@@ -6,6 +6,7 @@ use App\Http\Controllers\Login;
 use App\Http\Controllers\Site;
 use App\Http\Controllers\SiteDetail;
 use App\Http\Controllers\Store;
+use App\Http\Controllers\TargetStore;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -46,6 +47,15 @@ Route::group(['middleware' => 'revalidate'], function () {
     Route::get('/hapus-store/{id}', [Store::class, 'delete']);
     Route::get('/detail-store/{id}', [Store::class, 'byId'])->name('detail-store');
     Route::post('/status/{id}', [Store::class, 'updateStatus']);
+
+    Route::get('/daftar-target-store', [TargetStore::class, 'index'])->name('daftar-target-store');
+    Route::get('/tambah-target-store', [TargetStore::class, 'new'])->name('tambah-target-store');
+    Route::post('/tambah-target-store', [TargetStore::class, 'new']);
+    Route::get('/edit-target-store/{id}', [TargetStore::class, 'update'])->name('edit-target-store');
+    Route::post('/edit-target-store/{id}', [TargetStore::class, 'update']);
+    Route::get('/hapus-target-store/{id}', [TargetStore::class, 'delete']);
+    Route::get('/detail-target-store/{id}', [TargetStore::class, 'byId'])->name('detail-target-store');
+    Route::post('/status-target-store/{id}', [TargetStore::class, 'updateStatus']);
     
 
     Route::get('/detail-site-user/{id}', [User::class, 'detail'])->name('detail-site-user');
