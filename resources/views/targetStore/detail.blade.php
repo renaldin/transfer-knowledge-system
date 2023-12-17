@@ -48,6 +48,14 @@
                             <label class="form-label" for="reschedule_date">Tanggal Kunjungan Selanjutnya</label>
                             <input type="text" class="form-control" value="{{date('d-m-Y', strtotime($detail->reschedule_date))}}"readonly>
                         </div>
+                        <div class="form-group col-md-6">
+                            <label class="form-label" for="store_address">Latitude</label>
+                            <input type="text" class="form-control" value="{{$detail->latitude}}"readonly>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="form-label" for="store_address">Longitude</label>
+                            <input type="text" class="form-control" value="{{$detail->longitude}}"readonly>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-12">

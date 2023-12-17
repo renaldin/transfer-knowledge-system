@@ -320,6 +320,138 @@
                 }
             });
         </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var form = document.getElementById('detailInvoiceForm');
+                let add = document.getElementById('add');
+                let bill = document.getElementById('bill');
+                let remainingBalance = document.getElementById('remaining_balance');
+                let latitudeStore = document.getElementById('latitude_store').value;
+                let longitudeStore = document.getElementById('longitude_store').value;
+                
+                if (form) {
+                    add.addEventListener('keyup', function (e) {
+                        let addValue = removeFormatting(add.value);
+                        let billValue = removeFormatting(bill.value);
+                        let remaining = parseInt(addValue) - parseInt(billValue);
+                        
+                        add.value = formatRupiah(addValue);
+                        remainingBalance.value = formatRupiah(`${remaining}`);
+                    });
+
+                    function formatRupiah(angka, prefix) {
+                        let number_string = angka.replace(/[^,\d]/g, '').toString(),
+                            split = number_string.split(','),
+                            sisa = split[0].length % 3,
+                            rupiah = split[0].substr(0, sisa),
+                            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+                        if (ribuan) {
+                            separator = sisa ? '.' : '';
+                            rupiah += separator + ribuan.join('.');
+                        }
+
+                        rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah;
+                        return prefix === undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+                    }
+
+                    function removeFormatting(value) {
+                        return value.replace(/[^\d]/g, '');
+                    }
+
+                    function getCoordinates() {
+                        if (navigator.geolocation) {
+                            navigator.geolocation.getCurrentPosition(function(position) {
+                                var latitude = position.coords.latitude;
+                                var longitude = position.coords.longitude;
+
+                                const currentLatitude = document.getElementById('latitude').value = latitude;
+                                const currentLongitude = document.getElementById('longitude').value = longitude;
+
+                                const distance = getDistanceBetweenPoints(currentLatitude, currentLongitude, latitudeStore, longitudeStore);
+                                document.getElementById('distance').value = distance.meters.toFixed(2);
+                                document.getElementById('absensi').value = distance.meters < 100 ? 'Hasir': 'Tidak Hadir';
+                            }, function(error) {
+                                console.error('Error getting location:', error.message);
+                            });
+                        } else {
+                            console.log('Geolocation is not supported by your browser.');
+                        }
+                    }
+
+                    function getDistanceBetweenPoints(lat1, lon1, lat2, lon2) {
+                        const theta = lon1 - lon2;
+                        let miles = Math.acos(
+                            Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) +
+                            Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta))
+                        );
+
+                        miles = rad2deg(miles);
+                        miles = miles * 60 * 1.1515;
+                        const feet = miles * 5280;
+                        const yards = feet / 3;
+                        const kilometers = miles * 1.609344;
+                        const meters = kilometers * 1000;
+
+                        return {
+                            miles: miles,
+                            feet: feet,
+                            yards: yards,
+                            kilometers: kilometers,
+                            meters: meters
+                        };
+                    }
+
+                    function deg2rad(deg) {
+                        return deg * (Math.PI / 180);
+                    }
+
+                    function rad2deg(rad) {
+                        return rad * (180 / Math.PI);
+                    }
+
+                    getCoordinates();
+                }
+            });
+        </script>
+
+{{-- <script>
+    if(navigator.geolocation){ //jika navigator tersedia
+      navigator.geolocation.getCurrentPosition(showPosition, showError);
+    }
+    else{ //jika navigator tidak tersedia
+      console.log("Geolocation is not supported by this device");
+    }
+   
+    //jika location allowed
+    function showPosition(position){
+   
+      var latlong = position.coords.latitude + "," + position.coords.longitude;
+   
+      alert(latlong);
+   
+    }
+       
+    //jika location disabled atau not allowed
+    function showError(error){
+   
+      switch(error.code){
+        case error.PERMISSION_DENIED:
+          console.log("User denied the request for Geolocation.");
+          break;
+        case error.POSITION_UNAVAILABLE:
+          console.log("Location information is unavailable.");
+          break;
+        case error.TIMEOUT:
+          console.log("The request to get user location timed out.");
+          break;
+        case error.UNKNOWN_ERROR:
+          console.log("An unknown error occurred.");
+          break;
+      }
+    }
+  </script> --}}
 </body>
 
 </html>

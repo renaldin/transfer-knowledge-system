@@ -149,6 +149,8 @@ class Store extends Controller
                 'store_address'         => Request()->store_address,
                 'link_gmaps'            => Request()->link_gmaps,
                 'description'           => Request()->description,
+                'latitude'              => Request()->latitude,
+                'longitude'             => Request()->longitude,
                 'store_pict'            => $fileNameStorePict,
                 'ktp_pict'              => $fileNameKtpPict,
                 'form_pict'             => $fileNameFormPict,
@@ -232,7 +234,9 @@ class Store extends Controller
                 'store_mobile_phone'    => Request()->store_mobile_phone,
                 'store_address'         => Request()->store_address,
                 'link_gmaps'            => Request()->link_gmaps,
-                'description'           => Request()->description
+                'description'           => Request()->description,
+                'latitude'              => Request()->latitude,
+                'longitude'             => Request()->longitude
             ];
 
             if (Request()->store_pict <> "") {

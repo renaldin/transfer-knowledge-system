@@ -15,8 +15,17 @@
                     @csrf
                     <div class="row">
                         <div class="form-group col-md-6">
+                            <label class="form-label" for="user_code">Kode User</label>
+                            <input type="text" class="form-control @error('user_code') is-invalid @enderror" id="user_code" name="user_code" value="@if($form === 'Tambah'){{ old('user_code') }}@elseif($form === 'Edit' || $form === 'Detail'){{$detail->user_code}}@endif" @if($form === 'Detail') disabled @endif autofocus placeholder="Masukkan Kode" required>
+                            @error('user_code')
+                                <div class="invalid-feedback">
+                                {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="form-group col-md-6">
                             <label class="form-label" for="fullname">Nama Lengkap</label>
-                            <input type="text" class="form-control @error('fullname') is-invalid @enderror" id="fullname" name="fullname" value="@if($form === 'Tambah'){{ old('fullname') }}@elseif($form === 'Edit' || $form === 'Detail'){{$detail->fullname}}@endif" @if($form === 'Detail') disabled @endif autofocus placeholder="Masukkan Nama Lengkap" required>
+                            <input type="text" class="form-control @error('fullname') is-invalid @enderror" id="fullname" name="fullname" value="@if($form === 'Tambah'){{ old('fullname') }}@elseif($form === 'Edit' || $form === 'Detail'){{$detail->fullname}}@endif" @if($form === 'Detail') disabled @endif placeholder="Masukkan Nama Lengkap" required>
                             @error('fullname')
                                 <div class="invalid-feedback">
                                 {{ $message }}

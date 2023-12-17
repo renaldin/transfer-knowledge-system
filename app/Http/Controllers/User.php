@@ -102,6 +102,7 @@ class User extends Controller
             return view('admin.user.form', $data);
         } else {
             Request()->validate([
+                'user_code'      => 'required',
                 'fullname'      => 'required',
                 'username'      => 'required',
                 'email'         => 'required|unique:user,email',
@@ -111,6 +112,7 @@ class User extends Controller
                 'role'          => 'required',
                 'photo'         => 'required|mimes:jpeg,png,jpg|max:2048'
             ], [
+                'user_code.required'     => 'Kode harus diisi!',
                 'fullname.required'     => 'Nama lengkap harus diisi!',
                 'username.required'     => 'Username harus diisi!',
                 'email.required'        => 'Email harus diisi!',
@@ -130,6 +132,7 @@ class User extends Controller
             $file->move(public_path($this->public_path), $fileName);
 
             $data = [
+                'user_code'      => Request()->user_code,
                 'fullname'      => Request()->fullname,
                 'username'      => Request()->username,
                 'email'         => Request()->email,
@@ -163,6 +166,7 @@ class User extends Controller
             return view('admin.user.form', $data);
         } else {
             Request()->validate([
+                'user_code'      => 'required',
                 'fullname'      => 'required',
                 'username'      => 'required',
                 'email'         => 'required',
@@ -171,6 +175,7 @@ class User extends Controller
                 'role'          => 'required',
                 'photo'         => 'mimes:jpeg,png,jpg|max:2048'
             ], [
+                'user_code.required'     => 'Kode harus diisi!',
                 'fullname.required'     => 'Nama lengkap harus diisi!',
                 'username.required'     => 'Username harus diisi!',
                 'email.required'        => 'Email harus diisi!',
@@ -195,6 +200,7 @@ class User extends Controller
     
                     $data = [
                         'id_user'       => $id_user,
+                        'user_code'      => Request()->user_code,
                         'fullname'      => Request()->fullname,
                         'username'      => Request()->username,
                         'email'         => Request()->email,
@@ -207,6 +213,7 @@ class User extends Controller
                 } else {
                     $data = [
                         'id_user'       => $id_user,
+                        'user_code'      => Request()->user_code,
                         'fullname'      => Request()->fullname,
                         'username'      => Request()->username,
                         'email'         => Request()->email,
@@ -228,6 +235,7 @@ class User extends Controller
     
                     $data = [
                         'id_user'       => $id_user,
+                        'user_code'      => Request()->user_code,
                         'fullname'      => Request()->fullname,
                         'username'      => Request()->username,
                         'email'         => Request()->email,
@@ -239,6 +247,7 @@ class User extends Controller
                 } else {
                     $data = [
                         'id_user'       => $id_user,
+                        'user_code'      => Request()->user_code,
                         'fullname'      => Request()->fullname,
                         'username'      => Request()->username,
                         'email'         => Request()->email,

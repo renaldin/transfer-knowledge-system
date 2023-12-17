@@ -110,6 +110,8 @@ class TargetStore extends Controller
                 'reschedule_date'       => Request()->reschedule_date,
                 'target_store_status'   => Request()->target_store_status,
                 'description'           => Request()->description,
+                'latitude'              => Request()->latitude,
+                'longitude'             => Request()->longitude,
                 'target_store_pict'     => $fileNameTargetStorePict,
             ];
     
@@ -165,7 +167,9 @@ class TargetStore extends Controller
                 'target_store_address'  => Request()->target_store_address,
                 'reschedule_date'       => Request()->reschedule_date,
                 'target_store_status'   => Request()->target_store_status,
-                'description'           => Request()->description
+                'description'           => Request()->description,
+                'latitude'              => Request()->latitude,
+                'longitude'             => Request()->longitude
             ];
 
             if (Request()->target_store_pict <> "") {

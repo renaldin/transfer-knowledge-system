@@ -154,6 +154,14 @@
                             @enderror
                         </div>
                         <div class="form-group col-md-6">
+                            <label class="form-label" for="latitude">Latitude</label>
+                            <input type="text" class="form-control @error('latitude') is-invalid @enderror" id="latitude" name="latitude" value="@if($form === 'Tambah'){{ old('latitude') }}@elseif($form === 'Edit' || $form === 'Detail'){{$detail->latitude}}@endif" @if($form === 'Detail') disabled @endif placeholder="Masukkan Latitude" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="form-label" for="longitude">Longitude</label>
+                            <input type="text" class="form-control @error('longitude') is-invalid @enderror" id="longitude" name="longitude" value="@if($form === 'Tambah'){{ old('longitude') }}@elseif($form === 'Edit' || $form === 'Detail'){{$detail->longitude}}@endif" @if($form === 'Detail') disabled @endif placeholder="Masukkan Longitude" required>
+                        </div>
+                        <div class="form-group col-md-6">
                             <label class="form-label" for="description">Deskripsi</label>
                             <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="5" placeholder="Masukkan Deskripsi">@if($form === 'Tambah'){{ old('description') }}@elseif($form === 'Edit'){{$detail->description}}@endif</textarea>
                             @error('description')
