@@ -329,23 +329,29 @@
                 let remainingBalance = document.getElementById('remaining_balance');
                 let latitudeStore = document.getElementById('latitude_store').value;
                 let longitudeStore = document.getElementById('longitude_store').value;
-                
+
                 if (form) {
+                    let addValue = removeFormatting(add.value);
+                    let billValue = removeFormatting(bill.value);
+                    let remaining = parseInt(addValue) - parseInt(billValue);
+
+                    add.value = formatRupiah(addValue);
+                    remainingBalance.value = remaining.toLocaleString('id-ID');
                     add.addEventListener('keyup', function (e) {
                         let addValue = removeFormatting(add.value);
                         let billValue = removeFormatting(bill.value);
                         let remaining = parseInt(addValue) - parseInt(billValue);
-                        
+
                         add.value = formatRupiah(addValue);
-                        remainingBalance.value = formatRupiah(`${remaining}`);
+                        remainingBalance.value = remaining.toLocaleString('id-ID');
                     });
 
                     function formatRupiah(angka, prefix) {
                         let number_string = angka.replace(/[^,\d]/g, '').toString(),
-                            split = number_string.split(','),
-                            sisa = split[0].length % 3,
-                            rupiah = split[0].substr(0, sisa),
-                            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+                        split = number_string.split(','),
+                        sisa = split[0].length % 3,
+                        rupiah = split[0].substr(0, sisa),
+                        ribuan = split[0].substr(sisa).match(/\d{3}/gi);
 
                         if (ribuan) {
                             separator = sisa ? '.' : '';
@@ -365,13 +371,11 @@
                             navigator.geolocation.getCurrentPosition(function(position) {
                                 var latitude = position.coords.latitude;
                                 var longitude = position.coords.longitude;
-
                                 const currentLatitude = document.getElementById('latitude').value = latitude;
                                 const currentLongitude = document.getElementById('longitude').value = longitude;
-
                                 const distance = getDistanceBetweenPoints(currentLatitude, currentLongitude, latitudeStore, longitudeStore);
                                 document.getElementById('distance').value = distance.meters.toFixed(2);
-                                document.getElementById('absensi').value = distance.meters < 100 ? 'Hasir': 'Tidak Hadir';
+                                document.getElementById('absensi').value = distance.meters < 100 ? 'Hadir': 'Tidak Hadir';
                             }, function(error) {
                                 console.error('Error getting location:', error.message);
                             });
@@ -413,45 +417,10 @@
 
                     getCoordinates();
                 }
+
             });
         </script>
 
-{{-- <script>
-    if(navigator.geolocation){ //jika navigator tersedia
-      navigator.geolocation.getCurrentPosition(showPosition, showError);
-    }
-    else{ //jika navigator tidak tersedia
-      console.log("Geolocation is not supported by this device");
-    }
-   
-    //jika location allowed
-    function showPosition(position){
-   
-      var latlong = position.coords.latitude + "," + position.coords.longitude;
-   
-      alert(latlong);
-   
-    }
-       
-    //jika location disabled atau not allowed
-    function showError(error){
-   
-      switch(error.code){
-        case error.PERMISSION_DENIED:
-          console.log("User denied the request for Geolocation.");
-          break;
-        case error.POSITION_UNAVAILABLE:
-          console.log("Location information is unavailable.");
-          break;
-        case error.TIMEOUT:
-          console.log("The request to get user location timed out.");
-          break;
-        case error.UNKNOWN_ERROR:
-          console.log("An unknown error occurred.");
-          break;
-      }
-    }
-  </script> --}}
 </body>
 
 </html>

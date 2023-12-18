@@ -50,7 +50,7 @@ class Invoice extends Controller
 
         $dataInvoice = [
             'id_user'   => Session()->get('id_user'),
-            'date'      => date('Y-d-m', strtotime($data[0][3])),
+            'date'      => date('Y-m-d', strtotime(str_replace('/', '-', $data[3][3]))),
             'day'       => $data[1][3],
             'user_code_invoice' => $data[2][3]
         ];
