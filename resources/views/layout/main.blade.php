@@ -320,6 +320,107 @@
                 }
             });
         </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var form = document.getElementById('detailInvoiceForm');
+                let add = document.getElementById('add');
+                let bill = document.getElementById('bill');
+                let remainingBalance = document.getElementById('remaining_balance');
+                let latitudeStore = document.getElementById('latitude_store').value;
+                let longitudeStore = document.getElementById('longitude_store').value;
+
+                if (form) {
+                    let addValue = removeFormatting(add.value);
+                    let billValue = removeFormatting(bill.value);
+                    let remaining = parseInt(addValue) - parseInt(billValue);
+
+                    add.value = formatRupiah(addValue);
+                    remainingBalance.value = remaining.toLocaleString('id-ID');
+                    add.addEventListener('keyup', function (e) {
+                        let addValue = removeFormatting(add.value);
+                        let billValue = removeFormatting(bill.value);
+                        let remaining = parseInt(addValue) - parseInt(billValue);
+
+                        add.value = formatRupiah(addValue);
+                        remainingBalance.value = remaining.toLocaleString('id-ID');
+                    });
+
+                    function formatRupiah(angka, prefix) {
+                        let number_string = angka.replace(/[^,\d]/g, '').toString(),
+                        split = number_string.split(','),
+                        sisa = split[0].length % 3,
+                        rupiah = split[0].substr(0, sisa),
+                        ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+                        if (ribuan) {
+                            separator = sisa ? '.' : '';
+                            rupiah += separator + ribuan.join('.');
+                        }
+
+                        rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah;
+                        return prefix === undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+                    }
+
+                    function removeFormatting(value) {
+                        return value.replace(/[^\d]/g, '');
+                    }
+
+                    function getCoordinates() {
+                        if (navigator.geolocation) {
+                            navigator.geolocation.getCurrentPosition(function(position) {
+                                var latitude = position.coords.latitude;
+                                var longitude = position.coords.longitude;
+                                const currentLatitude = document.getElementById('latitude').value = latitude;
+                                const currentLongitude = document.getElementById('longitude').value = longitude;
+                                const distance = getDistanceBetweenPoints(currentLatitude, currentLongitude, latitudeStore, longitudeStore);
+                                document.getElementById('distance').value = distance.meters.toFixed(2);
+                                document.getElementById('absensi').value = distance.meters < 100 ? 'Hadir': 'Tidak Hadir';
+                            }, function(error) {
+                                console.error('Error getting location:', error.message);
+                            });
+                        } else {
+                            console.log('Geolocation is not supported by your browser.');
+                        }
+                    }
+
+                    function getDistanceBetweenPoints(lat1, lon1, lat2, lon2) {
+                        const theta = lon1 - lon2;
+                        let miles = Math.acos(
+                            Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) +
+                            Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta))
+                        );
+
+                        miles = rad2deg(miles);
+                        miles = miles * 60 * 1.1515;
+                        const feet = miles * 5280;
+                        const yards = feet / 3;
+                        const kilometers = miles * 1.609344;
+                        const meters = kilometers * 1000;
+
+                        return {
+                            miles: miles,
+                            feet: feet,
+                            yards: yards,
+                            kilometers: kilometers,
+                            meters: meters
+                        };
+                    }
+
+                    function deg2rad(deg) {
+                        return deg * (Math.PI / 180);
+                    }
+
+                    function rad2deg(rad) {
+                        return rad * (180 / Math.PI);
+                    }
+
+                    getCoordinates();
+                }
+
+            });
+        </script>
+
 </body>
 
 </html>

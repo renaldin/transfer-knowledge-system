@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\User;
 use App\Http\Controllers\Dashboard;
+use App\Http\Controllers\DetailInvoice;
+use App\Http\Controllers\Invoice;
 use App\Http\Controllers\Login;
 use App\Http\Controllers\Site;
 use App\Http\Controllers\SiteDetail;
@@ -21,6 +23,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/download-ktp/{fileName}', [Store::class, 'downloadKtp']);
+Route::post('/tambah-invoice', [Invoice::class, 'new']);
 
 Route::group(['middleware' => 'revalidate'], function () {
     
@@ -80,7 +83,12 @@ Route::group(['middleware' => 'revalidate'], function () {
     Route::get('/daftar-detail-site/{id_site}', [SiteDetail::class, 'index'])->name('daftar-detail-site');
     Route::post('/tambah-detail-site/{id_site}', [SiteDetail::class, 'new']);
 
-    
+    Route::get('/daftar-invoice', [Invoice::class, 'index'])->name('daftar-invoice');
+    Route::get('/edit-invoice/{id}', [Invoice::class, 'update'])->name('edit-invoice');
+    Route::post('/edit-invoice/{id}', [Invoice::class, 'update']);
+    Route::get('/hapus-invoice/{id}', [Invoice::class, 'delete']);
+    Route::get('/detail-invoice/{id}', [DetailInvoice::class, 'index'])->name('detail-invoice');
+    Route::get('/edit-detail-invoice/{id}', [DetailInvoice::class, 'update']);
 
     Route::group(['middleware' => 'administrator'], function () {
         

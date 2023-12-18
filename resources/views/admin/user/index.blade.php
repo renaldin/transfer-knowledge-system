@@ -43,6 +43,7 @@
                         <tr class="ligth">
                             <th>No</th>
                             <th>Foto</th>
+                            <th>Kode User</th>
                             <th>Nama Lengkap</th>
                             <th>Alamat</th>
                             <th>Role</th>
@@ -58,6 +59,7 @@
                                     <td class="text-center">
                                         <img class="bg-soft-primary rounded img-fluid avatar-40 me-3" src="@if($item->photo === null) {{ asset('photo/default1.jpg') }} @else {{ asset('photo/'.$item->photo) }} @endif" alt="profile">
                                     </td>
+                                    <td>{{$item->user_code}}</td>
                                     <td>{{$item->fullname}}</td>
                                     <td>{{$item->user_address}}</td>
                                     <td>
@@ -209,6 +211,11 @@
                 <div class="row">
                     <div class="col-md-12">
                         <table>
+                            <tr>
+                                <th>Kode User</th>
+                                <td>:</td>
+                                <td>{{$item->user_code}}</td>
+                            </tr>
                             <tr>
                                 <th>Nama Lengkap</th>
                                 <td>:</td>

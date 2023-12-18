@@ -259,6 +259,11 @@
                     <div class="col-md-12">
                         <table>
                             <tr>
+                                <th>Kode Sales</th>
+                                <td>:</td>
+                                <td>{{$item->user_code}}</td>
+                            </tr>
+                            <tr>
                                 <th>Nama Lengkap</th>
                                 <td>:</td>
                                 <td>{{$item->fullname}}</td>

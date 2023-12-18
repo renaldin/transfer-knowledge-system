@@ -12,6 +12,10 @@
             <div class="card-body px-4">
                 <div class="row">
                     <div class="form-group col-md-6">
+                        <label class="form-label">Kode Sales</label>
+                        <input type="text" class="form-control" value="{{$detail->user_code}}" readonly>
+                    </div>
+                    <div class="form-group col-md-6">
                         <label class="form-label">Nama Sales</label>
                         <input type="text" class="form-control" value="{{$detail->fullname}}" readonly>
                     </div>
