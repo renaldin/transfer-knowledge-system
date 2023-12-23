@@ -323,14 +323,17 @@
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                var form = document.getElementById('detailInvoiceForm');
-                let add = document.getElementById('add');
-                let bill = document.getElementById('bill');
-                let remainingBalance = document.getElementById('remaining_balance');
-                let latitudeStore = document.getElementById('latitude_store').value;
-                let longitudeStore = document.getElementById('longitude_store').value;
+                var formDetailInvoiceForm = document.getElementById('detailInvoiceForm');
+                var productForm = document.getElementById('productForm');
+                var bayarFormModal = document.getElementById('bayarFormModal');
 
-                if (form) {
+                if (formDetailInvoiceForm) {
+                    let add = document.getElementById('add');
+                    let bill = document.getElementById('bill');
+                    let remainingBalance = document.getElementById('remaining_balance');
+                    let latitudeStore = document.getElementById('latitude_store').value;
+                    let longitudeStore = document.getElementById('longitude_store').value;
+
                     let addValue = removeFormatting(add.value);
                     let billValue = removeFormatting(bill.value);
                     let remaining = parseInt(addValue) - parseInt(billValue);
@@ -345,26 +348,6 @@
                         add.value = formatRupiah(addValue);
                         remainingBalance.value = remaining.toLocaleString('id-ID');
                     });
-
-                    function formatRupiah(angka, prefix) {
-                        let number_string = angka.replace(/[^,\d]/g, '').toString(),
-                        split = number_string.split(','),
-                        sisa = split[0].length % 3,
-                        rupiah = split[0].substr(0, sisa),
-                        ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-
-                        if (ribuan) {
-                            separator = sisa ? '.' : '';
-                            rupiah += separator + ribuan.join('.');
-                        }
-
-                        rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah;
-                        return prefix === undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
-                    }
-
-                    function removeFormatting(value) {
-                        return value.replace(/[^\d]/g, '');
-                    }
 
                     function getCoordinates() {
                         if (navigator.geolocation) {
@@ -418,6 +401,67 @@
                     getCoordinates();
                 }
 
+                if(productForm) {
+                    let purchasePrice = document.getElementById('purchase_price')
+                    let sellPriceCash = document.getElementById('sell_price_cash')
+                    let sellPriceTempo = document.getElementById('sell_price_tempo')
+
+                    let purchasePriceValue = removeFormatting(purchasePrice.value);
+                    let sellPriceCashValue = removeFormatting(sellPriceCash.value);
+                    let sellPriceTempoValue = removeFormatting(sellPriceTempo.value);
+
+                    purchasePrice.value = formatRupiah(purchasePriceValue);
+                    sellPriceCash.value = formatRupiah(sellPriceCashValue);
+                    sellPriceTempo.value = formatRupiah(sellPriceTempoValue);
+
+                    purchasePrice.addEventListener('keyup', function (e) {
+                        let purchasePriceValue = removeFormatting(purchasePrice.value);
+                        purchasePrice.value = formatRupiah(purchasePriceValue);
+                    });
+
+                    sellPriceCash.addEventListener('keyup', function (e) {
+                        let sellPriceCashValue = removeFormatting(sellPriceCash.value);
+                        sellPriceCash.value = formatRupiah(sellPriceCashValue);
+                    });
+
+                    sellPriceTempo.addEventListener('keyup', function (e) {
+                        let sellPriceTempoValue = removeFormatting(sellPriceTempo.value);
+                        sellPriceTempo.value = formatRupiah(sellPriceTempoValue);
+                    });
+                }
+
+                if(bayarFormModal) {
+                    let totalPay = document.getElementById('total_pay')
+
+                    let totalPayValue = removeFormatting(totalPay.value);
+
+                    totalPay.value = formatRupiah(totalPayValue);
+
+                    totalPay.addEventListener('keyup', function (e) {
+                        let totalPayValue = removeFormatting(totalPay.value);
+                        totalPay.value = formatRupiah(totalPayValue);
+                    });
+                }
+
+                function formatRupiah(angka, prefix) {
+                    let number_string = angka.replace(/[^,\d]/g, '').toString(),
+                    split = number_string.split(','),
+                    sisa = split[0].length % 3,
+                    rupiah = split[0].substr(0, sisa),
+                    ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+                    if (ribuan) {
+                        separator = sisa ? '.' : '';
+                        rupiah += separator + ribuan.join('.');
+                    }
+
+                    rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah;
+                    return prefix === undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+                }
+
+                function removeFormatting(value) {
+                    return value.replace(/[^\d]/g, '');
+                }
             });
         </script>
 
