@@ -11,6 +11,7 @@ use App\Http\Controllers\SalesDetail;
 use App\Http\Controllers\Site;
 use App\Http\Controllers\SiteDetail;
 use App\Http\Controllers\Stock;
+use App\Http\Controllers\StockOpname;
 use App\Http\Controllers\Store;
 use App\Http\Controllers\TargetStore;
 use Illuminate\Support\Facades\Route;
@@ -85,6 +86,12 @@ Route::group(['middleware' => 'revalidate'], function () {
     Route::get('/hapus-site/{id}', [Site::class, 'delete']);
 
     Route::get('/daftar-produk', [Product::class, 'index'])->name('daftar-produk');
+
+    Route::get('/daftar-semua-stok', [Product::class, 'stok'])->name('daftar-semua-stok');
+    Route::post('/daftar-semua-stok', [Product::class, 'stok'])->name('daftar-semua-stok');
+    Route::get('/daftar-semua-stok-opname', [Product::class, 'stokOpname'])->name('daftar-semua-stok-opname');
+    Route::post('/daftar-semua-stok-opname', [Product::class, 'stokOpname'])->name('daftar-semua-stok-opname');
+    
     Route::get('/tambah-produk', [Product::class, 'new'])->name('tambah-produk');
     Route::post('/tambah-produk', [Product::class, 'new']);
     Route::get('/edit-produk/{id}', [Product::class, 'update'])->name('edit-produk');
@@ -95,6 +102,11 @@ Route::group(['middleware' => 'revalidate'], function () {
     Route::post('/tambah-stok', [Stock::class, 'new']);
     Route::post('/edit-stok/{id}', [Stock::class, 'update']);
     Route::get('/hapus-stok/{id}/{id_product}', [Stock::class, 'delete']);
+
+    Route::get('/stok-opname-produk/{id_product}', [StockOpname::class, 'index']);
+    Route::post('/tambah-stok-opname', [StockOpname::class, 'new']);
+    Route::post('/edit-stok-opname/{id}', [StockOpname::class, 'update']);
+    Route::get('/hapus-stok-opname/{id}/{id_product}', [StockOpname::class, 'delete']);
     
     Route::get('/daftar-detail-site/{id_site}', [SiteDetail::class, 'index'])->name('daftar-detail-site');
     Route::post('/tambah-detail-site/{id_site}', [SiteDetail::class, 'new']);
@@ -113,6 +125,7 @@ Route::group(['middleware' => 'revalidate'], function () {
     Route::post('/edit-penjualan/{id}', [Sales::class, 'update']);
     Route::get('/hapus-penjualan/{id}', [Sales::class, 'delete']);
     Route::post('/bayar-penjualan/{id}', [Sales::class, 'pay']);
+    Route::get('/nota-penjualan/{id}', [Sales::class, 'nota']);
     
     Route::get('/detail-penjualan/{id_sales}', [SalesDetail::class, 'index']);
     Route::get('/tambah-detail-penjualan/{id_sales}', [SalesDetail::class, 'new'])->name('tambah-detail-penjualan');

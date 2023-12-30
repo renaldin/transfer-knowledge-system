@@ -120,10 +120,8 @@ class SalesDetail extends Controller
             return view('sellingDetail.form', $data);
         } else {
             Request()->validate([
-                'id_product'            => 'required',
                 'quantity_sales'        => 'required'
             ], [
-                'id_product.required'           => 'Produk harus diisi!',
                 'quantity_sales.required'       => 'Kuantitas harus diisi!'
             ]);
     
