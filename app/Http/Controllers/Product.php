@@ -6,17 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Models\ModelProduct;
 use App\Models\ModelUser;
 use App\Models\ModelStock;
+use App\Models\ModelStockOpname;
 
 class Product extends Controller
 {
 
-    private $ModelProduct, $ModelUser, $ModelStock;
+    private $ModelProduct, $ModelUser, $ModelStock, $ModelStockOpname;
 
     public function __construct()
     {
         $this->ModelProduct = new ModelProduct();
         $this->ModelUser = new ModelUser();
         $this->ModelStock = new ModelStock();
+        $this->ModelStockOpname = new ModelStockOpname();
     }
 
     public function index()
@@ -137,5 +139,59 @@ class Product extends Controller
         $this->ModelStock->deleteData('id_product', $id_product);
 
         return back()->with('success', 'Data berhasil dihapus!');
+    }
+
+    public function stok()
+    {
+        if (!Session()->get('role')) {
+            return redirect()->route('login');
+        }
+
+        if(!Request()->date_from) {
+            $data = [
+                'title'             => 'Data Produk',
+                'subTitle'          => 'Daftar Stok',
+                'produk'      => $this->ModelProduct->findAll('id_product', 'DESC'),
+                'daftarStok'        => $this->ModelStock->findAll('id_stock', 'DESC'),
+                'user'              => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
+            ];
+        } else {
+            $data = [
+                'title'             => 'Data Produk',
+                'subTitle'          => 'Daftar Stok',
+                'produk'            => $this->ModelProduct->findAll('id_product', 'DESC'),
+                'daftarStok'        => $this->ModelStock->findAllWhere('id_stock', 'DESC', Request()->date_from, Request()->date_to),
+                'user'              => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
+            ];
+        }
+
+        return view('product.stock', $data);
+    }
+
+    public function stokOpname()
+    {
+        if (!Session()->get('role')) {
+            return redirect()->route('login');
+        }
+
+        if(!Request()->date_from) {
+            $data = [
+                'title'             => 'Data Produk',
+                'subTitle'          => 'Daftar Stok Opname',
+                'produk'      => $this->ModelProduct->findAll('id_product', 'DESC'),
+                'daftarStokOpname'  => $this->ModelStockOpname->findAll('id_stock_opname', 'DESC'),
+                'user'              => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
+            ];
+        } else {
+            $data = [
+                'title'             => 'Data Produk',
+                'subTitle'          => 'Daftar Stok Opname',
+                'produk'            => $this->ModelProduct->findAll('id_product', 'DESC'),
+                'daftarStokOpname'  => $this->ModelStockOpname->findAllWhere('id_stock_opname', 'DESC', Request()->date_from, Request()->date_to),
+                'user'              => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
+            ];
+        }
+
+        return view('product.stockOpname', $data);
     }
 }

@@ -21,6 +21,16 @@ class ModelStock extends Model
             ->get();
     }
 
+    public function findAllWhere($order, $by, $dateFrom, $dateTo)
+    {
+        return DB::table('stock')
+            ->join('product', 'product.id_product', '=', 'stock.id_product')
+            ->join('user', 'user.id_user', '=', 'stock.id_user')
+            ->whereBetween('stock.stock_date', [$dateFrom, $dateTo])
+            ->orderBy($order, $by)
+            ->get();
+    }
+
     public function findOne($where, $value)
     {
         return DB::table('stock')

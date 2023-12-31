@@ -6,17 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Models\ModelProduct;
 use App\Models\ModelUser;
 use App\Models\ModelStock;
+use App\Models\ModelStockOpname;
 
 class Stock extends Controller
 {
 
-    private $ModelProduct, $ModelUser, $ModelStock;
+    private $ModelProduct, $ModelUser, $ModelStock, $ModelStockOpname;
 
     public function __construct()
     {
         $this->ModelProduct = new ModelProduct();
         $this->ModelUser = new ModelUser();
         $this->ModelStock = new ModelStock();
+        $this->ModelStockOpname = new ModelStockOpname();
     }
 
     public function index($id_product)
@@ -27,9 +29,10 @@ class Stock extends Controller
 
         $data = [
             'title'             => 'Data Stok',
-            'subTitle'          => 'Daftar Stok',
+            'subTitle'          => 'Data Stok',
             'produk'            => $this->ModelProduct->findOne('id_product', $id_product),
             'daftarStok'        => $this->ModelStock->findAll('id_stock', 'DESC'),
+            'daftarStokOpname'  => $this->ModelStockOpname->findAll('id_stock_opname', 'DESC'),
             'user'              => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
         ];
 

@@ -17,7 +17,7 @@
                         <div class="form-group col-md-6">
                             <label class="form-label" for="id_product">Produk</label>
                             <input type="hidden" name="id_sales" value="{{$sales->id_sales}}" id="">
-                            <select name="id_product" id="id_product" class="selectpicker form-control @error('id_product') is-invalid @enderror" data-style="py-0" @if($form === 'Detail') disabled @endif required>
+                            <select name="id_product" id="id_product" class="selectpicker form-control @error('id_product') is-invalid @enderror" data-style="py-0" @if($form === 'Edit') disabled @endif @if($form === 'Tambah') required @endif >
                                 @if ($form === 'Tambah')
                                     <option value="" selected disabled>-- Pilih --</option>
                                 @else
@@ -37,7 +37,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label class="form-label" for="quantity_sales">QTY</label>
-                            <input type="text" class="form-control @error('quantity_sales') is-invalid @enderror" id="quantity_sales" name="quantity_sales" value="@if($form === 'Tambah'){{ old('quantity_sales') }}@elseif($form === 'Edit' || $form === 'Detail'){{$detail->quantity_sales}}@endif" @if($form === 'Detail') disabled @endif placeholder="Masukkan Nomor Telepon" oninput="handleNumberOnly(this)">
+                            <input type="text" class="form-control @error('quantity_sales') is-invalid @enderror" id="quantity_sales" name="quantity_sales" value="@if($form === 'Tambah'){{ old('quantity_sales') }}@elseif($form === 'Edit' || $form === 'Detail'){{$detail->quantity_sales}}@endif" @if($form === 'Detail') disabled @endif placeholder="Masukkan QTY" oninput="handleNumberOnly(this)">
                             @error('quantity_sales')
                                 <div class="invalid-feedback">
                                 {{ $message }}

@@ -154,6 +154,25 @@ class Sales extends Controller
         return back()->with('success', 'Anda berhasil update pembayaran!');
     }
 
+    public function nota($id_sales)
+    {
+        if (!Session()->get('role')) {
+            return redirect()->route('login');
+        }
+
+        $sales = $this->ModelSales->findOne('id_sales', $id_sales);
+
+        $data = [
+            'title'     => 'Penjualan',
+            'subTitle'  => 'Nota Penjualan',
+            'sales'     => $this->ModelSales->findOne('id_sales', $id_sales),
+            'salesDetail' => $this->ModelSalesDetail->findAll('id_sales_detail', 'DESC'),
+            'user'      => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
+            'detail'    => $sales,
+        ];
+        return view('selling.nota', $data);
+    }
+
     public function delete($id_sales)
     {
         if (!Session()->get('role')) {

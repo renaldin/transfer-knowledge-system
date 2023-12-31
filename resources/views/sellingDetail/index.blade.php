@@ -60,6 +60,7 @@
                 <div class="row">
                     <div class="form-group col-md-12">
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bayar{{$sales->id_sales}}">Bayar</button>
+                        <a href="/nota-penjualan/{{$sales->id_sales}}" target="_blank" class="btn btn-primary">Nota</a>
                     </div>
                 </div>
             </div>
