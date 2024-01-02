@@ -29,6 +29,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/download-ktp/{fileName}', [Store::class, 'downloadKtp']);
 Route::post('/tambah-invoice', [Invoice::class, 'new']);
+Route::get('/export-invoice/{id}', [Invoice::class, 'export']);
 
 Route::group(['middleware' => 'revalidate'], function () {
     

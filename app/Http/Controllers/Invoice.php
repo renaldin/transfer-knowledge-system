@@ -7,6 +7,10 @@ use App\Models\ModelInvoice;
 use App\Models\ModelDetailInvoice;
 use App\Models\ModelUser;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Reader\Exception;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Writer\Xls;
 
 class Invoice extends Controller
 {
@@ -121,5 +125,80 @@ class Invoice extends Controller
         $this->ModelInvoice->deleteData('id_invoice', $id_invoice);
         $this->ModelDetailInvoice->deleteData('id_invoice', $id_invoice);
         return back()->with('success', 'Data berhasil dihapus!');
+    }
+
+    public function export($id_invoice)
+    {
+        if (!Session()->get('role')) {
+            return redirect()->route('login');
+        }
+
+        $invoice = $this->ModelInvoice->findOne('id_invoice', $id_invoice);
+        $daftarDetailInvoice = $this->ModelDetailInvoice->findAll('id_detail_invoice', 'ASC');
+        $user = $this->ModelUser->findOne('user_code', $invoice->user_code_invoice);
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $sheet->mergeCells('A2:B2');
+        $sheet->setCellValue('A2', 'TANGGAL CETAK');
+        $sheet->setCellValue('C2', date('d/m/Y', strtotime($invoice->date)));
+        $sheet->mergeCells('A3:B3');
+        $sheet->setCellValue('A3', 'JADWAL');
+        $sheet->setCellValue('C3', $invoice->day);
+        $sheet->mergeCells('A4:B4');
+        $sheet->setCellValue('A4', 'NAMA SALES');
+        $sheet->setCellValue('C4', $user ? $user->fullname : $invoice->user_code_invoice);
+
+        $sheet->setCellValue('A6', 'NO');
+        $sheet->setCellValue('B6', 'ID');
+        $sheet->setCellValue('C6', 'Nama Store');
+        $sheet->setCellValue('D6', 'Tagihan');
+        $sheet->setCellValue('E6', 'Limit');
+        $sheet->setCellValue('F6', 'Harga Grup');
+        $sheet->setCellValue('G6', 'Tanggal Aktifasi');
+        $sheet->setCellValue('H6', 'ADD');
+        $sheet->setCellValue('I6', 'Sisa Saldo');
+        $sheet->setCellValue('J6', 'Keterangan');
+        $sheet->setCellValue('K6', 'Kunjungan');
+        $sheet->setCellValue('L6', 'Absensi');
+        $sheet->setCellValue('M6', 'Jarak');
+        $sheet->setCellValue('N6', 'catatan Untuk Sales');
+
+        $row = 7;
+        $no = 1;
+        foreach ($daftarDetailInvoice as $item) {
+            if($item->id_invoice == $invoice->id_invoice) {
+                $sheet->setCellValue('A' . $row, $no++);
+                $sheet->setCellValue('B' . $row, $item->store_code);
+                $sheet->setCellValue('C' . $row, $item->store_name);
+                $sheet->setCellValue('D' . $row, $item->bill);
+                $sheet->setCellValue('E' . $row, $item->limit);
+                $sheet->setCellValue('F' . $row, $item->group_price);
+                $sheet->setCellValue('G' . $row, date('d/m/Y', strtotime($item->activation_date)));
+                $sheet->setCellValue('H' . $row, $item->add);
+                $sheet->setCellValue('I' . $row, $item->remaining_balance);
+                $sheet->setCellValue('J' . $row, $item->notes);
+                $sheet->setCellValue('K' . $row, $item->visit == 1 ? 'Ya' : 'Tidak');
+                $sheet->setCellValue('L' . $row, $item->absensi);
+                $sheet->setCellValue('M' . $row, $item->distance);
+                $sheet->setCellValue('N' . $row, $item->notes_for_salesman);
+                $row++;
+            }
+        }
+
+        $headerStyle = [
+            'font' => ['bold' => true]
+            // 'fill' => ['fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID, 'startColor' => ['rgb' => '90EE90']],
+        ];
+        $sheet->getStyle('A6:N6')->applyFromArray($headerStyle);
+
+        $fileName = 'invoice-'.date('d-m-Y', strtotime($invoice->date)).'.xlsx';
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename='.$fileName);
+        header('Cache-Control: max-age=0');
+
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('php://output');
     }
 }
