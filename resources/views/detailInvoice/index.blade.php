@@ -24,6 +24,11 @@
                         <input type="text" class="form-control" value="{{$invoice->day}}" readonly>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <a href="/export-invoice/{{$invoice->id_invoice}}" class="btn btn-primary" target="_blank">Export Invoice</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

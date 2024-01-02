@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 23, 2023 at 10:55 AM
--- Server version: 10.4.24-MariaDB
--- PHP Version: 8.0.19
+-- Generation Time: Jan 02, 2024 at 09:36 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -47,7 +47,7 @@ CREATE TABLE `detail_invoice` (
   `notes_for_salesman` text DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `detail_invoice`
@@ -73,7 +73,7 @@ CREATE TABLE `invoice` (
   `day` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `invoice`
@@ -91,7 +91,7 @@ INSERT INTO `invoice` (`id_invoice`, `id_user`, `user_code_invoice`, `date`, `da
 
 CREATE TABLE `migrations` (
   `id` int(10) UNSIGNED NOT NULL,
-  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `migration` varchar(255) NOT NULL,
   `batch` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -115,11 +115,11 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 
 CREATE TABLE `personal_access_tokens` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `tokenable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tokenable_type` varchar(255) NOT NULL,
   `tokenable_id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `abilities` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) NOT NULL,
+  `token` varchar(64) NOT NULL,
+  `abilities` text DEFAULT NULL,
   `last_used_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -143,16 +143,16 @@ CREATE TABLE `product` (
   `last_stock` int(11) NOT NULL DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `product`
 --
 
 INSERT INTO `product` (`id_product`, `product_code`, `product_name`, `product_desc`, `purchase_price`, `sell_price_cash`, `sell_price_tempo`, `early_stock`, `last_stock`, `created_at`, `updated_at`) VALUES
-(3, 'PK002', 'Produk 2', 'Deskripsi Produk 2', 50000, 100000, 150000, 15, 15, '2023-12-19 23:21:19', '2023-12-23 09:36:22'),
-(5, 'PK003', 'Produk 3', 'Deskripsi', 50000, 100000, 150000, 15, 15, '2023-12-22 17:54:25', '2023-12-23 09:36:22'),
-(6, 'PK004', 'Produk 4', 'Deskripsi', 60000, 110000, 140000, 0, 0, '2023-12-22 17:55:06', '2023-12-23 09:30:41');
+(3, 'PK002', 'Produk 2', 'Deskripsi Produk 2', 50000, 100000, 150000, 15, 12, '2023-12-19 23:21:19', '2023-12-30 00:13:13'),
+(5, 'PK003', 'Produk 3', 'Deskripsi', 50000, 100000, 150000, 15, 12, '2023-12-22 17:54:25', '2023-12-27 16:49:24'),
+(6, 'PK004', 'Produk 4', 'Deskripsi', 60000, 110000, 140000, 12, 14, '2023-12-22 17:55:06', '2023-12-29 23:43:23');
 
 -- --------------------------------------------------------
 
@@ -175,14 +175,14 @@ CREATE TABLE `sales` (
   `notes` text DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `sales`
 --
 
 INSERT INTO `sales` (`id_sales`, `sales_code`, `sales_date`, `customer_name`, `customer_address`, `customer_phone`, `payment_type`, `total_qty`, `total_amount`, `total_pay`, `remaining_amount`, `notes`, `created_at`, `updated_at`) VALUES
-(2, 'P0001', '2023-12-21', 'Pelanggan 1', 'Alamat Pelanggan 1', '089787234234', 'Cash', 0, 0, 0, 0, 'Catatan', '2023-12-21 00:14:35', '2023-12-21 00:14:35');
+(2, 'P0001', '2023-12-21', 'Pelanggan 1', 'Alamat Pelanggan 1', '089787234234', 'Cash', 5, 500000, 0, 500000, 'Catatan', '2023-12-21 00:14:35', '2023-12-27 16:49:24');
 
 -- --------------------------------------------------------
 
@@ -200,7 +200,15 @@ CREATE TABLE `sales_detail` (
   `total_price` int(11) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `sales_detail`
+--
+
+INSERT INTO `sales_detail` (`id_sales_detail`, `id_sales`, `id_product`, `purchase_price_sales`, `sell_price_sales`, `quantity_sales`, `total_price`, `created_at`, `updated_at`) VALUES
+(11, 2, 3, 50000, 100000, 2, 200000, '2023-12-27 16:49:14', '2023-12-27 16:49:14'),
+(12, 2, 5, 50000, 100000, 3, 300000, '2023-12-27 16:49:24', '2023-12-27 16:49:24');
 
 -- --------------------------------------------------------
 
@@ -210,8 +218,8 @@ CREATE TABLE `sales_detail` (
 
 CREATE TABLE `site` (
   `id_site` bigint(20) UNSIGNED NOT NULL,
-  `site_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `site_address` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `site_name` varchar(255) DEFAULT NULL,
+  `site_address` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -272,7 +280,7 @@ CREATE TABLE `stock` (
   `id_user` int(11) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `stock`
@@ -281,7 +289,33 @@ CREATE TABLE `stock` (
 INSERT INTO `stock` (`id_stock`, `id_product`, `quantity`, `stock_date`, `description`, `id_user`, `created_at`, `updated_at`) VALUES
 (9, 3, 10, '2023-12-20', 'Deskripsi', 1, '2023-12-20 02:28:24', '2023-12-20 02:28:49'),
 (13, 5, 15, '2023-12-23', 'Deskripsi', 1, '2023-12-23 09:32:38', '2023-12-23 09:32:38'),
-(14, 3, 5, '2023-12-23', 'Deskripsi', 1, '2023-12-23 09:34:58', '2023-12-23 09:34:58');
+(14, 3, 5, '2023-12-23', 'Deskripsi', 1, '2023-12-23 09:34:58', '2023-12-23 09:34:58'),
+(15, 6, 12, '2023-12-30', 'Deskripsi', 1, '2023-12-29 23:43:03', '2023-12-29 23:43:03');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `stock_opname`
+--
+
+CREATE TABLE `stock_opname` (
+  `id_stock_opname` int(11) NOT NULL,
+  `id_product` int(11) DEFAULT NULL,
+  `quantity_opname` int(11) DEFAULT NULL,
+  `date_opname` date DEFAULT NULL,
+  `desc_opname` varchar(255) DEFAULT NULL,
+  `id_user` int(11) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `stock_opname`
+--
+
+INSERT INTO `stock_opname` (`id_stock_opname`, `id_product`, `quantity_opname`, `date_opname`, `desc_opname`, `id_user`, `created_at`, `updated_at`) VALUES
+(2, 3, -1, '2023-12-27', 'Deskripsi', 1, '2023-12-27 16:31:03', '2023-12-27 16:31:03'),
+(3, 6, 2, '2023-12-30', 'Deskripsi', 1, '2023-12-29 23:43:23', '2023-12-29 23:43:23');
 
 -- --------------------------------------------------------
 
@@ -293,19 +327,19 @@ CREATE TABLE `store` (
   `id_store` bigint(20) UNSIGNED NOT NULL,
   `id_site` bigint(20) UNSIGNED NOT NULL,
   `id_user` bigint(20) UNSIGNED NOT NULL,
-  `store_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `store_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `owner_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `store_mobile_phone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `store_address` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `link_gmaps` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `store_pict` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `ktp_pict` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `form_pict` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `store_code` varchar(255) DEFAULT NULL,
+  `store_name` varchar(255) DEFAULT NULL,
+  `owner_name` varchar(255) DEFAULT NULL,
+  `store_mobile_phone` varchar(255) DEFAULT NULL,
+  `store_address` text DEFAULT NULL,
+  `link_gmaps` text DEFAULT NULL,
+  `store_pict` varchar(255) DEFAULT NULL,
+  `ktp_pict` varchar(255) DEFAULT NULL,
+  `form_pict` varchar(255) DEFAULT NULL,
   `store_status` int(11) NOT NULL DEFAULT 1,
-  `description` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `latitude` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `longitude` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` text DEFAULT NULL,
+  `latitude` varchar(255) DEFAULT NULL,
+  `longitude` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -329,16 +363,16 @@ CREATE TABLE `target_store` (
   `id_target_store` bigint(20) UNSIGNED NOT NULL,
   `id_site` bigint(20) UNSIGNED NOT NULL,
   `id_user` bigint(20) UNSIGNED NOT NULL,
-  `target_store_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `target_store_owner` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `target_store_mobile` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `target_store_address` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `target_store_name` varchar(255) DEFAULT NULL,
+  `target_store_owner` varchar(255) DEFAULT NULL,
+  `target_store_mobile` varchar(255) DEFAULT NULL,
+  `target_store_address` text DEFAULT NULL,
   `reschedule_date` timestamp NULL DEFAULT NULL,
-  `target_store_pict` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `target_store_status` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `latitude` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `longitude` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `target_store_pict` text DEFAULT NULL,
+  `description` text DEFAULT NULL,
+  `target_store_status` varchar(255) DEFAULT NULL,
+  `latitude` varchar(255) DEFAULT NULL,
+  `longitude` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -359,15 +393,15 @@ INSERT INTO `target_store` (`id_target_store`, `id_site`, `id_user`, `target_sto
 
 CREATE TABLE `user` (
   `id_user` bigint(20) UNSIGNED NOT NULL,
-  `user_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `fullname` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `username` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `password` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `user_address` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `mobile_phone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `role` enum('Administrator','Sales','Admin Cabang') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `photo` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `user_code` varchar(255) DEFAULT NULL,
+  `fullname` varchar(255) DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `password` text DEFAULT NULL,
+  `user_address` varchar(255) DEFAULT NULL,
+  `mobile_phone` varchar(255) DEFAULT NULL,
+  `role` enum('Administrator','Sales','Admin Cabang') NOT NULL,
+  `photo` text DEFAULT NULL,
   `id_user_respon` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -456,6 +490,12 @@ ALTER TABLE `stock`
   ADD PRIMARY KEY (`id_stock`);
 
 --
+-- Indexes for table `stock_opname`
+--
+ALTER TABLE `stock_opname`
+  ADD PRIMARY KEY (`id_stock_opname`);
+
+--
 -- Indexes for table `store`
 --
 ALTER TABLE `store`
@@ -521,7 +561,7 @@ ALTER TABLE `sales`
 -- AUTO_INCREMENT for table `sales_detail`
 --
 ALTER TABLE `sales_detail`
-  MODIFY `id_sales_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_sales_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `site`
@@ -539,7 +579,13 @@ ALTER TABLE `site_detail`
 -- AUTO_INCREMENT for table `stock`
 --
 ALTER TABLE `stock`
-  MODIFY `id_stock` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id_stock` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT for table `stock_opname`
+--
+ALTER TABLE `stock_opname`
+  MODIFY `id_stock_opname` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `store`
