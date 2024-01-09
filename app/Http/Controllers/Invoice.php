@@ -162,8 +162,7 @@ class Invoice extends Controller
         $sheet->setCellValue('J6', 'Keterangan');
         $sheet->setCellValue('K6', 'Kunjungan');
         $sheet->setCellValue('L6', 'Absensi');
-        $sheet->setCellValue('M6', 'Jarak');
-        $sheet->setCellValue('N6', 'catatan Untuk Sales');
+        $sheet->setCellValue('M6', 'catatan Untuk Sales');
 
         $row = 7;
         $no = 1;
@@ -181,8 +180,7 @@ class Invoice extends Controller
                 $sheet->setCellValue('J' . $row, $item->notes);
                 $sheet->setCellValue('K' . $row, $item->visit == 1 ? 'Ya' : 'Tidak');
                 $sheet->setCellValue('L' . $row, $item->absensi);
-                $sheet->setCellValue('M' . $row, $item->distance);
-                $sheet->setCellValue('N' . $row, $item->notes_for_salesman);
+                $sheet->setCellValue('M' . $row, $item->notes_for_salesman);
                 $row++;
             }
         }
@@ -191,7 +189,7 @@ class Invoice extends Controller
             'font' => ['bold' => true]
             // 'fill' => ['fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID, 'startColor' => ['rgb' => '90EE90']],
         ];
-        $sheet->getStyle('A6:N6')->applyFromArray($headerStyle);
+        $sheet->getStyle('A6:M6')->applyFromArray($headerStyle);
 
         $fileName = 'invoice-'.date('d-m-Y', strtotime($invoice->date)).'.xlsx';
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
