@@ -11,37 +11,45 @@
             </div>
             <div class="card-body">
                 <div class="new-user-info">
-                    <form action="@if($form === 'Tambah') /tambah-produk @elseif($form === 'Edit') /edit-produk/{{$detail->id_product}} @endif" method="POST" id="productForm">
+                    <form action="@if($form === 'Tambah') /tambah-stok/{{$produk->id_product}} @elseif($form === 'Edit') /edit-stok/{{$produk->id_product}}/{{$detail->id_stock}} @endif" method="POST" id="stockForm">
                     @csrf
                     <div class="row">
                         <div class="form-group col-md-6">
-                            <label class="form-label" for="product_code">Kode Produk</label>
-                            <input type="text" class="form-control @error('product_code') is-invalid @enderror" id="product_code" name="product_code" value="@if($form === 'Tambah'){{ old('product_code') }}@elseif($form === 'Edit' || $form === 'Detail'){{$detail->product_code}}@endif" @if($form === 'Detail') disabled @endif placeholder="Masukkan Kode Produk">
-                            @error('product_code')
-                                <div class="invalid-feedback">
-                                {{ $message }}
-                                </div>
-                            @enderror
+                            <label class="form-label" for="id_product">Produk</label>
+                            <input type="hidden" class="form-control" name="id_product" id="id_product" value="{{$produk->id_product}}">
+                            <input type="text" class="form-control" name="product_name" id="product_name" value="{{$produk->product_name}}" readonly>
                         </div>
+                        @if ($form === 'Edit')
+                            <div class="form-group col-md-6">
+                                <label class="form-label" for="id_site">Site</label>
+                                <input type="hidden" class="form-control" name="id_site" id="id_site" value="{{$detail->id_site}}">
+                                <input type="text" class="form-control" name="site_name" id="site_name" value="{{$detail->site_name}}" readonly>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="form-label" for="early_stock">Stok Awal</label>
+                                <input type="text" class="form-control" name="early_stock" id="early_stock" value="{{$detail->early_stock}}" readonly>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="form-label" for="last_stock">Stok Akhir</label>
+                                <input type="text" class="form-control" name="last_stock" id="last_stock" value="{{$detail->last_stock}}" readonly>
+                            </div>
+                        @else
+                            <div class="form-group col-md-6">
+                                <label class="form-label" for="id_site">Site</label>
+                                <select name="id_site" id="id_site" class="selectpicker form-control @error('id_site') is-invalid @enderror" data-style="py-0" required>
+                                    @if ($form === 'Tambah')
+                                        <option value="" selected disabled>-- Pilih --</option>
+                                    @else
+                                        <option value="{{$detail->id_site}}">{{$detail->site_name}} | {{$detail->site_address}}</option>
+                                    @endif
+                                    @foreach ($daftarSite as $item)
+                                        <option value="{{$item->id_site}}" >{{$item->site_name}} | {{$item->site_address}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @endif
+                        
                         <div class="form-group col-md-6">
-                            <label class="form-label" for="product_name">Nama Produk</label>
-                            <input type="text" class="form-control @error('product_name') is-invalid @enderror" id="product_name" name="product_name" value="@if($form === 'Tambah'){{ old('product_name') }}@elseif($form === 'Edit' || $form === 'Detail'){{$detail->product_name}}@endif" @if($form === 'Detail') disabled @endif placeholder="Masukkan Nama Produk" required>
-                            @error('product_name')
-                                <div class="invalid-feedback">
-                                {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label class="form-label" for="product_desc">Deskripsi</label>
-                            <input type="text" class="form-control @error('product_desc') is-invalid @enderror" id="product_desc" name="product_desc" value="@if($form === 'Tambah'){{ old('product_desc') }}@elseif($form === 'Edit' || $form === 'Detail'){{$detail->product_desc}}@endif" @if($form === 'Detail') disabled @endif placeholder="Masukkan Deskripsi">
-                            @error('product_desc')
-                                <div class="invalid-feedback">
-                                {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-                        {{-- <div class="form-group col-md-6">
                             <label class="form-label" for="purchase_price">Harga Pembelian</label>
                             <input type="text" class="form-control @error('purchase_price') is-invalid @enderror" id="purchase_price" name="purchase_price" value="@if($form === 'Tambah'){{ old('purchase_price') }}@elseif($form === 'Edit' || $form === 'Detail'){{$detail->purchase_price}}@endif" @if($form === 'Detail') disabled @endif placeholder="Masukkan Harga Pembelian">
                             @error('purchase_price')
@@ -67,9 +75,9 @@
                                 {{ $message }}
                                 </div>
                             @enderror
-                        </div> --}}
+                        </div>
                     </div>
-                    @include('components.tombolForm', ['linkKembali' => '/daftar-produk'])
+                    @include('components.tombolForm', ['linkKembali' => '/daftar-stok/'.$produk->id_product])
                     </form>
                 </div>
             </div>

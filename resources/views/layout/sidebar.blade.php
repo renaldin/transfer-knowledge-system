@@ -71,7 +71,7 @@
                         </a>
                         <ul class="sub-nav collapse" id="landing" data-bs-parent="#sidebar-menu">
                             <li class="nav-item">
-                                <a class="nav-link @if ($subTitle === 'Daftar Produk' || $subTitle === 'Data Stok') active @endif" href="/daftar-produk">
+                                <a class="nav-link @if ($subTitle === 'Daftar Produk' || $subTitle === 'Daftar Stok' || $subTitle === 'Tambah Stok' || $subTitle === 'Edit Stok' || $subTitle === 'Daftar Stok Masuk' || $subTitle === 'Tambah Stok Masuk' || $subTitle === 'Edit Stok Masuk') active @endif" href="/daftar-produk">
                                     <i class="icon">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24"
                                             fill="currentColor">
@@ -86,7 +86,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link @if ($subTitle === 'Daftar Stok') active @endif" href="/daftar-semua-stok">
+                                <a class="nav-link @if ($subTitle === 'Data Stok' || $subTitle === 'Tambah Data Stok' || $subTitle === 'Edit Data Stok') active @endif" href="/data-stok">
                                     <i class="icon">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24"
                                             fill="currentColor">
@@ -101,7 +101,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link @if ($subTitle === 'Daftar Stok Opname') active @endif" href="/daftar-semua-stok-opname">
+                                <a class="nav-link @if ($subTitle === 'Data Stok Masuk' || $subTitle === 'Tambah Stok Masuk' || $subTitle === 'Edit Stok Masuk') active @endif" href="/data-stok-masuk">
                                     <i class="icon">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24"
                                             fill="currentColor">
@@ -112,7 +112,7 @@
                                         </svg>
                                     </i>
                                     <i class="sidenav-mini-icon"> A </i>
-                                    <span class="item-name">Stok Opname</span>
+                                    <span class="item-name">Stok Masuk</span>
                                 </a>
                             </li>
                         </ul>

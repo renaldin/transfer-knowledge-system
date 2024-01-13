@@ -15,21 +15,24 @@
                     @csrf
                     <div class="row">
                         <div class="form-group col-md-6">
-                            <label class="form-label" for="id_product">Produk</label>
+                            <label class="form-label" for="id_stock">Produk</label>
                             <input type="hidden" name="id_sales" value="{{$sales->id_sales}}" id="">
-                            <select name="id_product" id="id_product" class="selectpicker form-control @error('id_product') is-invalid @enderror" data-style="py-0" @if($form === 'Edit') disabled @endif @if($form === 'Tambah') required @endif >
+                            @if ($form === 'Edit')
+                            <input type="hidden" name="id_stock" value="{{$detail->id_stock}}" id="">
+                            @endif
+                            <select name="id_stock" id="id_stock" class="selectpicker form-control @error('id_stock') is-invalid @enderror" data-style="py-0" @if($form === 'Edit') disabled @endif @if($form === 'Tambah') required @endif>
                                 @if ($form === 'Tambah')
                                     <option value="" selected disabled>-- Pilih --</option>
                                 @else
-                                    <option value="{{$detail->id_product}}">{{$detail->product_code}} | {{$detail->product_name}}</option>
+                                    <option value="{{$detail->id_stock}}">{{$detail->product_code}} | {{$detail->product_name}} | {{$detail->site_name}}</option>
                                 @endif
-                                @foreach ($produk as $item)
+                                @foreach ($stock as $item)
                                     @if ($item->last_stock != 0)
-                                        <option value="{{$item->id_product}}" >{{$item->product_code}} | {{$item->product_name}}</option>
+                                        <option value="{{$item->id_stock}}">{{$item->product_code}} | {{$item->product_name}} | {{$item->site_name}}</option>
                                     @endif
                                 @endforeach
                             </select>
-                            @error('id_user')
+                            @error('id_stock')
                                 <div class="invalid-feedback">
                                 {{ $message }}
                                 </div>

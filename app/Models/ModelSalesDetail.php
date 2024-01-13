@@ -16,7 +16,9 @@ class ModelSalesDetail extends Model
     {
         return DB::table('sales_detail')
             ->join('sales', 'sales.id_sales', '=', 'sales_detail.id_sales')
-            ->join('product', 'product.id_product', '=', 'sales_detail.id_product')
+            ->join('stock', 'stock.id_stock', '=', 'sales_detail.id_stock')
+            ->join('site', 'site.id_site', '=', 'stock.id_site')
+            ->join('product', 'product.id_product', '=', 'stock.id_product')
             ->orderBy($order, $by)
             ->get();
     }
@@ -25,7 +27,9 @@ class ModelSalesDetail extends Model
     {
         return DB::table('sales_detail')
             ->join('sales', 'sales.id_sales', '=', 'sales_detail.id_sales')
-            ->join('product', 'product.id_product', '=', 'sales_detail.id_product')
+            ->join('stock', 'stock.id_stock', '=', 'sales_detail.id_stock')
+            ->join('site', 'site.id_site', '=', 'stock.id_site')
+            ->join('product', 'product.id_product', '=', 'stock.id_product')
             ->where($where, $value)
             ->first();
     }

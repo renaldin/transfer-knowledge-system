@@ -11,6 +11,9 @@ use App\Http\Controllers\SalesDetail;
 use App\Http\Controllers\Site;
 use App\Http\Controllers\SiteDetail;
 use App\Http\Controllers\Stock;
+use App\Http\Controllers\StockAll;
+use App\Http\Controllers\StockIn;
+use App\Http\Controllers\StockInAll;
 use App\Http\Controllers\StockOpname;
 use App\Http\Controllers\Store;
 use App\Http\Controllers\TargetStore;
@@ -99,10 +102,29 @@ Route::group(['middleware' => 'revalidate'], function () {
     Route::post('/edit-produk/{id}', [Product::class, 'update']);
     Route::get('/hapus-produk/{id}', [Product::class, 'delete']);
     
-    Route::get('/stok-produk/{id_product}', [Stock::class, 'index']);
-    Route::post('/tambah-stok', [Stock::class, 'new']);
-    Route::post('/edit-stok/{id}', [Stock::class, 'update']);
-    Route::get('/hapus-stok/{id}/{id_product}', [Stock::class, 'delete']);
+    Route::get('/daftar-stok/{id_product}', [Stock::class, 'index'])->name('daftar-stok');
+    Route::get('/tambah-stok/{id_product}', [Stock::class, 'new']);
+    Route::post('/tambah-stok/{id_product}', [Stock::class, 'new']);
+    Route::get('/edit-stok/{id_product}/{id}', [Stock::class, 'update']);
+    Route::post('/edit-stok/{id_product}/{id}', [Stock::class, 'update']);
+
+    Route::get('/daftar-stok-masuk/{id_stock}', [StockIn::class, 'index'])->name('daftar-stok-masuk');
+    Route::post('/tambah-stok-masuk', [StockIn::class, 'new']);
+    Route::post('/edit-stok-masuk/{id}', [StockIn::class, 'update']);
+    Route::get('/hapus-stok-masuk/{id}', [StockIn::class, 'delete']);
+
+    Route::get('/data-stok', [StockAll::class, 'index'])->name('data-stok');
+    Route::post('/data-stok', [StockAll::class, 'index'])->name('data-stok');
+    Route::get('/tambah-data-stok', [StockAll::class, 'new']);
+    Route::post('/tambah-data-stok', [StockAll::class, 'new']);
+    Route::get('/edit-data-stok/{id}', [StockAll::class, 'update']);
+    Route::post('/edit-data-stok/{id}', [StockAll::class, 'update']);
+
+    Route::get('/data-stok-masuk', [StockInAll::class, 'index'])->name('data-stok-masuk');
+    Route::post('/data-stok-masuk', [StockInAll::class, 'index'])->name('data-stok-masuk');
+    Route::post('/tambah-data-stok-masuk', [StockInAll::class, 'new']);
+    Route::post('/edit-data-stok-masuk/{id}', [StockInAll::class, 'update']);
+    Route::get('/hapus-data-stok-masuk/{id}', [StockInAll::class, 'delete']);
 
     Route::get('/stok-opname-produk/{id_product}', [StockOpname::class, 'index']);
     Route::post('/tambah-stok-opname', [StockOpname::class, 'new']);
