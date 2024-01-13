@@ -6,19 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Models\ModelSales;
 use App\Models\ModelUser;
 use App\Models\ModelSalesDetail;
-use App\Models\ModelProduct;
+use App\Models\ModelStock;
 
 class SalesDetail extends Controller
 {
 
-    private $ModelSales, $ModelUser, $ModelSalesDetail, $ModelProduct;
+    private $ModelSales, $ModelUser, $ModelSalesDetail, $ModelStock;
 
     public function __construct()
     {
         $this->ModelSales = new ModelSales();
         $this->ModelUser = new ModelUser();
         $this->ModelSalesDetail = new ModelSalesDetail();
-        $this->ModelProduct = new ModelProduct();
+        $this->ModelStock = new ModelStock();
     }
 
     public function index($id_sales)
@@ -44,11 +44,11 @@ class SalesDetail extends Controller
             return redirect()->route('login');
         }
 
-        if(!Request()->id_product) {
+        if(!Request()->id_stock) {
             $data = [
                 'title'     => 'Detail Penjualan',
                 'subTitle'  => 'Tambah Detail Penjualan',
-                'produk'    => $this->ModelProduct->findAll('id_product', 'DESC'),
+                'stock'    => $this->ModelStock->findAll('id_stock', 'DESC'),
                 'sales'     => $this->ModelSales->findOne('id_sales', $id_sales),
                 'user'      => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
                 'form'      => 'Tambah',
@@ -56,26 +56,26 @@ class SalesDetail extends Controller
             return view('sellingDetail.form', $data);
         } else {
             Request()->validate([
-                'id_product'            => 'required',
+                'id_stock'            => 'required',
                 'quantity_sales'        => 'required'
             ], [
-                'id_product.required'           => 'Produk harus diisi!',
+                'id_stock.required'           => 'Stok harus diisi!',
                 'quantity_sales.required'       => 'Kuantitas harus diisi!'
             ]);
 
             $sales = $this->ModelSales->findOne('id_sales', Request()->id_sales);
-            $product = $this->ModelProduct->findOne('id_product', Request()->id_product);
+            $stock = $this->ModelStock->findOne('id_stock', Request()->id_stock);
 
             if ($sales->payment_type === 'Cash') {
-                $sellPriceSales = $product->sell_price_cash;
+                $sellPriceSales = $stock->sell_price_cash;
             } else if($sales->payment_type === 'Tempo') {
-                $sellPriceSales = $product->sell_price_tempo;
+                $sellPriceSales = $stock->sell_price_tempo;
             }
 
             $data = [
-                'id_product'            => $product->id_product,
+                'id_stock'              => $stock->id_stock,
                 'id_sales'              => $sales->id_sales,
-                'purchase_price_sales'  => $product->purchase_price,
+                'purchase_price_sales'  => $stock->purchase_price,
                 'sell_price_sales'      => $sellPriceSales,
                 'quantity_sales'        => Request()->quantity_sales,
                 'total_price'           => Request()->quantity_sales * $sellPriceSales
@@ -91,11 +91,11 @@ class SalesDetail extends Controller
             // dd($dataSales);
             $this->ModelSales->edit($dataSales);
 
-            $dataProduct = [
-                'id_product'    => $product->id_product,
-                'last_stock'    => $product->last_stock - Request()->quantity_sales
+            $dataStock = [
+                'id_stock'      => $stock->id_stock,
+                'last_stock'    => $stock->last_stock - Request()->quantity_sales
             ];
-            $this->ModelProduct->edit($dataProduct);
+            $this->ModelStock->edit($dataStock);
 
             return redirect('/detail-penjualan/'.$sales->id_sales)->with('success', 'Data berhasil ditambahkan!');
         }
@@ -107,11 +107,11 @@ class SalesDetail extends Controller
             return redirect()->route('login');
         }
 
-        if(!Request()->id_product) {
+        if(!Request()->id_stock) {
             $data = [
                 'title'     => 'Detail Penjualan',
                 'subTitle'  => 'Edit Detail Penjualan',
-                'produk'    => $this->ModelProduct->findAll('id_product', 'DESC'),
+                'stock'     => $this->ModelStock->findAll('id_stock', 'DESC'),
                 'sales'     => $this->ModelSales->findOne('id_sales', $id_sales),
                 'detail'    => $this->ModelSalesDetail->findOne('id_sales_detail', $id_sales_detail),
                 'user'      => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
@@ -126,22 +126,22 @@ class SalesDetail extends Controller
             ]);
     
             $sales = $this->ModelSales->findOne('id_sales', Request()->id_sales);
-            $product = $this->ModelProduct->findOne('id_product', Request()->id_product);
+            $stock = $this->ModelStock->findOne('id_stock', Request()->id_stock);
             $salesDetail = $this->ModelSalesDetail->findOne('id_sales_detail', $id_sales_detail);
     
             if ($sales->payment_type === 'Cash') {
-                $sellPriceSales = $product->sell_price_cash;
+                $sellPriceSales = $stock->sell_price_cash;
             } else if($sales->payment_type === 'Tempo') {
-                $sellPriceSales = $product->sell_price_tempo;
+                $sellPriceSales = $stock->sell_price_tempo;
             }
 
             $totalPrice = Request()->quantity_sales * $sellPriceSales;
     
             $data = [
                 'id_sales_detail'       => $salesDetail->id_sales_detail,
-                'id_product'            => $product->id_product,
+                'id_stock'              => $stock->id_stock,
                 'id_sales'              => $sales->id_sales,
-                'purchase_price_sales'  => $product->purchase_price,
+                'purchase_price_sales'  => $stock->purchase_price,
                 'sell_price_sales'      => $sellPriceSales,
                 'quantity_sales'        => Request()->quantity_sales,
                 'total_price'           => $totalPrice
@@ -159,11 +159,11 @@ class SalesDetail extends Controller
             // dd($dataSales);
             $this->ModelSales->edit($dataSales);
     
-            $dataProduct = [
-                'id_product'    => $product->id_product,
-                'last_stock'    => $product->last_stock + $salesDetail->quantity_sales - Request()->quantity_sales
+            $dataStock = [
+                'id_stock'      => $stock->id_stock,
+                'last_stock'    => $stock->last_stock + $salesDetail->quantity_sales - Request()->quantity_sales
             ];
-            $this->ModelProduct->edit($dataProduct);
+            $this->ModelStock->edit($dataStock);
     
             return redirect('/detail-penjualan/'.$sales->id_sales)->with('success', 'Data berhasil diedit!');
         }
@@ -177,7 +177,7 @@ class SalesDetail extends Controller
 
         $sales = $this->ModelSales->findOne('id_sales', $id_sales);
         $salesDetail = $this->ModelSalesDetail->findOne('id_sales_detail', $id_sales_detail);
-        $product = $this->ModelProduct->findOne('id_product', $salesDetail->id_product);
+        $stock = $this->ModelStock->findOne('id_stock', $salesDetail->id_stock);
 
         $dataSales = [
             'id_sales'          => $sales->id_sales,
@@ -187,11 +187,11 @@ class SalesDetail extends Controller
         ];
         $this->ModelSales->edit($dataSales);
 
-        $dataProduct = [
-            'id_product'    => $product->id_product,
-            'last_stock'    => $product->last_stock + $salesDetail->quantity_sales
+        $dataStock = [
+            'id_stock'    => $stock->id_stock,
+            'last_stock'    => $stock->last_stock + $salesDetail->quantity_sales
         ];
-        $this->ModelProduct->edit($dataProduct);
+        $this->ModelStock->edit($dataStock);
         
         $this->ModelSalesDetail->deleteData('id_sales_detail', $id_sales_detail);
 

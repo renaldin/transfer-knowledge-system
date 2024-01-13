@@ -55,26 +55,17 @@ class Product extends Controller
             Request()->validate([
                 'product_code'      => 'required',
                 'product_name'      => 'required',
-                'product_desc'      => 'required',
-                'purchase_price'    => 'required',
-                'sell_price_cash'   => 'required',
-                'sell_price_tempo'  => 'required'
+                'product_desc'      => 'required'
             ], [
                 'product_code.required'     => 'Kode produk harus diisi!',
                 'product_name.required'     => 'Nama produk harus diisi!',
-                'product_desc.required'     => 'Deskripsi harus diisi!',
-                'purchase_price.required'   => 'Harga pembelian harus diisi!',
-                'sell_price_cash.required'  => 'Harga jual cash harus diisi!',
-                'sell_price_tempo.required' => 'Harga jual tempo harus diisi!'
+                'product_desc.required'     => 'Deskripsi harus diisi!'
             ]);
 
             $data = [
                 'product_code'      => Request()->product_code,
                 'product_name'      => Request()->product_name,
-                'product_desc'      => Request()->product_desc,
-                'purchase_price'    => (int) str_replace('.', '', Request()->purchase_price),
-                'sell_price_cash'   => (int) str_replace('.', '', Request()->sell_price_cash),
-                'sell_price_tempo'  => (int) str_replace('.', '', Request()->sell_price_tempo)
+                'product_desc'      => Request()->product_desc
             ];
             $this->ModelProduct->create($data);
 
@@ -101,27 +92,18 @@ class Product extends Controller
             Request()->validate([
                 'product_code'      => 'required',
                 'product_name'      => 'required',
-                'product_desc'      => 'required',
-                'purchase_price'    => 'required',
-                'sell_price_cash'   => 'required',
-                'sell_price_tempo'  => 'required'
+                'product_desc'      => 'required'
             ], [
                 'product_code.required'     => 'Kode produk harus diisi!',
                 'product_name.required'     => 'Nama produk harus diisi!',
-                'product_desc.required'     => 'Deskripsi harus diisi!',
-                'purchase_price.required'   => 'Harga pembelian harus diisi!',
-                'sell_price_cash.required'  => 'Harga jual cash harus diisi!',
-                'sell_price_tempo.required' => 'Harga jual tempo harus diisi!'
+                'product_desc.required'     => 'Deskripsi harus diisi!'
             ]);
 
             $data = [
                 'id_product'        => $id_product,
                 'product_code'      => Request()->product_code,
                 'product_name'      => Request()->product_name,
-                'product_desc'      => Request()->product_desc,
-                'purchase_price'    => (int) str_replace('.', '', Request()->purchase_price),
-                'sell_price_cash'   => (int) str_replace('.', '', Request()->sell_price_cash),
-                'sell_price_tempo'  => (int) str_replace('.', '', Request()->sell_price_tempo)
+                'product_desc'      => Request()->product_desc
             ];
             
             $this->ModelProduct->edit($data);
@@ -135,6 +117,20 @@ class Product extends Controller
             return redirect()->route('login');
         }
         
+        $stock = $this->ModelStock->findAll('id_stock', 'DESC');
+        $stockCondition = '';
+        foreach($stock as $item) {
+            if($item->id_product == $id_product) {
+                if($item->last_stock > 0) {
+                    $stockCondition = 'Masih Ada';
+                }
+            }
+        }
+        
+        if($stockCondition === 'Masih Ada') {
+            return back()->with('fail', 'Tidak bisa dihapus! Stok pada produk ini masih ada!');
+        }
+
         $this->ModelProduct->deleteData('id_product', $id_product);
         $this->ModelStock->deleteData('id_product', $id_product);
 

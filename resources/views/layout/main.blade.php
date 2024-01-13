@@ -293,10 +293,10 @@
 
         <script>
             window.setTimeout(function() {
-                $(".alert").fadeTo(1500, 0).slideUp(1500, function() {
+                $(".alert").fadeTo(2000, 0).slideUp(2000, function() {
                     $(this).remove();
                 });
-            }, 6000);
+            }, 8000);
         </script>
 
         <!-- Select2 -->
@@ -325,6 +325,7 @@
             document.addEventListener('DOMContentLoaded', function() {
                 var formDetailInvoiceForm = document.getElementById('detailInvoiceForm');
                 var productForm = document.getElementById('productForm');
+                var stockForm = document.getElementById('stockForm');
                 var bayarFormModal = document.getElementById('bayarFormModal');
 
                 if (formDetailInvoiceForm) {
@@ -402,6 +403,35 @@
                 }
 
                 if(productForm) {
+                    let purchasePrice = document.getElementById('purchase_price')
+                    let sellPriceCash = document.getElementById('sell_price_cash')
+                    let sellPriceTempo = document.getElementById('sell_price_tempo')
+
+                    let purchasePriceValue = removeFormatting(purchasePrice.value);
+                    let sellPriceCashValue = removeFormatting(sellPriceCash.value);
+                    let sellPriceTempoValue = removeFormatting(sellPriceTempo.value);
+
+                    purchasePrice.value = formatRupiah(purchasePriceValue);
+                    sellPriceCash.value = formatRupiah(sellPriceCashValue);
+                    sellPriceTempo.value = formatRupiah(sellPriceTempoValue);
+
+                    purchasePrice.addEventListener('keyup', function (e) {
+                        let purchasePriceValue = removeFormatting(purchasePrice.value);
+                        purchasePrice.value = formatRupiah(purchasePriceValue);
+                    });
+
+                    sellPriceCash.addEventListener('keyup', function (e) {
+                        let sellPriceCashValue = removeFormatting(sellPriceCash.value);
+                        sellPriceCash.value = formatRupiah(sellPriceCashValue);
+                    });
+
+                    sellPriceTempo.addEventListener('keyup', function (e) {
+                        let sellPriceTempoValue = removeFormatting(sellPriceTempo.value);
+                        sellPriceTempo.value = formatRupiah(sellPriceTempoValue);
+                    });
+                }
+
+                if(stockForm) {
                     let purchasePrice = document.getElementById('purchase_price')
                     let sellPriceCash = document.getElementById('sell_price_cash')
                     let sellPriceTempo = document.getElementById('sell_price_tempo')

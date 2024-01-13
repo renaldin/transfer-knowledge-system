@@ -9,7 +9,7 @@ use App\Models\ModelStock;
 use App\Models\ModelSite;
 use App\Models\ModelStockOpname;
 
-class Stock extends Controller
+class StockAll extends Controller
 {
 
     private $ModelProduct, $ModelUser, $ModelStock, $ModelStockOpname, $ModelSite;
@@ -23,24 +23,34 @@ class Stock extends Controller
         $this->ModelSite = new ModelSite();
     }
 
-    public function index($id_product)
+    public function index()
     {
         if (!Session()->get('role')) {
             return redirect()->route('login');
         }
 
-        $data = [
-            'title'             => 'Data Produk',
-            'subTitle'          => 'Daftar Stok',
-            'produk'            => $this->ModelProduct->findOne('id_product', $id_product),
-            'daftarStok'        => $this->ModelStock->findAll('id_stock', 'DESC'),
-            'user'              => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
-        ];
+        if(!Request()->date_from) {
+            $data = [
+                'title'             => 'Data Stok',
+                'subTitle'          => 'Data Stok',
+                'produk'            => $this->ModelProduct->findAll('id_product', 'DESC'),
+                'daftarStok'        => $this->ModelStock->findAll('id_stock', 'DESC'),
+                'user'              => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
+            ];
+        } else {
+            $data = [
+                'title'             => 'Data Stok',
+                'subTitle'          => 'Data Stok',
+                'produk'            => $this->ModelProduct->findAll('id_product', 'DESC'),
+                'daftarStok'        => $this->ModelStock->findAllWhere('id_stock', 'DESC', Request()->date_from, Request()->date_to),
+                'user'              => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
+            ];
+        }
 
-        return view('stock.index', $data);
+        return view('stockAll.index', $data);
     }
 
-    public function new($id_product)
+    public function new()
     {
         if (!Session()->get('role')) {
             return redirect()->route('login');
@@ -49,13 +59,13 @@ class Stock extends Controller
         if(!Request()->id_site) {
             $data = [
                 'title'     => 'Data Stok',
-                'subTitle'  => 'Tambah Stok',
-                'produk'    => $this->ModelProduct->findOne('id_product', $id_product),
+                'subTitle'  => 'Tambah Data Stok',
+                'daftarProduk'    => $this->ModelProduct->findAll('id_product', 'DESC'),
                 'daftarSite' => $this->ModelSite->findAll('id_site', 'DESC'),
                 'user'      => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
                 'form'      => 'Tambah',
             ];
-            return view('stock.form', $data);
+            return view('stockAll.form', $data);
         } else {
             Request()->validate([
                 'purchase_price'        => 'required',
@@ -71,7 +81,7 @@ class Stock extends Controller
             $detailProduct = $this->ModelProduct->findOne('id_product', Request()->id_product);
             $detailSite = $this->ModelSite->findOne('id_site', Request()->id_site);
             if ($check) {
-                return redirect("/daftar-stok/".$id_product)->with('fail', "Stok dengan produk $detailProduct->product_name dan site $detailSite->site_name tersebut sudah ada!");
+                return redirect()->route('data-stok')->with('fail', "Stok dengan produk $detailProduct->product_name dan site $detailSite->site_name tersebut sudah ada!");
             }
 
             $data = [
@@ -83,11 +93,11 @@ class Stock extends Controller
             ];
             $this->ModelStock->create($data);
 
-            return redirect("/daftar-stok/".$id_product)->with('success', 'Data berhasil ditambahkan!');
+            return redirect()->route('data-stok')->with('success', 'Data berhasil ditambahkan!');
         }
     }
 
-    public function update($id_product, $id_stock)
+    public function update($id_stock)
     {
         if (!Session()->get('role')) {
             return redirect()->route('login');
@@ -96,14 +106,14 @@ class Stock extends Controller
         if (!Request()->id_site) {
             $data = [
                 'title'         => 'Data Stok',
-                'subTitle'      => 'Edit Stok',
+                'subTitle'      => 'Edit Data Stok',
                 'form'          => 'Edit',
                 'daftarSite'    => $this->ModelSite->findAll('id_site', 'DESC'),
-                'produk'        => $this->ModelProduct->findOne('id_product', $id_product),
+                'daftarProduk'        => $this->ModelProduct->findAll('id_product', 'DESC'),
                 'detail'        => $this->ModelStock->findOne('id_stock', $id_stock),
                 'user'          => $this->ModelUser->findOne('id_user', Session()->get('id_user'))
             ];
-            return view('stock.form', $data);
+            return view('stockAll.form', $data);
         } else {
             Request()->validate([
                 'purchase_price'        => 'required',
@@ -124,28 +134,7 @@ class Stock extends Controller
             ];
             $this->ModelStock->edit($data);
 
-            return redirect("/daftar-stok/".$id_product)->with('success', 'Data berhasil ditambahkan!');
+            return redirect()->route('data-stok')->with('success', 'Data berhasil ditambahkan!');
         }
     }
-
-    // public function delete($id_stock, $id_product)
-    // {
-    //     if (!Session()->get('role')) {
-    //         return redirect()->route('login');
-    //     }
-
-    //     $detailStock = $this->ModelStock->findOne('id_stock', $id_stock);
-    //     $detailProduct = $this->ModelProduct->findOne('id_product', $id_product);
-
-    //     $subtractionStock = [
-    //         'id_product'    => $detailProduct->id_product,
-    //         'early_stock'   => $detailProduct->early_stock - $detailStock->quantity,
-    //         'last_stock'    => $detailProduct->last_stock - $detailStock->quantity
-    //     ];
-    //     $this->ModelProduct->edit($subtractionStock);
-        
-    //     $this->ModelStock->deleteData('id_stock', $id_stock);
-
-    //     return back()->with('success', 'Data berhasil dihapus!');
-    // }
 }
