@@ -17,7 +17,7 @@
                         @if ($user->role === 'Administrator')
                             <div class="form-group col-md-6">
                                 <label class="form-label" for="id_site">Sales</label>
-                                <select name="id_user" id="id_user" class="selectpicker form-control @error('id_user') is-invalid @enderror" data-style="py-0" @if($form === 'Detail') disabled @endif required>
+                                <select name="id_user" id="id_user" class="selectpicker form-control @error('id_user') is-invalid @enderror" data-live-search="true" @if($form === 'Detail') disabled @endif required>
                                     @if ($form === 'Tambah')
                                         <option value="" selected disabled>-- Pilih --</option>
                                     @else
@@ -38,7 +38,7 @@
                         @elseif($user->role === 'Admin Cabang')
                             <div class="form-group col-md-6">
                                 <label class="form-label" for="id_site">Sales</label>
-                                <select name="id_user" id="id_user" class="selectpicker form-control @error('id_user') is-invalid @enderror" data-style="py-0" @if($form === 'Detail') disabled @endif required>
+                                <select name="id_user" id="id_user" class="selectpicker form-control @error('id_user') is-invalid @enderror" data-live-search="true" @if($form === 'Detail') disabled @endif required>
                                     @if ($form === 'Tambah')
                                         <option value="" selected disabled>-- Pilih --</option>
                                     @else

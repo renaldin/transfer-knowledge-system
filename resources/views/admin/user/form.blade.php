@@ -85,7 +85,7 @@
                         @if ($user->role === 'Administrator')
                             <div class="form-group col-md-6">
                                 <label class="form-label" for="role">Role</label>
-                                <select name="role" id="role" class="selectpicker form-control @error('role') is-invalid @enderror" data-style="py-0" @if($form === 'Detail') disabled @endif required>
+                                <select name="role" id="role" class="selectpicker form-control @error('role') is-invalid @enderror" data-live-search="true" @if($form === 'Detail') disabled @endif required>
                                     <option value="" selected disabled>-- Pilih --</option>
                                     <option value="Administrator" @if($form === "Tambah" && old("role") === "Administrator") selected @elseif($form === "Edit" && $detail->role === "Administrator") selected @endif)>Administrator</option>
                                     <option value="Admin Cabang" @if($form === "Tambah" && old("role") === "Admin Cabang") selected @elseif($form === "Edit" && $detail->role === "Admin Cabang") selected @endif)>Admin Cabang</option>
@@ -100,7 +100,7 @@
                         @else
                             <div class="form-group col-md-6">
                                 <label class="form-label" for="role">Role</label>
-                                <select name="role" id="role" class="selectpicker form-control @error('role') is-invalid @enderror" data-style="py-0" @if($form === 'Detail') disabled @endif required>
+                                <select name="role" id="role" class="selectpicker form-control @error('role') is-invalid @enderror" data-live-search="true" @if($form === 'Detail') disabled @endif required>
                                     <option value="" selected disabled>-- Pilih --</option>
                                     <option value="Sales" @if($form === "Tambah" && old("role") === "Sales") selected @elseif($form === "Edit" && $detail->role === "Sales") selected @endif>Sales</option>
                                 </select>

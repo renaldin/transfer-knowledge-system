@@ -57,36 +57,71 @@
                             <th style="min-width: 100px">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @php
-                            $no = 1;
-                        @endphp
-                        @foreach ($daftarStok as $item)
-                            <tr>
-                                <td>{{$no++}}</td>
-                                <td>{{$item->product_name}}</td>
-                                <td>{{$item->site_name}}</td>
-                                <td>{{number_format($item->purchase_price)}}</td>
-                                <td>{{number_format($item->sell_price_cash)}}</td>
-                                <td>{{number_format($item->sell_price_tempo)}}</td>
-                                <td>{{$item->early_stock}}</td>
-                                <td>{{$item->last_stock}}</td>
-                                <td>
-                                    <div class="flex align-items-center list-user-action">
-                                        <a href="/edit-data-stok/{{$item->id_stock}}" class="btn btn-sm btn-icon btn-success" data-toggle="tooltip" data-placement="top" title="Edit" data-original-title="Edit">
-                                            <span class="btn-inner">
-                                                <svg width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M11.4925 2.78906H7.75349C4.67849 2.78906 2.75049 4.96606 2.75049 8.04806V16.3621C2.75049 19.4441 4.66949 21.6211 7.75349 21.6211H16.5775C19.6625 21.6211 21.5815 19.4441 21.5815 16.3621V12.3341" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.82812 10.921L16.3011 3.44799C17.2321 2.51799 18.7411 2.51799 19.6721 3.44799L20.8891 4.66499C21.8201 5.59599 21.8201 7.10599 20.8891 8.03599L13.3801 15.545C12.9731 15.952 12.4211 16.181 11.8451 16.181H8.09912L8.19312 12.401C8.20712 11.845 8.43412 11.315 8.82812 10.921Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                <path d="M15.1655 4.60254L19.7315 9.16854" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                </svg>
-                                            </span>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
+                    @if ($user->role === 'Admin Cabang')
+                        <tbody>
+                            @php
+                                $no = 1;
+                            @endphp
+                            @foreach ($daftarStok as $item)
+                                @if (in_array($item->id_site, $siteUser))
+                                    <tr>
+                                        <td>{{$no++}}</td>
+                                        <td>{{$item->product_name}}</td>
+                                        <td>{{$item->site_name}}</td>
+                                        <td>{{number_format($item->purchase_price)}}</td>
+                                        <td>{{number_format($item->sell_price_cash)}}</td>
+                                        <td>{{number_format($item->sell_price_tempo)}}</td>
+                                        <td>{{$item->early_stock}}</td>
+                                        <td>{{$item->last_stock}}</td>
+                                        <td>
+                                            <div class="flex align-items-center list-user-action">
+                                                <a href="/edit-data-stok/{{$item->id_stock}}" class="btn btn-sm btn-icon btn-success" data-toggle="tooltip" data-placement="top" title="Edit" data-original-title="Edit">
+                                                    <span class="btn-inner">
+                                                        <svg width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M11.4925 2.78906H7.75349C4.67849 2.78906 2.75049 4.96606 2.75049 8.04806V16.3621C2.75049 19.4441 4.66949 21.6211 7.75349 21.6211H16.5775C19.6625 21.6211 21.5815 19.4441 21.5815 16.3621V12.3341" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.82812 10.921L16.3011 3.44799C17.2321 2.51799 18.7411 2.51799 19.6721 3.44799L20.8891 4.66499C21.8201 5.59599 21.8201 7.10599 20.8891 8.03599L13.3801 15.545C12.9731 15.952 12.4211 16.181 11.8451 16.181H8.09912L8.19312 12.401C8.20712 11.845 8.43412 11.315 8.82812 10.921Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                        <path d="M15.1655 4.60254L19.7315 9.16854" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                        </svg>
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endif
+                            @endforeach
+                        </tbody>
+                    @else
+                        <tbody>
+                            @php
+                                $no = 1;
+                            @endphp
+                            @foreach ($daftarStok as $item)
+                                <tr>
+                                    <td>{{$no++}}</td>
+                                    <td>{{$item->product_name}}</td>
+                                    <td>{{$item->site_name}}</td>
+                                    <td>{{number_format($item->purchase_price)}}</td>
+                                    <td>{{number_format($item->sell_price_cash)}}</td>
+                                    <td>{{number_format($item->sell_price_tempo)}}</td>
+                                    <td>{{$item->early_stock}}</td>
+                                    <td>{{$item->last_stock}}</td>
+                                    <td>
+                                        <div class="flex align-items-center list-user-action">
+                                            <a href="/edit-data-stok/{{$item->id_stock}}" class="btn btn-sm btn-icon btn-success" data-toggle="tooltip" data-placement="top" title="Edit" data-original-title="Edit">
+                                                <span class="btn-inner">
+                                                    <svg width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M11.4925 2.78906H7.75349C4.67849 2.78906 2.75049 4.96606 2.75049 8.04806V16.3621C2.75049 19.4441 4.66949 21.6211 7.75349 21.6211H16.5775C19.6625 21.6211 21.5815 19.4441 21.5815 16.3621V12.3341" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.82812 10.921L16.3011 3.44799C17.2321 2.51799 18.7411 2.51799 19.6721 3.44799L20.8891 4.66499C21.8201 5.59599 21.8201 7.10599 20.8891 8.03599L13.3801 15.545C12.9731 15.952 12.4211 16.181 11.8451 16.181H8.09912L8.19312 12.401C8.20712 11.845 8.43412 11.315 8.82812 10.921Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                    <path d="M15.1655 4.60254L19.7315 9.16854" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                    </svg>
+                                                </span>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    @endif
                 </table>
                 </div>
             </div>
@@ -127,7 +162,7 @@
                         @csrf
                         <div class="form-group col-md-12">
                             <label class="form-label" for="filter_by">Filter By</label>
-                            <select name="filter_by" id="filter_by" class="selectpicker form-control" data-style="py-0" required>
+                            <select name="filter_by" id="filter_by" class="selectpicker form-control" data-live-search="true" required>
                                 <option value="" selected disabled>-- Pilih --</option>
                                 <option value="Produk" >Produk</option>
                                 <option value="Site" >Site</option>
@@ -136,7 +171,7 @@
                         </div>
                         <div class="form-group col-md-12">
                             <label class="form-label" for="id_product">Produk</label>
-                            <select name="id_product" id="id_product" class="selectpicker form-control" data-style="py-0" >
+                            <select name="id_product" id="id_product" class="selectpicker form-control" data-live-search="true" >
                                 <option value="" selected disabled>-- Pilih --</option>
                                 @foreach ($daftarProduk as $item)
                                     <option value="{{$item->id_product}}" >{{$item->product_code}} | {{$item->product_name}}</option>
@@ -145,7 +180,7 @@
                         </div>
                         <div class="form-group col-md-12">
                             <label class="form-label" for="id_site">Site</label>
-                            <select name="id_site" id="id_site" class="selectpicker form-control" data-style="py-0" >
+                            <select name="id_site" id="id_site" class="selectpicker form-control" data-live-search="true" >
                                 <option value="" selected disabled>-- Pilih --</option>
                                 @foreach ($daftarSite as $item)
                                     <option value="{{$item->id_site}}" >{{$item->site_name}} | {{$item->site_address}}</option>

@@ -49,6 +49,16 @@ class ModelSiteDetail extends Model
             ->get();
     }
 
+    public function findAllStockBySite($id_site)
+    {
+        return DB::table('stock')
+            ->join('product', 'product.id_product', '=', 'stock.id_product')
+            ->join('site', 'site.id_site', '=', 'stock.id_site')
+            ->whereIn('stock.id_site', $id_site)
+            ->orderBy('id_stock', 'DESC')
+            ->get();
+    }
+
     public function findOne($where, $value)
     {
         return DB::table('site_detail')

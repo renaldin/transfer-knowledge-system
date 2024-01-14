@@ -17,7 +17,7 @@
                         @if ($form === 'Tambah')
                             <div class="form-group col-md-6">
                                 <label class="form-label" for="id_site">Site</label>
-                                <select name="id_site" id="id_site" class="selectpicker form-control @error('id_site') is-invalid @enderror" data-style="py-0" required>
+                                <select name="id_site" id="id_site" class="selectpicker form-control @error('id_site') is-invalid @enderror" data-live-search="true" required>
                                     @if ($form === 'Tambah')
                                         <option value="" selected disabled>-- Pilih --</option>
                                     @else
@@ -82,7 +82,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label class="form-label" for="payment_type">Tipe Pembayaran</label>
-                            <select name="payment_type" id="payment_type" class="selectpicker form-control @error('payment_type') is-invalid @enderror" data-style="py-0" @if($form === 'Detail') disabled @endif required>
+                            <select name="payment_type" id="payment_type" class="selectpicker form-control @error('payment_type') is-invalid @enderror" data-live-search="true" @if($form === 'Detail') disabled @endif required>
                                 <option value="" selected disabled>-- Pilih --</option>
                                 <option value="Cash" @if($form === "Tambah" && old("payment_type") === "Cash") selected @elseif($form === "Edit" && $detail->payment_type === "Cash") selected @endif)>Cash</option>
                                 <option value="Tempo" @if($form === "Tambah" && old("payment_type") === "Tempo") selected @elseif($form === "Edit" && $detail->payment_type === "Tempo") selected @endif)>Tempo</option>

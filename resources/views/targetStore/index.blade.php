@@ -212,7 +212,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label class="form-label" for="target_store_status">Status</label>
-                            <select name="target_store_status" id="target_store_status" class="selectpicker form-control" data-style="py-0" required>
+                            <select name="target_store_status" id="target_store_status" class="selectpicker form-control" data-live-search="true" required>
                                 <option value="" selected disabled>-- Pilih --</option>
                                 <option value="Belum Closing" @if($item->target_store_status === 'Belum Closing') selected @endif>Belum Closing</option>
                                 <option value="Closing" @if($item->target_store_status === 'Closing') selected @endif>Closing</option>

@@ -32,7 +32,7 @@
                             @if ($form === 'Edit')
                             <input type="hidden" name="id_stock" value="{{$detail->id_stock}}" id="">
                             @endif
-                            <select name="id_stock" id="id_stock" class="selectpicker form-control @error('id_stock') is-invalid @enderror" data-style="py-0" @if($form === 'Edit') disabled @endif @if($form === 'Tambah') required @endif>
+                            <select name="id_stock" id="id_stock" class="selectpicker form-control @error('id_stock') is-invalid @enderror" data-live-search="true" @if($form === 'Edit') disabled @endif @if($form === 'Tambah') required @endif>
                                 @if ($form === 'Tambah')
                                     <option value="" selected disabled>-- Pilih --</option>
                                 @else

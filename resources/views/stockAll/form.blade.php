@@ -36,7 +36,7 @@
                         @else
                             <div class="form-group col-md-6">
                                 <label class="form-label" for="id_product">Produk</label>
-                                <select name="id_product" id="id_product" class="selectpicker form-control @error('id_product') is-invalid @enderror" data-style="py-0" required>
+                                <select name="id_product" id="id_product" data-live-search="true" class="selectpicker form-control @error('id_product') is-invalid @enderror" required>
                                     @if ($form === 'Tambah')
                                         <option value="" selected disabled>-- Pilih --</option>
                                     @else
@@ -49,7 +49,7 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label class="form-label" for="id_site">Site</label>
-                                <select name="id_site" id="id_site" class="selectpicker form-control @error('id_site') is-invalid @enderror" data-style="py-0" required>
+                                <select name="id_site" id="id_site" data-live-search="true" class="selectpicker form-control @error('id_site') is-invalid @enderror" required>
                                     @if ($form === 'Tambah')
                                         <option value="" selected disabled>-- Pilih --</option>
                                     @else

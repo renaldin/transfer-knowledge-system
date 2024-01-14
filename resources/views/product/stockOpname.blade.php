@@ -128,7 +128,7 @@
                         @csrf
                         <div class="form-group col-md-12">
                             <label class="form-label" for="id_product">Produk</label>
-                            <select name="id_product" id="id_product" class="selectpicker form-control @error('id_product') is-invalid @enderror" data-style="py-0" >
+                            <select name="id_product" id="id_product" class="selectpicker form-control @error('id_product') is-invalid @enderror" data-live-search="true" >
                                 <option value="" selected disabled>-- Pilih --</option>
                                 @foreach ($produk as $item)
                                     <option value="{{$item->id_product}}" >{{$item->product_code}} | {{$item->product_name}}</option>
