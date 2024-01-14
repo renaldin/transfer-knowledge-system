@@ -8,11 +8,12 @@ use App\Models\ModelUser;
 use App\Models\ModelStockOpname;
 use App\Models\ModelStock;
 use App\Models\ModelSite;
+use App\Models\ModelSiteDetail;
 
 class StockOpname extends Controller
 {
 
-    private $ModelProduct, $ModelUser, $ModelStockOpname, $ModelStock, $ModelSite;
+    private $ModelProduct, $ModelUser, $ModelStockOpname, $ModelStock, $ModelSite, $ModelSiteDetail;
 
     public function __construct()
     {
@@ -21,6 +22,7 @@ class StockOpname extends Controller
         $this->ModelStockOpname = new ModelStockOpname();
         $this->ModelStock = new ModelStock();
         $this->ModelSite = new ModelSite();
+        $this->ModelSiteDetail = new ModelSiteDetail();
     }
 
     public function index()
@@ -29,16 +31,24 @@ class StockOpname extends Controller
             return redirect()->route('login');
         }
 
+        $detailSite = $this->ModelSiteDetail->siteUser(Session()->get('id_user'));
+        $siteUser = [];
+        foreach($detailSite as $item) {
+            $siteUser[] = $item->id_site;
+        }
+
         if(!Request()->filter_by) {
             $data = [
                 'title'             => 'Data Stok Opname',
                 'subTitle'          => 'Data Stok Opname',
                 'filter'            => false,
+                'siteUser'          => $siteUser,
                 'daftarSite'        => $this->ModelSite->findAll('id_site', 'DESC'),
                 'daftarProduk'      => $this->ModelProduct->findAll('id_product', 'DESC'),
                 'daftarStock'       => $this->ModelStock->findAll('id_stock', 'DESC'),
                 'daftarStokOpname'  => $this->ModelStockOpname->findAll('id_stock_opname', 'DESC'),
                 'user'              => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
+                'daftarStockSite'   => $this->ModelSiteDetail->findAllStockBySite($siteUser),
             ];
         } else {
             if(Request()->filter_by === 'Produk') {
@@ -58,6 +68,7 @@ class StockOpname extends Controller
                 'title'             => 'Data Stok Opname',
                 'subTitle'          => 'Data Stok Opname',
                 'filter'            => true,
+                'siteUser'          => $siteUser,
                 'filterBy'          => Request()->filter_by,
                 'filterValue'       => $filterValue,
                 'daftarSite'        => $this->ModelSite->findAll('id_site', 'DESC'),
@@ -65,6 +76,7 @@ class StockOpname extends Controller
                 'daftarStock'       => $this->ModelStock->findAll('id_stock', 'DESC'),
                 'daftarStokOpname'  => $daftarStokOpname,
                 'user'              => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
+                'daftarStockSite'   => $this->ModelSiteDetail->findAllStockBySite($siteUser),
             ];
         }
 

@@ -118,7 +118,7 @@
                         @csrf
                         <div class="form-group col-md-12">
                             <label class="form-label" for="id_user">Sales</label>
-                            <select name="id_user" id="id_user" class="selectpicker form-control @error('id_user') is-invalid @enderror" data-style="py-0" required>
+                            <select name="id_user" id="id_user" class="selectpicker form-control @error('id_user') is-invalid @enderror" data-live-search="true" required>
                                 <option value="" selected disabled>-- Pilih --</option>
                                 @foreach ($daftarUser as $item)
                                     @if ($item->role !== 'Administrator')

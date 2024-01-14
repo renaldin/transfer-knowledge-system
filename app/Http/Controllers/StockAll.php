@@ -8,11 +8,12 @@ use App\Models\ModelUser;
 use App\Models\ModelStock;
 use App\Models\ModelSite;
 use App\Models\ModelStockOpname;
+use App\Models\ModelSiteDetail;
 
 class StockAll extends Controller
 {
 
-    private $ModelProduct, $ModelUser, $ModelStock, $ModelStockOpname, $ModelSite;
+    private $ModelProduct, $ModelUser, $ModelStock, $ModelStockOpname, $ModelSite, $ModelSiteDetail;
 
     public function __construct()
     {
@@ -21,6 +22,7 @@ class StockAll extends Controller
         $this->ModelStock = new ModelStock();
         $this->ModelStockOpname = new ModelStockOpname();
         $this->ModelSite = new ModelSite();
+        $this->ModelSiteDetail = new ModelSiteDetail();
     }
 
     public function index()
@@ -29,11 +31,18 @@ class StockAll extends Controller
             return redirect()->route('login');
         }
 
+        $detailSite = $this->ModelSiteDetail->siteUser(Session()->get('id_user'));
+        $siteUser = [];
+        foreach($detailSite as $item) {
+            $siteUser[] = $item->id_site;
+        }
+
         if(!Request()->filter_by) {
             $data = [
                 'title'             => 'Data Stok',
                 'subTitle'          => 'Data Stok',
                 'filter'            => false,
+                'siteUser'          => $siteUser,
                 'daftarSite'        => $this->ModelSite->findAll('id_site', 'DESC'),
                 'daftarProduk'      => $this->ModelProduct->findAll('id_product', 'DESC'),
                 'daftarStok'        => $this->ModelStock->findAll('id_stock', 'DESC'),
@@ -59,6 +68,7 @@ class StockAll extends Controller
                 'filter'            => true,
                 'filterBy'          => Request()->filter_by,
                 'filterValue'       => $filterValue,
+                'siteUser'          => $siteUser,
                 'daftarSite'        => $this->ModelSite->findAll('id_site', 'DESC'),
                 'daftarProduk'      => $this->ModelProduct->findAll('id_product', 'DESC'),
                 'daftarStok'        => $daftarStok,
