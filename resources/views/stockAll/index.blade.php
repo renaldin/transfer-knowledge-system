@@ -14,6 +14,10 @@
                     <div class="col-lg-12">
                         <a href="/tambah-data-stok" class="btn btn-primary mb-3">Tambah</a>
                         <button type="button" data-bs-target="#filter" data-bs-toggle="modal" class="btn btn-primary mb-3">Filter</button>
+                        @if ($filter)
+                            <a href="/data-stok" class="btn btn-danger mb-3 mr-4">Reset Filter</a>
+                            <strong>Filter By:</strong> {{$filterBy}}, <strong>Filter:</strong> {{$filterValue}}
+                        @endif
                     </div>
                     @if (session('success'))
                         <div class="col-lg-12">
@@ -119,21 +123,48 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <form action="/data-stok" method="POST">
+                    <form action="/data-stok" method="POST" id="filterStockForm">
                         @csrf
                         <div class="form-group col-md-12">
+                            <label class="form-label" for="filter_by">Filter By</label>
+                            <select name="filter_by" id="filter_by" class="selectpicker form-control" data-style="py-0" required>
+                                <option value="" selected disabled>-- Pilih --</option>
+                                <option value="Produk" >Produk</option>
+                                <option value="Site" >Site</option>
+                                <option value="Tanggal" >Tanggal</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="form-label" for="id_product">Produk</label>
+                            <select name="id_product" id="id_product" class="selectpicker form-control" data-style="py-0" >
+                                <option value="" selected disabled>-- Pilih --</option>
+                                @foreach ($daftarProduk as $item)
+                                    <option value="{{$item->id_product}}" >{{$item->product_code}} | {{$item->product_name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="form-label" for="id_site">Site</label>
+                            <select name="id_site" id="id_site" class="selectpicker form-control" data-style="py-0" >
+                                <option value="" selected disabled>-- Pilih --</option>
+                                @foreach ($daftarSite as $item)
+                                    <option value="{{$item->id_site}}" >{{$item->site_name}} | {{$item->site_address}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group col-md-12">
                             <label class="form-label" for="date_from">Dari Tanggal</label>
-                            <input type="date" class="form-control" id="date_from" name="date_from" placeholder="Masukkan Tanggal" required>
+                            <input type="date" class="form-control" id="date_from" name="date_from" placeholder="Masukkan Tanggal" >
                         </div>
                         <div class="form-group col-md-12">
                             <label class="form-label" for="date_to">Sampai Tanggal</label>
-                            <input type="date" class="form-control" id="date_to" name="date_to" placeholder="Masukkan Tanggal" required>
+                            <input type="date" class="form-control" id="date_to" name="date_to" placeholder="Masukkan Tanggal" >
                         </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
-                <button type="submit" class="btn btn-primary">Simpan</button>
+                <button type="submit" class="btn btn-primary">Filter</button>
                 </form>
             </div>
         </div>

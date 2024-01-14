@@ -66,6 +66,10 @@ class SalesDetail extends Controller
             $sales = $this->ModelSales->findOne('id_sales', Request()->id_sales);
             $stock = $this->ModelStock->findOne('id_stock', Request()->id_stock);
 
+            if($stock->last_stock < Request()->quantity_sales) {
+                return redirect('/tambah-detail-penjualan/'.$sales->id_sales)->with('fail', 'Stok yang diinput melebihi stok yang ada!');
+            }
+
             if ($sales->payment_type === 'Cash') {
                 $sellPriceSales = $stock->sell_price_cash;
             } else if($sales->payment_type === 'Tempo') {
@@ -128,6 +132,10 @@ class SalesDetail extends Controller
             $sales = $this->ModelSales->findOne('id_sales', Request()->id_sales);
             $stock = $this->ModelStock->findOne('id_stock', Request()->id_stock);
             $salesDetail = $this->ModelSalesDetail->findOne('id_sales_detail', $id_sales_detail);
+
+            if($stock->last_stock + $salesDetail->quantity_sales < Request()->quantity_sales) {
+                return redirect('/edit-detail-penjualan/'.$salesDetail->id_sales_detail.'/'.$sales->id_sales)->with('fail', 'Stok yang diinput melebihi stok yang ada!');
+            }
     
             if ($sales->payment_type === 'Cash') {
                 $sellPriceSales = $stock->sell_price_cash;

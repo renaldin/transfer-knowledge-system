@@ -15,6 +15,10 @@
                     <div class="col-lg-12">
                         <button type="button" data-bs-target="#tambah" data-bs-toggle="modal" class="btn btn-primary mb-3">Tambah</button>
                         <button type="button" data-bs-target="#filter" data-bs-toggle="modal" class="btn btn-primary mb-3">Filter</button>
+                        @if ($filter)
+                            <a href="/data-stok-masuk" class="btn btn-danger mb-3 mr-4">Reset Filter</a>
+                            <strong>Filter By:</strong> {{$filterBy}}, <strong>Filter:</strong> {{$filterValue}}
+                        @endif
                     </div>
                     @if (session('success'))
                         <div class="col-lg-12">
@@ -44,6 +48,8 @@
                     <thead>
                         <tr class="ligth">
                             <th>No</th>
+                            <th>Produk</th>
+                            <th>Site</th>
                             <th>Kuantitas</th>
                             <th>Tanggal</th>
                             <th>Deskripsi</th>
@@ -58,6 +64,8 @@
                         @foreach ($daftarStockIn as $item)
                             <tr>
                                 <td>{{$no++}}</td>
+                                <td>{{$item->product_name}}</td>
+                                <td>{{$item->site_name}}</td>
                                 <td>{{$item->quantity}}</td>
                                 <td>{{$item->date_stock_in}}</td>
                                 <td>{{$item->desc_stock_in}}</td>
@@ -125,7 +133,7 @@
                 <div class="row">
                     <form action="/tambah-data-stok-masuk" method="POST">
                         @csrf
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-12">
                             <label class="form-label" for="id_stock">Stok Produk</label>
                             <select name="id_stock" id="id_stock" class="selectpicker form-control @error('id_stock') is-invalid @enderror" data-style="py-0" required>
                                 <option value="" selected disabled>-- Pilih --</option>
@@ -170,7 +178,7 @@
                     <form action="/edit-data-stok-masuk/{{$item->id_stock_in}}" method="POST">
                         @csrf
                         <div class="form-group col-md-12">
-                            <label class="form-label" for="quantity">Kuantitas</label>
+                            <label class="form-label" for="id_stock">Stok Produk</label>
                             <input type="hidden" class="form-control" id="id_stock" name="id_stock" value="{{$item->id_stock}}">
                             <input type="text" class="form-control" id="product_name" name="product_name" value="{{$item->product_code}} | {{$item->product_name}} | {{$item->site_name}}" readonly>
                         </div>
@@ -207,21 +215,48 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <form action="/data-stok-masuk" method="POST">
+                    <form action="/data-stok-masuk" method="POST" id="filterStockForm">
                         @csrf
                         <div class="form-group col-md-12">
+                            <label class="form-label" for="filter_by">Filter By</label>
+                            <select name="filter_by" id="filter_by" class="selectpicker form-control" data-style="py-0" required>
+                                <option value="" selected disabled>-- Pilih --</option>
+                                <option value="Produk" >Produk</option>
+                                <option value="Site" >Site</option>
+                                <option value="Tanggal" >Tanggal</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="form-label" for="id_product">Produk</label>
+                            <select name="id_product" id="id_product" class="selectpicker form-control" data-style="py-0" >
+                                <option value="" selected disabled>-- Pilih --</option>
+                                @foreach ($daftarProduk as $item)
+                                    <option value="{{$item->id_product}}" >{{$item->product_code}} | {{$item->product_name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="form-label" for="id_site">Site</label>
+                            <select name="id_site" id="id_site" class="selectpicker form-control" data-style="py-0" >
+                                <option value="" selected disabled>-- Pilih --</option>
+                                @foreach ($daftarSite as $item)
+                                    <option value="{{$item->id_site}}" >{{$item->site_name}} | {{$item->site_address}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group col-md-12">
                             <label class="form-label" for="date_from">Dari Tanggal</label>
-                            <input type="date" class="form-control" id="date_from" name="date_from" placeholder="Masukkan Tanggal" required>
+                            <input type="date" class="form-control" id="date_from" name="date_from" placeholder="Masukkan Tanggal" >
                         </div>
                         <div class="form-group col-md-12">
                             <label class="form-label" for="date_to">Sampai Tanggal</label>
-                            <input type="date" class="form-control" id="date_to" name="date_to" placeholder="Masukkan Tanggal" required>
+                            <input type="date" class="form-control" id="date_to" name="date_to" placeholder="Masukkan Tanggal" >
                         </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
-                <button type="submit" class="btn btn-primary">Simpan</button>
+                <button type="submit" class="btn btn-primary">Filter</button>
                 </form>
             </div>
         </div>

@@ -7,11 +7,12 @@ use App\Models\ModelSales;
 use App\Models\ModelUser;
 use App\Models\ModelSalesDetail;
 use App\Models\ModelProduct;
+use App\Models\ModelSite;
 
 class Sales extends Controller
 {
 
-    private $ModelSales, $ModelUser, $ModelSalesDetail, $ModelProduct;
+    private $ModelSales, $ModelUser, $ModelSalesDetail, $ModelProduct, $ModelSite;
 
     public function __construct()
     {
@@ -19,6 +20,7 @@ class Sales extends Controller
         $this->ModelUser = new ModelUser();
         $this->ModelProduct = new ModelProduct();
         $this->ModelSalesDetail = new ModelSalesDetail();
+        $this->ModelSite = new ModelSite();
     }
 
     public function index()
@@ -47,6 +49,7 @@ class Sales extends Controller
             $data = [
                 'title'     => 'Penjualan',
                 'subTitle'  => 'Tambah Penjualan',
+                'daftarSite' => $this->ModelSite->findAll('id_site', 'DESC'),
                 'user'      => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
                 'form'      => 'Tambah',
             ];
@@ -72,6 +75,7 @@ class Sales extends Controller
             ]);
 
             $data = [
+                'id_site'           => Request()->id_site,
                 'sales_code'        => Request()->sales_code,
                 'sales_date'        => Request()->sales_date,
                 'customer_name'     => Request()->customer_name,

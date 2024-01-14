@@ -5,18 +5,22 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\ModelStock;
 use App\Models\ModelUser;
+use App\Models\ModelSite;
+use App\Models\ModelProduct;
 use App\Models\ModelStockIn;
 
 class StockInAll extends Controller
 {
 
-    private $ModelStock, $ModelUser, $ModelStockIn;
+    private $ModelStock, $ModelUser, $ModelStockIn, $ModelSite, $ModelProduct;
 
     public function __construct()
     {
         $this->ModelStock = new ModelStock();
         $this->ModelUser = new ModelUser();
         $this->ModelStockIn = new ModelStockIn();
+        $this->ModelSite = new ModelSite();
+        $this->ModelProduct = new ModelProduct();
     }
 
     public function index()
@@ -25,20 +29,41 @@ class StockInAll extends Controller
             return redirect()->route('login');
         }
 
-        if(!Request()->date_from) {
+        if(!Request()->filter_by) {
             $data = [
                 'title'             => 'Data Stok Masuk',
                 'subTitle'          => 'Data Stok Masuk',
+                'filter'            => false,
+                'daftarSite'        => $this->ModelSite->findAll('id_site', 'DESC'),
+                'daftarProduk'      => $this->ModelProduct->findAll('id_product', 'DESC'),
                 'daftarStock'       => $this->ModelStock->findAll('id_stock', 'DESC'),
                 'daftarStockIn'     => $this->ModelStockIn->findAll('id_stock_in', 'DESC'),
                 'user'              => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
             ];
         } else {
+            if(Request()->filter_by === 'Produk') {
+                $daftarStokIn = $this->ModelStockIn->findAllWhere('id_stock_in', 'DESC', Request()->id_product, Request()->filter_by);
+                $product = $this->ModelProduct->findOne('id_product', Request()->id_product);
+                $filterValue = $product->product_code . ' | ' .  $product->product_name;
+            } else if(Request()->filter_by === 'Site') {
+                $daftarStokIn = $this->ModelStockIn->findAllWhere('id_stock_in', 'DESC', Request()->id_site, Request()->filter_by);
+                $site = $this->ModelSite->findOne('id_site', Request()->id_site);
+                $filterValue = $site->site_name . ' | ' .  $site->site_address;
+            } else if(Request()->filter_by === 'Tanggal') {
+                $daftarStokIn = $this->ModelStockIn->findAllByTanggal('id_stock_in', 'DESC', Request()->date_from, Request()->date_to);
+                $filterValue = "dari ". Request()->date_from . " sampai " . Request()->date_to;
+            }
+
             $data = [
                 'title'             => 'Data Stok Masuk',
                 'subTitle'          => 'Data Stok Masuk',
+                'filter'            => true,
+                'filterBy'          => Request()->filter_by,
+                'filterValue'       => $filterValue,
+                'daftarSite'        => $this->ModelSite->findAll('id_site', 'DESC'),
+                'daftarProduk'      => $this->ModelProduct->findAll('id_product', 'DESC'),
                 'daftarStock'       => $this->ModelStock->findAll('id_stock', 'DESC'),
-                'daftarStockIn'     => $this->ModelStockIn->findAllWhere('id_stock_in', 'DESC', Request()->date_from, Request()->date_to),
+                'daftarStockIn'     => $daftarStokIn,
                 'user'              => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
             ];
         }

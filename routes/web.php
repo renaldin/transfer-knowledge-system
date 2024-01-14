@@ -126,10 +126,11 @@ Route::group(['middleware' => 'revalidate'], function () {
     Route::post('/edit-data-stok-masuk/{id}', [StockInAll::class, 'update']);
     Route::get('/hapus-data-stok-masuk/{id}', [StockInAll::class, 'delete']);
 
-    Route::get('/stok-opname-produk/{id_product}', [StockOpname::class, 'index']);
+    Route::get('/data-stok-opname', [StockOpname::class, 'index'])->name('data-stok-opname');
+    Route::post('/data-stok-opname', [StockOpname::class, 'index'])->name('data-stok-opname');
     Route::post('/tambah-stok-opname', [StockOpname::class, 'new']);
     Route::post('/edit-stok-opname/{id}', [StockOpname::class, 'update']);
-    Route::get('/hapus-stok-opname/{id}/{id_product}', [StockOpname::class, 'delete']);
+    Route::get('/hapus-stok-opname/{id}', [StockOpname::class, 'delete']);
     
     Route::get('/daftar-detail-site/{id_site}', [SiteDetail::class, 'index'])->name('daftar-detail-site');
     Route::post('/tambah-detail-site/{id_site}', [SiteDetail::class, 'new']);

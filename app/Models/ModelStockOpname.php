@@ -15,17 +15,38 @@ class ModelStockOpname extends Model
     public function findAll($order, $by)
     {
         return DB::table('stock_opname')
-            ->join('product', 'product.id_product', '=', 'stock_opname.id_product')
+            ->join('stock', 'stock.id_stock', '=', 'stock_opname.id_stock')
             ->join('user', 'user.id_user', '=', 'stock_opname.id_user')
+            ->join('product', 'product.id_product', '=', 'stock.id_product')
+            ->join('site', 'site.id_site', '=', 'stock.id_site')
             ->orderBy($order, $by)
             ->get();
     }
 
-    public function findAllWhere($order, $by, $dateFrom, $dateTo)
+    public function findAllWhere($order, $by, $filter, $filterBy)
+    {
+        if($filterBy === 'Produk') {
+            $where = 'stock.id_product';
+        } else if($filterBy === 'Site') {
+            $where = 'stock.id_site';
+        }
+        return DB::table('stock_opname')
+            ->join('stock', 'stock.id_stock', '=', 'stock_opname.id_stock')
+            ->join('user', 'user.id_user', '=', 'stock_opname.id_user')
+            ->join('product', 'product.id_product', '=', 'stock.id_product')
+            ->join('site', 'site.id_site', '=', 'stock.id_site')
+            ->where($where, $filter)
+            ->orderBy($order, $by)
+            ->get();
+    }
+
+    public function findAllByTanggal($order, $by, $dateFrom, $dateTo)
     {
         return DB::table('stock_opname')
-            ->join('product', 'product.id_product', '=', 'stock_opname.id_product')
+            ->join('stock', 'stock.id_stock', '=', 'stock_opname.id_stock')
             ->join('user', 'user.id_user', '=', 'stock_opname.id_user')
+            ->join('product', 'product.id_product', '=', 'stock.id_product')
+            ->join('site', 'site.id_site', '=', 'stock.id_site')
             ->whereBetween('stock_opname.date_opname', [$dateFrom, $dateTo])
             ->orderBy($order, $by)
             ->get();
@@ -34,7 +55,7 @@ class ModelStockOpname extends Model
     public function findOne($where, $value)
     {
         return DB::table('stock_opname')
-            ->join('product', 'product.id_product', '=', 'stock_opname.id_product')
+            ->join('stock', 'stock.id_stock', '=', 'stock_opname.id_stock')
             ->join('user', 'user.id_user', '=', 'stock_opname.id_user')
             ->where($where, $value)
             ->first();

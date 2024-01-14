@@ -14,6 +14,27 @@
                     <form action="@if($form === 'Tambah') /tambah-penjualan @elseif($form === 'Edit') /edit-penjualan/{{$detail->id_sales}} @endif" method="POST" id="salesForm">
                     @csrf
                     <div class="row">
+                        @if ($form === 'Tambah')
+                            <div class="form-group col-md-6">
+                                <label class="form-label" for="id_site">Site</label>
+                                <select name="id_site" id="id_site" class="selectpicker form-control @error('id_site') is-invalid @enderror" data-style="py-0" required>
+                                    @if ($form === 'Tambah')
+                                        <option value="" selected disabled>-- Pilih --</option>
+                                    @else
+                                        <option value="{{$detail->id_site}}">{{$detail->site_name}} | {{$detail->site_address}}</option>
+                                    @endif
+                                    @foreach ($daftarSite as $item)
+                                        <option value="{{$item->id_site}}" >{{$item->site_name}} | {{$item->site_address}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @else
+                            <div class="form-group col-md-6">
+                                <label class="form-label" for="id_site">Site</label>
+                                <input type="hidden" class="form-control" id="id_site" name="id_site" value="{{$detail->id_site}}" readonly>
+                                <input type="text" class="form-control" id="site_name" name="site_name" value="{{$detail->site_name}} | {{$detail->site_address}}" readonly>
+                            </div>
+                        @endif
                         <div class="form-group col-md-6">
                             <label class="form-label" for="sales_code">Kode Penjualan</label>
                             <input type="text" class="form-control @error('sales_code') is-invalid @enderror" id="sales_code" name="sales_code" value="@if($form === 'Tambah'){{ old('sales_code') }}@elseif($form === 'Edit' || $form === 'Detail'){{$detail->sales_code}}@endif" @if($form === 'Detail') disabled @endif placeholder="Masukkan Kode Penjualan">
@@ -82,7 +103,7 @@
                             @enderror
                         </div>
                     </div>
-                    @include('components.tombolForm', ['linkKembali' => '/daftar-produk'])
+                    @include('components.tombolForm', ['linkKembali' => '/daftar-penjualan'])
                     </form>
                 </div>
             </div>
