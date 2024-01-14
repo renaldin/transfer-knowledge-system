@@ -14,12 +14,18 @@ class ModelSales extends Model
 
     public function findAll($order, $by)
     {
-        return DB::table('sales')->orderBy($order, $by)->get();
+        return DB::table('sales')
+            ->join('site', 'site.id_site', '=', 'sales.id_site')
+            ->orderBy($order, $by)
+            ->get();
     }
 
     public function findOne($where, $value)
     {
-        return DB::table('sales')->where($where, $value)->first();
+        return DB::table('sales')
+            ->join('site', 'site.id_site', '=', 'sales.id_site')
+            ->where($where, $value)
+            ->first();
     }
 
     public function create($data)

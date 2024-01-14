@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 02, 2024 at 09:36 PM
+-- Generation Time: Jan 14, 2024 at 03:29 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -136,11 +136,6 @@ CREATE TABLE `product` (
   `product_code` varchar(255) DEFAULT NULL,
   `product_name` varchar(255) DEFAULT NULL,
   `product_desc` text DEFAULT NULL,
-  `purchase_price` int(11) DEFAULT NULL,
-  `sell_price_cash` int(11) DEFAULT NULL,
-  `sell_price_tempo` int(11) DEFAULT NULL,
-  `early_stock` int(11) DEFAULT 0,
-  `last_stock` int(11) NOT NULL DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -149,10 +144,8 @@ CREATE TABLE `product` (
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`id_product`, `product_code`, `product_name`, `product_desc`, `purchase_price`, `sell_price_cash`, `sell_price_tempo`, `early_stock`, `last_stock`, `created_at`, `updated_at`) VALUES
-(3, 'PK002', 'Produk 2', 'Deskripsi Produk 2', 50000, 100000, 150000, 15, 12, '2023-12-19 23:21:19', '2023-12-30 00:13:13'),
-(5, 'PK003', 'Produk 3', 'Deskripsi', 50000, 100000, 150000, 15, 12, '2023-12-22 17:54:25', '2023-12-27 16:49:24'),
-(6, 'PK004', 'Produk 4', 'Deskripsi', 60000, 110000, 140000, 12, 14, '2023-12-22 17:55:06', '2023-12-29 23:43:23');
+INSERT INTO `product` (`id_product`, `product_code`, `product_name`, `product_desc`, `created_at`, `updated_at`) VALUES
+(8, 'P0001', 'Produk 1', 'Deskripsi 1', '2024-01-11 10:00:45', '2024-01-11 10:00:45');
 
 -- --------------------------------------------------------
 
@@ -162,6 +155,7 @@ INSERT INTO `product` (`id_product`, `product_code`, `product_name`, `product_de
 
 CREATE TABLE `sales` (
   `id_sales` int(11) NOT NULL,
+  `id_site` int(11) DEFAULT NULL,
   `sales_code` varchar(255) DEFAULT NULL,
   `sales_date` date DEFAULT NULL,
   `customer_name` varchar(255) DEFAULT NULL,
@@ -181,8 +175,10 @@ CREATE TABLE `sales` (
 -- Dumping data for table `sales`
 --
 
-INSERT INTO `sales` (`id_sales`, `sales_code`, `sales_date`, `customer_name`, `customer_address`, `customer_phone`, `payment_type`, `total_qty`, `total_amount`, `total_pay`, `remaining_amount`, `notes`, `created_at`, `updated_at`) VALUES
-(2, 'P0001', '2023-12-21', 'Pelanggan 1', 'Alamat Pelanggan 1', '089787234234', 'Cash', 5, 500000, 0, 500000, 'Catatan', '2023-12-21 00:14:35', '2023-12-27 16:49:24');
+INSERT INTO `sales` (`id_sales`, `id_site`, `sales_code`, `sales_date`, `customer_name`, `customer_address`, `customer_phone`, `payment_type`, `total_qty`, `total_amount`, `total_pay`, `remaining_amount`, `notes`, `created_at`, `updated_at`) VALUES
+(2, 8, 'P0001', '2023-12-21', 'Pelanggan 1', 'Alamat Pelanggan 1', '089787234234', 'Cash', 5, 500000, 0, 500000, 'Catatan', '2023-12-21 00:14:35', '2023-12-27 16:49:24'),
+(5, 7, 'P004', '2024-01-12', 'Pelanggan 4', 'Subang', '08989923232', 'Cash', 2, 400000, 0, 400000, 'Ca', '2024-01-11 23:55:45', '2024-01-13 15:08:26'),
+(6, 6, 'P005', '2024-01-13', 'Pelanggan 3', 'Subang', '08989923232', 'Tempo', 0, 0, 0, 0, 'Ca', '2024-01-13 15:38:55', '2024-01-13 15:38:55');
 
 -- --------------------------------------------------------
 
@@ -193,7 +189,7 @@ INSERT INTO `sales` (`id_sales`, `sales_code`, `sales_date`, `customer_name`, `c
 CREATE TABLE `sales_detail` (
   `id_sales_detail` int(11) NOT NULL,
   `id_sales` int(11) DEFAULT NULL,
-  `id_product` int(11) DEFAULT NULL,
+  `id_stock` int(11) DEFAULT NULL,
   `purchase_price_sales` int(11) DEFAULT NULL,
   `sell_price_sales` int(11) DEFAULT NULL,
   `quantity_sales` int(11) DEFAULT NULL,
@@ -206,9 +202,10 @@ CREATE TABLE `sales_detail` (
 -- Dumping data for table `sales_detail`
 --
 
-INSERT INTO `sales_detail` (`id_sales_detail`, `id_sales`, `id_product`, `purchase_price_sales`, `sell_price_sales`, `quantity_sales`, `total_price`, `created_at`, `updated_at`) VALUES
+INSERT INTO `sales_detail` (`id_sales_detail`, `id_sales`, `id_stock`, `purchase_price_sales`, `sell_price_sales`, `quantity_sales`, `total_price`, `created_at`, `updated_at`) VALUES
 (11, 2, 3, 50000, 100000, 2, 200000, '2023-12-27 16:49:14', '2023-12-27 16:49:14'),
-(12, 2, 5, 50000, 100000, 3, 300000, '2023-12-27 16:49:24', '2023-12-27 16:49:24');
+(12, 2, 5, 50000, 100000, 3, 300000, '2023-12-27 16:49:24', '2023-12-27 16:49:24'),
+(16, 5, 20, 100000, 200000, 2, 400000, '2024-01-13 15:08:26', '2024-01-13 15:08:26');
 
 -- --------------------------------------------------------
 
@@ -274,10 +271,12 @@ INSERT INTO `site_detail` (`id_site_detail`, `id_user`, `id_site`, `created_at`,
 CREATE TABLE `stock` (
   `id_stock` int(11) NOT NULL,
   `id_product` int(11) DEFAULT NULL,
-  `quantity` int(11) DEFAULT NULL,
-  `stock_date` date DEFAULT NULL,
-  `description` text DEFAULT NULL,
-  `id_user` int(11) DEFAULT NULL,
+  `purchase_price` int(11) DEFAULT 0,
+  `sell_price_cash` int(11) DEFAULT 0,
+  `sell_price_tempo` int(11) DEFAULT 0,
+  `early_stock` int(11) DEFAULT 0,
+  `last_stock` int(11) DEFAULT 0,
+  `id_site` int(11) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -286,11 +285,34 @@ CREATE TABLE `stock` (
 -- Dumping data for table `stock`
 --
 
-INSERT INTO `stock` (`id_stock`, `id_product`, `quantity`, `stock_date`, `description`, `id_user`, `created_at`, `updated_at`) VALUES
-(9, 3, 10, '2023-12-20', 'Deskripsi', 1, '2023-12-20 02:28:24', '2023-12-20 02:28:49'),
-(13, 5, 15, '2023-12-23', 'Deskripsi', 1, '2023-12-23 09:32:38', '2023-12-23 09:32:38'),
-(14, 3, 5, '2023-12-23', 'Deskripsi', 1, '2023-12-23 09:34:58', '2023-12-23 09:34:58'),
-(15, 6, 12, '2023-12-30', 'Deskripsi', 1, '2023-12-29 23:43:03', '2023-12-29 23:43:03');
+INSERT INTO `stock` (`id_stock`, `id_product`, `purchase_price`, `sell_price_cash`, `sell_price_tempo`, `early_stock`, `last_stock`, `id_site`, `created_at`, `updated_at`) VALUES
+(19, 8, 100000, 200000, 300000, 0, 0, 8, '2024-01-11 10:01:01', '2024-01-11 10:01:01'),
+(20, 8, 100000, 200000, 300000, 20, 20, 7, '2024-01-11 10:01:38', '2024-01-13 15:08:26'),
+(21, 8, 110000, 220000, 330000, 0, 0, 6, '2024-01-11 22:56:18', '2024-01-11 23:32:10');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `stock_in`
+--
+
+CREATE TABLE `stock_in` (
+  `id_stock_in` int(11) NOT NULL,
+  `id_stock` int(11) DEFAULT NULL,
+  `quantity` int(11) DEFAULT 0,
+  `date_stock_in` date DEFAULT NULL,
+  `desc_stock_in` varchar(255) DEFAULT NULL,
+  `id_user` int(11) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `stock_in`
+--
+
+INSERT INTO `stock_in` (`id_stock_in`, `id_stock`, `quantity`, `date_stock_in`, `desc_stock_in`, `id_user`, `created_at`, `updated_at`) VALUES
+(2, 20, 20, '2024-01-11', 'Stok 2', 1, '2024-01-11 10:58:48', '2024-01-11 10:58:48');
 
 -- --------------------------------------------------------
 
@@ -300,7 +322,7 @@ INSERT INTO `stock` (`id_stock`, `id_product`, `quantity`, `stock_date`, `descri
 
 CREATE TABLE `stock_opname` (
   `id_stock_opname` int(11) NOT NULL,
-  `id_product` int(11) DEFAULT NULL,
+  `id_stock` int(11) DEFAULT NULL,
   `quantity_opname` int(11) DEFAULT NULL,
   `date_opname` date DEFAULT NULL,
   `desc_opname` varchar(255) DEFAULT NULL,
@@ -313,9 +335,9 @@ CREATE TABLE `stock_opname` (
 -- Dumping data for table `stock_opname`
 --
 
-INSERT INTO `stock_opname` (`id_stock_opname`, `id_product`, `quantity_opname`, `date_opname`, `desc_opname`, `id_user`, `created_at`, `updated_at`) VALUES
-(2, 3, -1, '2023-12-27', 'Deskripsi', 1, '2023-12-27 16:31:03', '2023-12-27 16:31:03'),
-(3, 6, 2, '2023-12-30', 'Deskripsi', 1, '2023-12-29 23:43:23', '2023-12-29 23:43:23');
+INSERT INTO `stock_opname` (`id_stock_opname`, `id_stock`, `quantity_opname`, `date_opname`, `desc_opname`, `id_user`, `created_at`, `updated_at`) VALUES
+(3, 20, 4, '2024-01-13', 'Deskripsi', 1, '2024-01-13 14:18:18', '2024-01-13 14:18:18'),
+(4, 20, -2, '2024-01-13', 'Deskripsi', 1, '2024-01-13 14:18:33', '2024-01-13 14:18:33');
 
 -- --------------------------------------------------------
 
@@ -417,7 +439,7 @@ INSERT INTO `user` (`id_user`, `user_code`, `fullname`, `username`, `email`, `pa
 (3, NULL, 'Renaldi 2', 'renaldi2', 'renaldi2@gmail.com', '$2y$10$yheDNgG6eR1o.QCpvNgPo..mTct/BE9b.B/rSCPfDMH4ZRR9H16J.', 'Bandung', '08989786757', 'Sales', '11172023152929 Renaldi 2.jpg', NULL, '2023-11-17 10:44:09', '2023-11-17 10:44:09'),
 (4, NULL, 'Renaldi 3', 'renaldi3', 'renaldi3@gmail.com', '$2y$10$BHyO/UAOZJ8/rYf9nAHkx.OQ2XVWYvddNnkIOJITH9Ng2ZBO3IJEy', 'Subang', '08989767753', 'Sales', '11172023153042 Renaldi 3.jpg', NULL, '2023-11-17 10:44:09', '2023-11-17 10:44:09'),
 (5, NULL, 'Renaldi 4', 'renaldi4', 'renaldi4@gmail.com', '$2y$10$uk8T9ak1vEM8mdBVJS67/uSPObJTRNNmgcq5BpwIrXOWDSmdTlsba', 'Bandung', '0898997866', 'Sales', '11172023153139 Renaldi 4.jpg', NULL, '2023-11-17 10:44:09', '2023-11-17 10:44:09'),
-(6, NULL, 'Renaldi 5', 'renaldi5', 'renaldi5@gmail.com', '$2y$10$nv6I8q7UcN0EP4YkSO77s.ytvBYs9er7wu/GM7EL8g8IFeEHU9Eau', 'Jakarta', '08989786683', 'Sales', '11172023153232 Renaldi 5.jpg', NULL, '2023-11-17 10:44:09', '2023-11-17 10:44:09'),
+(6, 'U001', 'Renaldi 5', 'renaldi5', 'renaldi5@gmail.com', '$2y$10$nv6I8q7UcN0EP4YkSO77s.ytvBYs9er7wu/GM7EL8g8IFeEHU9Eau', 'Jakarta', '08989786683', 'Sales', '11172023153232 Renaldi 5.jpg', NULL, '2023-11-17 10:44:09', '2023-11-17 10:44:09'),
 (10, NULL, 'Admin Cabang 1', 'admincabang1', 'admincabang1@gmail.com', '$2y$10$jkurUvVcTHQPTc5v9RmVPunqUEWNCzjoKhLYHDwXLgxXE6XoKlr8G', 'Jakarta', '08989786833', 'Admin Cabang', '11212023070636 Admin Cabang 1.jpg', NULL, '2023-11-21 00:06:36', '2023-11-21 00:06:36'),
 (11, 'Kode User u', 'Nama Lengkap', 'Username', 'Email@gmail.com', '$2y$10$lCQuWoleaE3t40RpKTe8MeonptmtmVfgGrCiuZItBm8NXsVjZRB5K', 'Alamat', '089898986753', 'Sales', '12142023175408 Nama Lengkap.jpg', NULL, '2023-12-14 10:54:08', '2023-12-14 10:54:38');
 
@@ -490,6 +512,12 @@ ALTER TABLE `stock`
   ADD PRIMARY KEY (`id_stock`);
 
 --
+-- Indexes for table `stock_in`
+--
+ALTER TABLE `stock_in`
+  ADD PRIMARY KEY (`id_stock_in`);
+
+--
 -- Indexes for table `stock_opname`
 --
 ALTER TABLE `stock_opname`
@@ -549,19 +577,19 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `id_product` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_product` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `sales`
 --
 ALTER TABLE `sales`
-  MODIFY `id_sales` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_sales` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `sales_detail`
 --
 ALTER TABLE `sales_detail`
-  MODIFY `id_sales_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_sales_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `site`
@@ -579,7 +607,13 @@ ALTER TABLE `site_detail`
 -- AUTO_INCREMENT for table `stock`
 --
 ALTER TABLE `stock`
-  MODIFY `id_stock` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id_stock` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- AUTO_INCREMENT for table `stock_in`
+--
+ALTER TABLE `stock_in`
+  MODIFY `id_stock_in` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `stock_opname`

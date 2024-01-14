@@ -23,7 +23,24 @@ class ModelStockIn extends Model
             ->get();
     }
 
-    public function findAllWhere($order, $by, $dateFrom, $dateTo)
+    public function findAllWhere($order, $by, $filter, $filterBy)
+    {
+        if($filterBy === 'Produk') {
+            $where = 'stock.id_product';
+        } else if($filterBy === 'Site') {
+            $where = 'stock.id_site';
+        }
+        return DB::table('stock_in')
+            ->join('stock', 'stock.id_stock', '=', 'stock_in.id_stock')
+            ->join('user', 'user.id_user', '=', 'stock_in.id_user')
+            ->join('product', 'product.id_product', '=', 'stock.id_product')
+            ->join('site', 'site.id_site', '=', 'stock.id_site')
+            ->where($where, $filter)
+            ->orderBy($order, $by)
+            ->get();
+    }
+
+    public function findAllByTanggal($order, $by, $dateFrom, $dateTo)
     {
         return DB::table('stock_in')
             ->join('stock', 'stock.id_stock', '=', 'stock_in.id_stock')

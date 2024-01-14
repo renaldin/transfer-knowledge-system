@@ -43,6 +43,7 @@
                         <tr class="ligth">
                             <th>No</th>
                             <th>Tanggal</th>
+                            <th>Site</th>
                             <th>Kode</th>
                             <th>Pelanggan</th>
                             <th>Alamat</th>
@@ -64,6 +65,7 @@
                             <tr>
                                 <td>{{$no++}}</td>
                                 <td><span class="badge bg-primary">{{$item->sales_date}}</span></td>
+                                <td>{{$item->site_name}}</td>
                                 <td>{{$item->sales_code}}</td>
                                 <td>{{$item->customer_name}}</td>
                                 <td>{{$item->customer_address}}</td>

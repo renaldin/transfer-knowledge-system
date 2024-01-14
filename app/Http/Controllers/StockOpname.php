@@ -6,32 +6,67 @@ use App\Http\Controllers\Controller;
 use App\Models\ModelProduct;
 use App\Models\ModelUser;
 use App\Models\ModelStockOpname;
+use App\Models\ModelStock;
+use App\Models\ModelSite;
 
 class StockOpname extends Controller
 {
 
-    private $ModelProduct, $ModelUser, $ModelStockOpname;
+    private $ModelProduct, $ModelUser, $ModelStockOpname, $ModelStock, $ModelSite;
 
     public function __construct()
     {
         $this->ModelProduct = new ModelProduct();
         $this->ModelUser = new ModelUser();
         $this->ModelStockOpname = new ModelStockOpname();
+        $this->ModelStock = new ModelStock();
+        $this->ModelSite = new ModelSite();
     }
 
-    public function index($id_product)
+    public function index()
     {
         if (!Session()->get('role')) {
             return redirect()->route('login');
         }
 
-        $data = [
-            'title'             => 'Data Stok Opname',
-            'subTitle'          => 'Data Stok Opname',
-            'produk'            => $this->ModelProduct->findOne('id_product', $id_product),
-            'daftarStokOpname'  => $this->ModelStockOpname->findAll('id_stock_opname', 'DESC'),
-            'user'              => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
-        ];
+        if(!Request()->filter_by) {
+            $data = [
+                'title'             => 'Data Stok Opname',
+                'subTitle'          => 'Data Stok Opname',
+                'filter'            => false,
+                'daftarSite'        => $this->ModelSite->findAll('id_site', 'DESC'),
+                'daftarProduk'      => $this->ModelProduct->findAll('id_product', 'DESC'),
+                'daftarStock'       => $this->ModelStock->findAll('id_stock', 'DESC'),
+                'daftarStokOpname'  => $this->ModelStockOpname->findAll('id_stock_opname', 'DESC'),
+                'user'              => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
+            ];
+        } else {
+            if(Request()->filter_by === 'Produk') {
+                $daftarStokOpname = $this->ModelStockOpname->findAllWhere('id_stock_opname', 'DESC', Request()->id_product, Request()->filter_by);
+                $product = $this->ModelProduct->findOne('id_product', Request()->id_product);
+                $filterValue = $product->product_code . ' | ' .  $product->product_name;
+            } else if(Request()->filter_by === 'Site') {
+                $daftarStokOpname = $this->ModelStockOpname->findAllWhere('id_stock_opname', 'DESC', Request()->id_site, Request()->filter_by);
+                $site = $this->ModelSite->findOne('id_site', Request()->id_site);
+                $filterValue = $site->site_name . ' | ' .  $site->site_address;
+            } else if(Request()->filter_by === 'Tanggal') {
+                $daftarStokOpname = $this->ModelStockOpname->findAllByTanggal('id_stock_opname', 'DESC', Request()->date_from, Request()->date_to);
+                $filterValue = "dari ". Request()->date_from . " sampai " . Request()->date_to;
+            }
+
+            $data = [
+                'title'             => 'Data Stok Opname',
+                'subTitle'          => 'Data Stok Opname',
+                'filter'            => true,
+                'filterBy'          => Request()->filter_by,
+                'filterValue'       => $filterValue,
+                'daftarSite'        => $this->ModelSite->findAll('id_site', 'DESC'),
+                'daftarProduk'      => $this->ModelProduct->findAll('id_product', 'DESC'),
+                'daftarStock'       => $this->ModelStock->findAll('id_stock', 'DESC'),
+                'daftarStokOpname'  => $daftarStokOpname,
+                'user'              => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
+            ];
+        }
 
         return view('stockOpname.index', $data);
     }
@@ -42,22 +77,10 @@ class StockOpname extends Controller
             return redirect()->route('login');
         }
 
-        Request()->validate([
-            'id_product'        => 'required',
-            'quantity_opname'   => 'required',
-            'date_opname'       => 'required',
-            'desc_opname'       => 'required'
-        ], [
-            'id_product.required'       => 'Produk harus diisi!',
-            'quantity_opname.required'  => 'Kuantitas harus diisi!',
-            'date_opname.required'      => 'Tanggal harus diisi!',
-            'desc_opname.required'      => 'Deskripsi harus diisi!',
-        ]);
-
-        $detailProduct = $this->ModelProduct->findOne('id_product', Request()->id_product);
+        $detailStock = $this->ModelStock->findOne('id_stock', Request()->id_stock);
         
         $data = [
-            'id_product'        => Request()->id_product,
+            'id_stock'          => Request()->id_stock,
             'quantity_opname'   => Request()->quantity_opname,
             'date_opname'       => Request()->date_opname,
             'desc_opname'       => Request()->desc_opname,
@@ -65,13 +88,13 @@ class StockOpname extends Controller
         ];
         $this->ModelStockOpname->create($data);
 
-        $product = [
-            'id_product'    => Request()->id_product,
-            'last_stock'    => $detailProduct->last_stock + Request()->quantity_opname
+        $stock = [
+            'id_stock'      => Request()->id_stock,
+            'last_stock'    => $detailStock->last_stock + Request()->quantity_opname
         ];
-        $this->ModelProduct->edit($product);
+        $this->ModelStock->edit($stock);
 
-        return back()->with('success-opname', 'Data berhasil ditambahkan!');
+        return back()->with('success', 'Data berhasil ditambahkan!');
     }
 
     public function update($id_stock_opname)
@@ -80,30 +103,18 @@ class StockOpname extends Controller
             return redirect()->route('login');
         }
 
-        Request()->validate([
-            'id_product'        => 'required',
-            'quantity_opname'   => 'required',
-            'date_opname'       => 'required',
-            'desc_opname'       => 'required'
-        ], [
-            'id_product.required'       => 'Produk harus diisi!',
-            'quantity_opname.required'  => 'Kuantitas harus diisi!',
-            'date_opname.required'      => 'Tanggal harus diisi!',
-            'desc_opname.required'      => 'Deskripsi harus diisi!',
-        ]);
-
-        $detailStock = $this->ModelStockOpname->findOne('id_stock_opname', $id_stock_opname);
-        $detailProduct = $this->ModelProduct->findOne('id_product', Request()->id_product);
+        $detailStockOpname = $this->ModelStockOpname->findOne('id_stock_opname', $id_stock_opname);
+        $detailStock = $this->ModelStock->findOne('id_stock', Request()->id_stock);
 
         $subtractionStock = [
-            'id_product'    => $detailProduct->id_product,
-            'last_stock'    => $detailProduct->last_stock - $detailStock->quantity_opname
+            'id_stock'      => $detailStock->id_stock,
+            'last_stock'    => $detailStock->last_stock - $detailStockOpname->quantity_opname
         ];
-        $this->ModelProduct->edit($subtractionStock);
+        $this->ModelStock->edit($subtractionStock);
 
         $data = [
             'id_stock_opname'   => $id_stock_opname,
-            'id_product'        => Request()->id_product,
+            'id_stock'          => Request()->id_stock,
             'quantity_opname'   => Request()->quantity_opname,
             'date_opname'       => Request()->date_opname,
             'desc_opname'       => Request()->desc_opname,
@@ -111,34 +122,34 @@ class StockOpname extends Controller
         ];
         $this->ModelStockOpname->edit($data);
 
-        $detailProductNew = $this->ModelProduct->findOne('id_product', Request()->id_product);
+        $detailStockNew = $this->ModelStock->findOne('id_stock', Request()->id_stock);
 
-        $product = [
-            'id_product'    => Request()->id_product,
-            'last_stock'    => $detailProductNew->last_stock + Request()->quantity_opname
+        $stock = [
+            'id_stock'      => Request()->id_stock,
+            'last_stock'    => $detailStockNew->last_stock + Request()->quantity_opname
         ];
-        $this->ModelProduct->edit($product);
+        $this->ModelStock->edit($stock);
 
-        return back()->with('success-opname', 'Data berhasil diedit!');
+        return back()->with('success', 'Data berhasil diedit!');
     }
 
-    public function delete($id_stock_opname, $id_product)
+    public function delete($id_stock_opname)
     {
         if (!Session()->get('role')) {
             return redirect()->route('login');
         }
 
-        $detailStock = $this->ModelStockOpname->findOne('id_stock_opname', $id_stock_opname);
-        $detailProduct = $this->ModelProduct->findOne('id_product', $id_product);
+        $detailStockOpname = $this->ModelStockOpname->findOne('id_stock_opname', $id_stock_opname);
+        $detailStock = $this->ModelStock->findOne('id_stock', $detailStockOpname->id_stock);
 
         $subtractionStock = [
-            'id_product'    => $detailProduct->id_product,
-            'last_stock'    => $detailProduct->last_stock - $detailStock->quantity_opname
+            'id_stock'      => $detailStock->id_stock,
+            'last_stock'    => $detailStock->last_stock - $detailStockOpname->quantity_opname
         ];
-        $this->ModelProduct->edit($subtractionStock);
+        $this->ModelStock->edit($subtractionStock);
         
         $this->ModelStockOpname->deleteData('id_stock_opname', $id_stock_opname);
 
-        return back()->with('success-opname', 'Data berhasil dihapus!');
+        return back()->with('success', 'Data berhasil dihapus!');
     }
 }

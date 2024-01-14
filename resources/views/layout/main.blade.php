@@ -327,6 +327,7 @@
                 var productForm = document.getElementById('productForm');
                 var stockForm = document.getElementById('stockForm');
                 var bayarFormModal = document.getElementById('bayarFormModal');
+                var filterStockForm = document.getElementById('filterStockForm');
 
                 if (formDetailInvoiceForm) {
                     let add = document.getElementById('add');
@@ -470,6 +471,63 @@
                     totalPay.addEventListener('keyup', function (e) {
                         let totalPayValue = removeFormatting(totalPay.value);
                         totalPay.value = formatRupiah(totalPayValue);
+                    });
+                }
+
+                if(filterStockForm) {
+                    var filterByDropdown = document.getElementById('filter_by');
+                    var produkLabel = document.querySelector('label[for="id_product"]');
+                    var siteLabel = document.querySelector('label[for="id_site"]');
+                    var dateFromLabel = document.querySelector('label[for="date_from"]');
+                    var dateToLabel = document.querySelector('label[for="date_to"]');
+                    var produkForm = document.getElementById('id_product');
+                    var siteForm = document.getElementById('id_site');
+                    var dateFromForm = document.getElementById('date_from');
+                    var dateToForm = document.getElementById('date_to');
+
+                    produkLabel.style.display = 'none';
+                    siteLabel.style.display = 'none';
+                    dateFromLabel.style.display = 'none';
+                    dateToLabel.style.display = 'none';
+                    produkForm.style.display = 'none';
+                    siteForm.style.display = 'none';
+                    dateFromForm.style.display = 'none';
+                    dateToForm.style.display = 'none';
+
+                    filterByDropdown.addEventListener('change', function () {
+                        produkLabel.style.display = 'none';
+                        siteLabel.style.display = 'none';
+                        dateFromLabel.style.display = 'none';
+                        dateToLabel.style.display = 'none';
+                        produkForm.style.display = 'none';
+                        siteForm.style.display = 'none';
+                        dateFromForm.style.display = 'none';
+                        dateToForm.style.display = 'none';
+
+                        if (filterByDropdown.value === 'Produk') {
+                            produkLabel.style.display = 'block';
+                            produkForm.style.display = 'block';
+                            produkForm.required = true;
+                            siteForm.required = false;
+                            dateFromForm.required = false;
+                            dateToForm.required = false
+                        } else if (filterByDropdown.value === 'Site') {
+                            siteLabel.style.display = 'block';
+                            siteForm.style.display = 'block';
+                            siteForm.required = true;
+                            produkForm.required = false;
+                            dateFromForm.required = false;
+                            dateToForm.required = false
+                        } else if (filterByDropdown.value === 'Tanggal') {
+                            dateFromLabel.style.display = 'block';
+                            dateToLabel.style.display = 'block';
+                            dateFromForm.style.display = 'block';
+                            dateToForm.style.display = 'block';
+                            dateFromForm.required = true;
+                            dateToForm.required = true
+                            siteForm.required = false;
+                            produkForm.required = false;
+                        }
                     });
                 }
 
