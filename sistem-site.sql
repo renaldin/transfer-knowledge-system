@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Jan 14, 2024 at 03:29 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- Host: localhost
+-- Generation Time: Jan 14, 2024 at 06:24 PM
+-- Server version: 10.4.21-MariaDB
+-- PHP Version: 8.1.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -30,8 +30,10 @@ SET time_zone = "+00:00";
 CREATE TABLE `detail_invoice` (
   `id_detail_invoice` int(11) NOT NULL,
   `id_invoice` int(11) DEFAULT NULL,
+  `id_store` int(11) NOT NULL,
   `store_code` varchar(255) DEFAULT NULL,
   `store_name` varchar(255) DEFAULT NULL,
+  `store_status_ar` varchar(10) DEFAULT NULL,
   `bill` int(11) DEFAULT NULL,
   `limit` int(11) DEFAULT NULL,
   `group_price` varchar(255) DEFAULT NULL,
@@ -47,17 +49,17 @@ CREATE TABLE `detail_invoice` (
   `notes_for_salesman` text DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `detail_invoice`
 --
 
-INSERT INTO `detail_invoice` (`id_detail_invoice`, `id_invoice`, `store_code`, `store_name`, `bill`, `limit`, `group_price`, `activation_date`, `add`, `remaining_balance`, `notes`, `visit`, `absensi`, `distance`, `latitude`, `longitude`, `notes_for_salesman`, `created_at`, `updated_at`) VALUES
-(13, 7, 'KS001', '1RB WAWAN CELL', -4272426, -5000000, 'FR - KEJAR POINT', '2023-12-05 00:00:00', 1000000, 3272426, NULL, 0, 'Tidak Hadir', NULL, NULL, NULL, NULL, '2023-12-17 03:44:43', '2023-12-17 03:45:20'),
-(14, 7, 'KS001', '1RB GANTAR CELL', -3970303, -5000000, 'FR - KEJAR POINT', '2023-12-05 00:00:00', NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, '2023-12-17 03:44:43', '2023-12-17 03:44:43'),
-(21, 11, 'KS001', '1RB WAWAN CELL', -4272426, -5000000, 'FR - KEJAR POINT', '2023-12-05 00:00:00', 2000000, -2272426, NULL, 0, 'Tidak Hadir', NULL, NULL, NULL, NULL, '2023-12-18 05:03:34', '2023-12-19 16:29:50'),
-(22, 11, 'KS001', '1RB GANTAR CELL', -3970303, -5000000, 'FR - KEJAR POINT', '2023-12-05 00:00:00', NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, '2023-12-18 05:03:34', '2023-12-18 05:03:34');
+INSERT INTO `detail_invoice` (`id_detail_invoice`, `id_invoice`, `id_store`, `store_code`, `store_name`, `store_status_ar`, `bill`, `limit`, `group_price`, `activation_date`, `add`, `remaining_balance`, `notes`, `visit`, `absensi`, `distance`, `latitude`, `longitude`, `notes_for_salesman`, `created_at`, `updated_at`) VALUES
+(13, 7, 0, 'KS001', '1RB WAWAN CELL', NULL, -4272426, -5000000, 'FR - KEJAR POINT', '2023-12-05 00:00:00', 1000000, 3272426, NULL, 0, 'Tidak Hadir', NULL, NULL, NULL, NULL, '2023-12-17 03:44:43', '2023-12-17 03:45:20'),
+(14, 7, 0, 'KS001', '1RB GANTAR CELL', NULL, -3970303, -5000000, 'FR - KEJAR POINT', '2023-12-05 00:00:00', NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, '2023-12-17 03:44:43', '2023-12-17 03:44:43'),
+(21, 11, 0, 'KS001', '1RB WAWAN CELL', NULL, -4272426, -5000000, 'FR - KEJAR POINT', '2023-12-05 00:00:00', 2000000, -2272426, NULL, 0, 'Tidak Hadir', NULL, NULL, NULL, NULL, '2023-12-18 05:03:34', '2023-12-19 16:29:50'),
+(22, 11, 0, 'KS001', '1RB GANTAR CELL', NULL, -3970303, -5000000, 'FR - KEJAR POINT', '2023-12-05 00:00:00', NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, '2023-12-18 05:03:34', '2023-12-18 05:03:34');
 
 -- --------------------------------------------------------
 
@@ -73,7 +75,7 @@ CREATE TABLE `invoice` (
   `day` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `invoice`
@@ -91,7 +93,7 @@ INSERT INTO `invoice` (`id_invoice`, `id_user`, `user_code_invoice`, `date`, `da
 
 CREATE TABLE `migrations` (
   `id` int(10) UNSIGNED NOT NULL,
-  `migration` varchar(255) NOT NULL,
+  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -115,11 +117,11 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 
 CREATE TABLE `personal_access_tokens` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `tokenable_type` varchar(255) NOT NULL,
+  `tokenable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tokenable_id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `token` varchar(64) NOT NULL,
-  `abilities` text DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `abilities` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `last_used_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -138,7 +140,7 @@ CREATE TABLE `product` (
   `product_desc` text DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `product`
@@ -169,7 +171,7 @@ CREATE TABLE `sales` (
   `notes` text DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `sales`
@@ -196,7 +198,7 @@ CREATE TABLE `sales_detail` (
   `total_price` int(11) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `sales_detail`
@@ -215,8 +217,8 @@ INSERT INTO `sales_detail` (`id_sales_detail`, `id_sales`, `id_stock`, `purchase
 
 CREATE TABLE `site` (
   `id_site` bigint(20) UNSIGNED NOT NULL,
-  `site_name` varchar(255) DEFAULT NULL,
-  `site_address` varchar(255) DEFAULT NULL,
+  `site_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `site_address` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -279,7 +281,7 @@ CREATE TABLE `stock` (
   `id_site` int(11) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `stock`
@@ -305,7 +307,7 @@ CREATE TABLE `stock_in` (
   `id_user` int(11) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `stock_in`
@@ -329,7 +331,7 @@ CREATE TABLE `stock_opname` (
   `id_user` int(11) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `stock_opname`
@@ -349,19 +351,20 @@ CREATE TABLE `store` (
   `id_store` bigint(20) UNSIGNED NOT NULL,
   `id_site` bigint(20) UNSIGNED NOT NULL,
   `id_user` bigint(20) UNSIGNED NOT NULL,
-  `store_code` varchar(255) DEFAULT NULL,
-  `store_name` varchar(255) DEFAULT NULL,
-  `owner_name` varchar(255) DEFAULT NULL,
-  `store_mobile_phone` varchar(255) DEFAULT NULL,
-  `store_address` text DEFAULT NULL,
-  `link_gmaps` text DEFAULT NULL,
-  `store_pict` varchar(255) DEFAULT NULL,
-  `ktp_pict` varchar(255) DEFAULT NULL,
-  `form_pict` varchar(255) DEFAULT NULL,
+  `store_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `store_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `owner_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `store_mobile_phone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `store_address` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `link_gmaps` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `store_pict` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ktp_pict` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `form_pict` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `store_status` int(11) NOT NULL DEFAULT 1,
-  `description` text DEFAULT NULL,
-  `latitude` varchar(255) DEFAULT NULL,
-  `longitude` varchar(255) DEFAULT NULL,
+  `store_status_ar` enum('TRUE','FALSE') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'TRUE',
+  `description` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `latitude` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `longitude` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -370,10 +373,10 @@ CREATE TABLE `store` (
 -- Dumping data for table `store`
 --
 
-INSERT INTO `store` (`id_store`, `id_site`, `id_user`, `store_code`, `store_name`, `owner_name`, `store_mobile_phone`, `store_address`, `link_gmaps`, `store_pict`, `ktp_pict`, `form_pict`, `store_status`, `description`, `latitude`, `longitude`, `created_at`, `updated_at`) VALUES
-(3, 1, 2, 'KS003', 'Store 2', 'Owner 2', '089898234234', 'Subang', 'https://maps.app.goo.gl/gsWyGyNw3McsBo4R6', '11192023000502 Store 2.jpg', '11192023000502 Store 2.png', '11192023000502 Store 2.jpg', 0, 'Deskripsi 2', '-6.570888134530516', '107.7615728664807', '2023-11-18 17:05:02', '2023-12-16 17:31:15'),
-(4, 2, 3, 'KAS002', 'Store 3', 'Owner 3', '0898972868323', 'Bandung', 'https://maps.app.goo.gl/gsWyGyNw3McsBo4R6', '11192023000625 Store 3.jpg', '11192023000625 Store 3.png', '11192023000625 Store 3.jpg', 1, 'Deskripsi 3', '-6.570888134530516', '107.7615728664807', '2023-11-18 17:06:25', '2023-12-16 17:30:28'),
-(8, 1, 2, 'KS001', 'aaa', 'aaa', '333333333333333333', 'aaa', 'aaa', '11212023091725 aaa.jpg', '11212023091725 aaa.jpg', '11212023091725 aaa.jpg', 1, 'aaa', '-6.57096274303458', '107.7615728664807', '2023-11-21 02:17:25', '2023-12-16 17:29:48');
+INSERT INTO `store` (`id_store`, `id_site`, `id_user`, `store_code`, `store_name`, `owner_name`, `store_mobile_phone`, `store_address`, `link_gmaps`, `store_pict`, `ktp_pict`, `form_pict`, `store_status`, `store_status_ar`, `description`, `latitude`, `longitude`, `created_at`, `updated_at`) VALUES
+(3, 1, 2, 'KS003', 'Store 2', 'Owner 2', '089898234234', 'Subang', 'https://maps.app.goo.gl/gsWyGyNw3McsBo4R6', '11192023000502 Store 2.jpg', '11192023000502 Store 2.png', '11192023000502 Store 2.jpg', 0, 'TRUE', 'Deskripsi 2', '-6.570888134530516', '107.7615728664807', '2023-11-18 17:05:02', '2023-12-16 17:31:15'),
+(4, 2, 3, 'KAS002', 'Store 3', 'Owner 3', '0898972868323', 'Bandung', 'https://maps.app.goo.gl/gsWyGyNw3McsBo4R6', '11192023000625 Store 3.jpg', '11192023000625 Store 3.png', '11192023000625 Store 3.jpg', 1, 'TRUE', 'Deskripsi 3', '-6.570888134530516', '107.7615728664807', '2023-11-18 17:06:25', '2023-12-16 17:30:28'),
+(8, 1, 2, 'KS001', 'aaa', 'aaa', '333333333333333333', 'aaa', 'aaa', '11212023091725 aaa.jpg', '11212023091725 aaa.jpg', '11212023091725 aaa.jpg', 1, 'TRUE', 'aaa', '-6.57096274303458', '107.7615728664807', '2023-11-21 02:17:25', '2023-12-16 17:29:48');
 
 -- --------------------------------------------------------
 
@@ -385,16 +388,16 @@ CREATE TABLE `target_store` (
   `id_target_store` bigint(20) UNSIGNED NOT NULL,
   `id_site` bigint(20) UNSIGNED NOT NULL,
   `id_user` bigint(20) UNSIGNED NOT NULL,
-  `target_store_name` varchar(255) DEFAULT NULL,
-  `target_store_owner` varchar(255) DEFAULT NULL,
-  `target_store_mobile` varchar(255) DEFAULT NULL,
-  `target_store_address` text DEFAULT NULL,
+  `target_store_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `target_store_owner` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `target_store_mobile` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `target_store_address` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `reschedule_date` timestamp NULL DEFAULT NULL,
-  `target_store_pict` text DEFAULT NULL,
-  `description` text DEFAULT NULL,
-  `target_store_status` varchar(255) DEFAULT NULL,
-  `latitude` varchar(255) DEFAULT NULL,
-  `longitude` varchar(255) DEFAULT NULL,
+  `target_store_pict` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `target_store_status` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `latitude` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `longitude` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -415,15 +418,15 @@ INSERT INTO `target_store` (`id_target_store`, `id_site`, `id_user`, `target_sto
 
 CREATE TABLE `user` (
   `id_user` bigint(20) UNSIGNED NOT NULL,
-  `user_code` varchar(255) DEFAULT NULL,
-  `fullname` varchar(255) DEFAULT NULL,
-  `username` varchar(255) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `password` text DEFAULT NULL,
-  `user_address` varchar(255) DEFAULT NULL,
-  `mobile_phone` varchar(255) DEFAULT NULL,
-  `role` enum('Administrator','Sales','Admin Cabang') NOT NULL,
-  `photo` text DEFAULT NULL,
+  `user_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `fullname` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `username` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `password` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `user_address` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `mobile_phone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `role` enum('Administrator','Sales','Admin Cabang') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `photo` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `id_user_respon` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
