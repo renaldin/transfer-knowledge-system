@@ -13,6 +13,11 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <button type="button" data-bs-target="#tambah" data-bs-toggle="modal" class="btn btn-primary mb-3">Import Invoice</button>
+                        <button type="button" data-bs-target="#filter" data-bs-toggle="modal" class="btn btn-primary mb-3">Filter</button>
+                        @if ($filter)
+                            <a href="/daftar-invoice" class="btn btn-danger mb-3 mr-4">Reset Filter</a>
+                            <strong>Filter By:</strong> {{$filterBy}}, <strong>Filter:</strong> {{$filterValue}}
+                        @endif
                     </div>
                     @if (session('success'))
                         <div class="col-lg-12">
@@ -133,6 +138,55 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Keluar</button>
                 <button type="submit" class="btn btn-primary">Simpan</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="filter" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Filter Data Invoice</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <form action="/daftar-invoice" method="POST" id="filterInvoiceForm">
+                        @csrf
+                        <div class="form-group col-md-12">
+                            <label class="form-label" for="filter_by">Filter By</label>
+                            <select name="filter_by" id="filter_by" class="form-control" data-live-search="true" required>
+                                <option value="" selected disabled>-- Pilih --</option>
+                                <option value="Sales">Sales</option>
+                                <option value="Tanggal">Tanggal</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="form-label" for="id_user">Sales</label>
+                            <select name="id_user" id="id_user" class="form-control" data-live-search="true" >
+                                <option value="" selected disabled>-- Pilih --</option>
+                                @foreach ($daftarUser as $item)
+                                    @if ($item->role === 'Sales')
+                                        <option value="{{$item->id_user}}" >{{$item->fullname}} | {{$item->user_address}}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="form-label" for="date_from">Dari Tanggal</label>
+                            <input type="date" class="form-control" id="date_from" name="date_from" placeholder="Masukkan Tanggal" >
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="form-label" for="date_to">Sampai Tanggal</label>
+                            <input type="date" class="form-control" id="date_to" name="date_to" placeholder="Masukkan Tanggal" >
+                        </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
+                <button type="submit" class="btn btn-primary">Filter</button>
                 </form>
             </div>
         </div>

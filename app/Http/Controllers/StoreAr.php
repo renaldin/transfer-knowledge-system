@@ -8,7 +8,7 @@ use App\Models\ModelStore;
 use App\Models\ModelSiteDetail;
 use App\Models\ModelUser;
 
-class Store extends Controller
+class StoreAr extends Controller
 {
 
     private $ModelSite, $ModelSiteDetail, $ModelUser, $ModelStore, $public_path_store, $public_path_ktp, $public_path_form;
@@ -36,44 +36,15 @@ class Store extends Controller
             $siteUser[] = $item->id_site;
         }
 
-        if (!Request()->filter_by) {
-            $data = [
-                'title'             => 'Data Downline',
-                'subTitle'          => 'Daftar Downline',
-                'siteUser'          => $siteUser,
-                'filter'            => false,
-                'daftarSite'        => $this->ModelSite->findAll('id_site', 'DESC'),
-                'daftarUser'        => $this->ModelUser->findAll('id_user', 'DESC'),
-                'daftarStore'       => $this->ModelStore->findAll('id_store', 'DESC'),
-                'user'              => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
-            ];
-        } else {
-            if(Request()->filter_by === 'Sales') {
-                $daftarStore = $this->ModelStore->findAllWhere('id_store', 'DESC', Request()->id_user, Request()->filter_by);
-                $user = $this->ModelUser->findOne('id_user', Request()->id_user);
-                $filterValue = $user->fullname . ' | ' .  $user->user_address;
-            } else if(Request()->filter_by === 'Site') {
-                $daftarStore = $this->ModelStore->findAllWhere('id_store', 'DESC', Request()->id_site, Request()->filter_by);
-                $site = $this->ModelSite->findOne('id_site', Request()->id_site);
-                $filterValue = $site->site_name . ' | ' .  $site->site_address;
-            }
+        $data = [
+            'title'             => 'Data Downline AR',
+            'subTitle'          => 'Daftar Downline AR',
+            'siteUser'          => $siteUser,
+            'daftarStore'       => $this->ModelStore->findAll('id_store', 'DESC'),
+            'user'              => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
+        ];
 
-            $data = [
-                'title'             => 'Data Downline',
-                'subTitle'          => 'Daftar Downline',
-                'siteUser'          => $siteUser,
-                'filter'            => true,
-                'filterBy'          => Request()->filter_by,
-                'filterValue'       => $filterValue,
-                'daftarSite'        => $this->ModelSite->findAll('id_site', 'DESC'),
-                'daftarUser'        => $this->ModelUser->findAll('id_user', 'DESC'),
-                'daftarStore'       => $daftarStore,
-                'user'              => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
-            ];
-        }
-
-
-        return view('store.index', $data);
+        return view('storeAr.index', $data);
     }
 
     public function byId($id_store)
@@ -83,13 +54,13 @@ class Store extends Controller
         }
 
         $data = [
-            'title'             => 'Data Downline',
-            'subTitle'          => 'Detail Downline',
+            'title'             => 'Data Downline AR',
+            'subTitle'          => 'Detail Downline AR',
             'detail'            => $this->ModelStore->findOne('id_store', $id_store),
             'user'              => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
         ];
 
-        return view('store.detail', $data);
+        return view('storeAr.detail', $data);
     }
 
     public function new()
@@ -107,8 +78,8 @@ class Store extends Controller
             }
 
             $data = [
-                'title'         => 'Data Downline',
-                'subTitle'      => 'Tambah Downline',
+                'title'         => 'Data Downline AR',
+                'subTitle'      => 'Tambah Downline AR',
                 'daftarUser'    => $this->ModelUser->findAll('id_user', 'ASC'),
                 'daftarSiteAdmin'    => $this->ModelSite->findAll('id_site', 'ASC'),
                 'daftarSite'    => $this->ModelSiteDetail->findAll('site_detail.id_site', 'ASC'),
@@ -117,7 +88,7 @@ class Store extends Controller
                 'user'          => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
                 'form'          => 'Tambah',
             ];
-            return view('store.form', $data);
+            return view('storeAr.form', $data);
         } else {
             Request()->validate([
                 'id_site'               => 'required',
@@ -186,7 +157,7 @@ class Store extends Controller
             ];
     
             $this->ModelStore->create($data);
-            return redirect()->route('daftar-store')->with('success', 'Data berhasil ditambahkan!');
+            return redirect()->route('daftar-store-ar')->with('success', 'Data berhasil ditambahkan!');
         }
     }
 
@@ -204,8 +175,8 @@ class Store extends Controller
             }
 
             $data = [
-                'title'         => 'Data Downline',
-                'subTitle'      => 'Edit Downline',
+                'title'         => 'Data Downline AR',
+                'subTitle'      => 'Edit Downline AR',
                 'form'          => 'Edit',
                 'daftarUser'    => $this->ModelUser->findAll('id_user', 'ASC'),
                 'daftarSiteAdmin'    => $this->ModelSite->findAll('id_site', 'ASC'),
@@ -215,7 +186,7 @@ class Store extends Controller
                 'dataUser'      => $this->ModelSiteDetail->dataUser($siteUser),
                 'user'          => $this->ModelUser->findOne('id_user', Session()->get('id_user'))
             ];
-            return view('store.form', $data);
+            return view('storeAr.form', $data);
         } else {
             Request()->validate([
                 'id_site'               => 'required',
@@ -305,7 +276,7 @@ class Store extends Controller
             }
             
             $this->ModelStore->edit($data);
-            return redirect()->route('daftar-store')->with('success', 'Data berhasil diedit!');
+            return redirect()->route('daftar-store-ar')->with('success', 'Data berhasil diedit!');
         }
     }
 

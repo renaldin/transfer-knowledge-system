@@ -19,6 +19,27 @@ class ModelInvoice extends Model
             ->orderBy($order, $by)->get();
     }
 
+    public function findAllWhere($order, $by, $filter, $filterBy)
+    {
+        if($filterBy === 'Sales') {
+            $where = 'invoice.id_user';
+        }
+        return DB::table('invoice')
+            ->join('user', 'user.id_user', '=', 'invoice.id_user')
+            ->where($where, $filter)
+            ->orderBy($order, $by)
+            ->get();
+    }
+
+    public function findAllByTanggal($order, $by, $dateFrom, $dateTo)
+    {
+        return DB::table('invoice')
+            ->join('user', 'user.id_user', '=', 'invoice.id_user')
+            ->whereBetween('invoice.date', [$dateFrom, $dateTo])
+            ->orderBy($order, $by)
+            ->get();
+    }
+
     public function findOne($where, $value)
     {
         return DB::table('invoice')

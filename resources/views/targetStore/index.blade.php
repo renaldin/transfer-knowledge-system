@@ -13,6 +13,13 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <a href="/tambah-target-store" class="btn btn-primary mb-3">Tambah</a>
+                        @if ($user->role === 'Administrator')
+                            <button type="button" data-bs-target="#filter" data-bs-toggle="modal" class="btn btn-primary mb-3">Filter</button>
+                            @if ($filter)
+                                <a href="/daftar-target-store" class="btn btn-danger mb-3 mr-4">Reset Filter</a>
+                                <strong>Filter By:</strong> {{$filterBy}}, <strong>Filter:</strong> {{$filterValue}}
+                            @endif
+                        @endif
                     </div>
                     @if (session('success'))
                         <div class="col-lg-12">
@@ -293,5 +300,55 @@
     </div>
 </div>
 @endforeach
+
+<div class="modal fade" id="filter" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Filter New Open Outlet</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <form action="/daftar-target-store" method="POST" id="filterDownlineForm">
+                        @csrf
+                        <div class="form-group col-md-12">
+                            <label class="form-label" for="filter_by">Filter By</label>
+                            <select name="filter_by" id="filter_by" class="form-control" data-live-search="true" required>
+                                <option value="" selected disabled>-- Pilih --</option>
+                                <option value="Sales" >Sales</option>
+                                <option value="Site" >Site</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="form-label" for="id_user">Sales</label>
+                            <select name="id_user" id="id_user" class="form-control" data-live-search="true" >
+                                <option value="" selected disabled>-- Pilih --</option>
+                                @foreach ($daftarUser as $item)
+                                    @if ($item->role === 'Sales')
+                                        <option value="{{$item->id_user}}" >{{$item->fullname}} | {{$item->user_address}}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="form-label" for="id_site">Site</label>
+                            <select name="id_site" id="id_site" class="form-control" data-live-search="true" >
+                                <option value="" selected disabled>-- Pilih --</option>
+                                @foreach ($daftarSite as $item)
+                                    <option value="{{$item->id_site}}" >{{$item->site_name}} | {{$item->site_address}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
+                <button type="submit" class="btn btn-primary">Filter</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 @endsection

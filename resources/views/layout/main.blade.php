@@ -252,14 +252,6 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js" integrity="sha512-yDlE7vpGDP7o2eftkCiPZ+yuUyEcaBwoJoIhdXv71KZWugFqEphIS3PU60lEkFaz8RxaVsMpSvQxMBaKVwA5xg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
         <script>
-            $(document).ready(function() { // Ketika halaman sudah siap (sudah selesai di load)
-                $('#id_stock').selectpicker({
-                    search: true,
-                });
-            });
-        </script>
-
-        <script>
             // umum
             function readImage(input) {
                 if (input.files && input.files[0]) {
@@ -346,6 +338,8 @@
                 var stockForm = document.getElementById('stockForm');
                 var bayarFormModal = document.getElementById('bayarFormModal');
                 var filterStockForm = document.getElementById('filterStockForm');
+                var filterInvoiceForm = document.getElementById('filterInvoiceForm');
+                var filterDownlineForm = document.getElementById('filterDownlineForm');
 
                 if (formDetailInvoiceForm) {
                     let add = document.getElementById('add');
@@ -498,6 +492,7 @@
                     var siteLabel = document.querySelector('label[for="id_site"]');
                     var dateFromLabel = document.querySelector('label[for="date_from"]');
                     var dateToLabel = document.querySelector('label[for="date_to"]');
+
                     var produkForm = document.getElementById('id_product');
                     var siteForm = document.getElementById('id_site');
                     var dateFromForm = document.getElementById('date_from');
@@ -507,6 +502,7 @@
                     siteLabel.style.display = 'none';
                     dateFromLabel.style.display = 'none';
                     dateToLabel.style.display = 'none';
+
                     produkForm.style.display = 'none';
                     siteForm.style.display = 'none';
                     dateFromForm.style.display = 'none';
@@ -517,6 +513,7 @@
                         siteLabel.style.display = 'none';
                         dateFromLabel.style.display = 'none';
                         dateToLabel.style.display = 'none';
+
                         produkForm.style.display = 'none';
                         siteForm.style.display = 'none';
                         dateFromForm.style.display = 'none';
@@ -545,6 +542,86 @@
                             dateToForm.required = true
                             siteForm.required = false;
                             produkForm.required = false;
+                        }
+                    });
+                }
+
+                if(filterInvoiceForm) {
+                    var filterByDropdown = document.getElementById('filter_by');
+                    var userLabel = document.querySelector('label[for="id_user"]');
+                    var dateFromLabel = document.querySelector('label[for="date_from"]');
+                    var dateToLabel = document.querySelector('label[for="date_to"]');
+
+                    var userForm = document.getElementById('id_user');
+                    var dateFromForm = document.getElementById('date_from');
+                    var dateToForm = document.getElementById('date_to');
+
+                    userLabel.style.display = 'none';
+                    dateFromLabel.style.display = 'none';
+                    dateToLabel.style.display = 'none';
+
+                    userForm.style.display = 'none';
+                    dateFromForm.style.display = 'none';
+                    dateToForm.style.display = 'none';
+
+                    filterByDropdown.addEventListener('change', function () {
+                        userLabel.style.display = 'none';
+                        dateFromLabel.style.display = 'none';
+                        dateToLabel.style.display = 'none';
+
+                        userForm.style.display = 'none';
+                        dateFromForm.style.display = 'none';
+                        dateToForm.style.display = 'none';
+
+                        if (filterByDropdown.value === 'Tanggal') {
+                            dateFromLabel.style.display = 'block';
+                            dateToLabel.style.display = 'block';
+                            dateFromForm.style.display = 'block';
+                            dateToForm.style.display = 'block';
+                            dateFromForm.required = true;
+                            dateToForm.required = true;
+                            userForm.required = false;
+                        } else if (filterByDropdown.value === 'Sales') {
+                            userLabel.style.display = 'block';
+                            userForm.style.display = 'block';
+                            userForm.required = true;
+                            dateFromForm.required = false;
+                            dateToForm.required = false
+                        }
+                    });
+                }
+
+                if(filterDownlineForm) {
+                    var filterByDropdown = document.getElementById('filter_by');
+                    var userLabel = document.querySelector('label[for="id_user"]');
+                    var siteLabel = document.querySelector('label[for="id_site"]');
+
+                    var userForm = document.getElementById('id_user');
+                    var siteForm = document.getElementById('id_site');
+
+                    userLabel.style.display = 'none';
+                    siteLabel.style.display = 'none';
+
+                    userForm.style.display = 'none';
+                    siteForm.style.display = 'none';
+
+                    filterByDropdown.addEventListener('change', function () {
+                        userLabel.style.display = 'none';
+                        siteLabel.style.display = 'none';
+
+                        userForm.style.display = 'none';
+                        siteForm.style.display = 'none';
+
+                        if (filterByDropdown.value === 'Sales') {
+                            userLabel.style.display = 'block';
+                            userForm.style.display = 'block';
+                            userForm.required = true;
+                            siteForm.required = false;
+                        } else if (filterByDropdown.value === 'Site') {
+                            siteLabel.style.display = 'block';
+                            siteForm.style.display = 'block';
+                            siteForm.required = true;
+                            userForm.required = false;
                         }
                     });
                 }

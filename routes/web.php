@@ -16,6 +16,7 @@ use App\Http\Controllers\StockIn;
 use App\Http\Controllers\StockInAll;
 use App\Http\Controllers\StockOpname;
 use App\Http\Controllers\Store;
+use App\Http\Controllers\StoreAr;
 use App\Http\Controllers\TargetStore;
 use Illuminate\Support\Facades\Route;
 
@@ -52,6 +53,7 @@ Route::group(['middleware' => 'revalidate'], function () {
     Route::post('/ubah-password/{id}', [User::class, 'ubahPassword']);
 
     Route::get('/daftar-store', [Store::class, 'index'])->name('daftar-store');
+    Route::post('/daftar-store', [Store::class, 'index'])->name('daftar-store');
     Route::get('/tambah-store', [Store::class, 'new'])->name('tambah-store');
     Route::post('/tambah-store', [Store::class, 'new']);
     Route::get('/edit-store/{id}', [Store::class, 'update'])->name('edit-store');
@@ -59,8 +61,20 @@ Route::group(['middleware' => 'revalidate'], function () {
     Route::get('/hapus-store/{id}', [Store::class, 'delete']);
     Route::get('/detail-store/{id}', [Store::class, 'byId'])->name('detail-store');
     Route::post('/status/{id}', [Store::class, 'updateStatus']);
+    Route::post('/store-status/{id}', [Store::class, 'updateStatus']);
+
+    Route::get('/daftar-store-ar', [StoreAr::class, 'index'])->name('daftar-store-ar');
+    Route::get('/tambah-store-ar', [StoreAr::class, 'new'])->name('tambah-store-ar');
+    Route::post('/tambah-store-ar', [StoreAr::class, 'new']);
+    Route::get('/edit-store-ar/{id}', [StoreAr::class, 'update'])->name('edit-store-ar');
+    Route::post('/edit-store-ar/{id}', [StoreAr::class, 'update']);
+    Route::get('/hapus-store-ar/{id}', [StoreAr::class, 'delete']);
+    Route::get('/detail-store-ar/{id}', [StoreAr::class, 'byId'])->name('detail-store');
+    Route::post('/status-ar/{id}', [StoreAr::class, 'updateStatus']);
+    Route::post('/store-status-ar/{id}', [StoreAr::class, 'updateStatus']);
 
     Route::get('/daftar-target-store', [TargetStore::class, 'index'])->name('daftar-target-store');
+    Route::post('/daftar-target-store', [TargetStore::class, 'index'])->name('daftar-target-store');
     Route::get('/tambah-target-store', [TargetStore::class, 'new'])->name('tambah-target-store');
     Route::post('/tambah-target-store', [TargetStore::class, 'new']);
     Route::get('/edit-target-store/{id}', [TargetStore::class, 'update'])->name('edit-target-store');
@@ -136,6 +150,7 @@ Route::group(['middleware' => 'revalidate'], function () {
     Route::post('/tambah-detail-site/{id_site}', [SiteDetail::class, 'new']);
 
     Route::get('/daftar-invoice', [Invoice::class, 'index'])->name('daftar-invoice');
+    Route::post('/daftar-invoice', [Invoice::class, 'index'])->name('daftar-invoice');
     Route::get('/edit-invoice/{id}', [Invoice::class, 'update'])->name('edit-invoice');
     Route::post('/edit-invoice/{id}', [Invoice::class, 'update']);
     Route::get('/hapus-invoice/{id}', [Invoice::class, 'delete']);

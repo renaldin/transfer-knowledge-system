@@ -133,27 +133,35 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @if ($title === 'Data Site' || $title === 'Data Detail Site') active @endif" aria-current="page" href="/daftar-site">
+                        <a class="nav-link @if ($title === 'Data Cluster' || $title === 'Data Detail Cluster') active @endif" aria-current="page" href="/daftar-site">
                             <i class="icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon-32" width="20" viewBox="0 0 24 24" fill="none">                                    <circle cx="12" cy="12" r="7.5" fill="currentColor" fill-opacity="0.4" stroke="currentColor"></circle>                                </svg>  
                             </i>
-                            <span class="item-name">Data Site</span>
+                            <span class="item-name">Data Cluster</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @if ($title === 'Data Store') active @endif" aria-current="page" href="/daftar-store">
+                        <a class="nav-link @if ($title === 'Data Downline') active @endif" aria-current="page" href="/daftar-store">
                             <i class="icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon-32" width="20" viewBox="0 0 24 24" fill="none">                                    <circle cx="12" cy="12" r="7.5" fill="currentColor" fill-opacity="0.4" stroke="currentColor"></circle>                                </svg>  
                             </i>
-                            <span class="item-name">Data Store</span>
+                            <span class="item-name">Data Downline</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @if ($title === 'Data Target Store') active @endif" aria-current="page" href="/daftar-target-store">
+                        <a class="nav-link @if ($title === 'New Open Outlet') active @endif" aria-current="page" href="/daftar-target-store">
                             <i class="icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon-32" width="20" viewBox="0 0 24 24" fill="none">                                    <circle cx="12" cy="12" r="7.5" fill="currentColor" fill-opacity="0.4" stroke="currentColor"></circle>                                </svg>  
                             </i>
-                            <span class="item-name">Data Target Store</span>
+                            <span class="item-name">New Open Outlet</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @if ($title === 'Data Downline AR') active @endif" aria-current="page" href="/daftar-store-ar">
+                            <i class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon-32" width="20" viewBox="0 0 24 24" fill="none">                                    <circle cx="12" cy="12" r="7.5" fill="currentColor" fill-opacity="0.4" stroke="currentColor"></circle>                                </svg>  
+                            </i>
+                            <span class="item-name">Downline AR</span>
                         </a>
                     </li>
                     <li class="nav-item">

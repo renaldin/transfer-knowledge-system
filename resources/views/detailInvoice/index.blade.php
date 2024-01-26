@@ -83,6 +83,7 @@
                             <th>Catatan</th>
                             <th>Kunjungan</th>
                             <th>Absensi</th>
+                            <th>Status AR</th>
                             <th>Catatan Untuk Sales</th>
                             <th style="min-width: 100px">Aksi</th>
                         </tr>
@@ -92,19 +93,20 @@
                         @foreach ($daftarDetailInvoice as $item)
                             @if ($invoice->id_invoice === $item->id_invoice)
                                 <tr>
-                                    <td>{{$no++}}</td>
-                                    <td>{{$item->store_code}}</td>
-                                    <td>{{$item->store_name}}</td>
-                                    <td>{{number_format($item->bill)}}</td>
-                                    <td>{{number_format($item->limit)}}</td>
-                                    <td>{{$item->group_price}}</td>
-                                    <td>{{date('d-m-Y', strtotime($item->activation_date))}}</td>
-                                    <td>{{$item->add ? number_format($item->add) : '-'}}</td>
-                                    <td>{{$item->remaining_balance ? number_format($item->remaining_balance) : '-'}}</td>
-                                    <td>{{$item->notes ? $item->notes : '-'}}</td>
-                                    <td>{{$item->visit == 1 ? 'Ya' : 'Tidak'}}</td>
-                                    <td>{{$item->absensi ? $item->absensi : '-'}}</td>
-                                    <td>{{$item->notes_for_salesman ? $item->notes_for_salesman : '-'}}</td>
+                                    <td @if($item->remaining_balance === null || $item->remaining_balance < 0) class="text-danger text-bold" @endif>{{$no++}}</td>
+                                    <td @if($item->remaining_balance === null || $item->remaining_balance < 0) class="text-danger text-bold" @endif>{{$item->store_code}}</td>
+                                    <td @if($item->remaining_balance === null || $item->remaining_balance < 0) class="text-danger text-bold" @endif>{{$item->store_name}}</td>
+                                    <td @if($item->remaining_balance === null || $item->remaining_balance < 0) class="text-danger text-bold" @endif>{{number_format($item->bill)}}</td>
+                                    <td @if($item->remaining_balance === null || $item->remaining_balance < 0) class="text-danger text-bold" @endif>{{number_format($item->limit)}}</td>
+                                    <td @if($item->remaining_balance === null || $item->remaining_balance < 0) class="text-danger text-bold" @endif>{{$item->group_price}}</td>
+                                    <td @if($item->remaining_balance === null || $item->remaining_balance < 0) class="text-danger text-bold" @endif>{{date('d-m-Y', strtotime($item->activation_date))}}</td>
+                                    <td @if($item->remaining_balance === null || $item->remaining_balance < 0) class="text-danger text-bold" @endif>{{$item->add ? number_format($item->add) : '-'}}</td>
+                                    <td @if($item->remaining_balance === null || $item->remaining_balance < 0) class="text-danger text-bold" @endif>{{$item->remaining_balance === null ? '-' : number_format($item->remaining_balance)}}</td>
+                                    <td @if($item->remaining_balance === null || $item->remaining_balance < 0) class="text-danger text-bold" @endif>{{$item->notes ? $item->notes : '-'}}</td>
+                                    <td @if($item->remaining_balance === null || $item->remaining_balance < 0) class="text-danger text-bold" @endif>{{$item->visit == 1 ? 'Ya' : 'Tidak'}}</td>
+                                    <td @if($item->remaining_balance === null || $item->remaining_balance < 0) class="text-danger text-bold" @endif>{{$item->absensi ? $item->absensi : '-'}}</td>
+                                    <td @if($item->remaining_balance === null || $item->remaining_balance < 0) class="text-danger text-bold" @endif>{{$item->store_status_ar ? $item->store_status_ar : '-'}}</td>
+                                    <td @if($item->remaining_balance === null || $item->remaining_balance < 0) class="text-danger text-bold" @endif>{{$item->notes_for_salesman ? $item->notes_for_salesman : '-'}}</td>
                                     <td>
                                         <div class="flex align-items-center list-user-action">
                                             <a href="/edit-detail-invoice/{{$item->id_detail_invoice}}" class="btn btn-sm btn-icon btn-success" data-toggle="tooltip"  data-placement="top" title="Edit" data-original-title="Edit">

@@ -26,8 +26,8 @@ class SiteDetail extends Controller
         }
 
         $data = [
-            'title'             => 'Data Detail Site',
-            'subTitle'          => 'Daftar Detail Site',
+            'title'             => 'Data Detail Cluster',
+            'subTitle'          => 'Daftar Detail Cluster',
             'detailSite'        => $this->ModelSite->findOne('id_site', $id_site),
             'daftarUser'        => $this->ModelUser->findAll('id_user', 'DESC'),
             'daftarSiteDetail'  => $this->ModelSiteDetail->findAll('id_site_detail', 'DESC'),

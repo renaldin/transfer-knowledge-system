@@ -26,8 +26,8 @@ class Site extends Controller
         }
 
         $data = [
-            'title'             => 'Data Site',
-            'subTitle'          => 'Daftar Site',
+            'title'             => 'Data Cluster',
+            'subTitle'          => 'Daftar Cluster',
             'daftarSite'        => $this->ModelSite->findAll('id_site', 'DESC'),
             'siteUser'          => $this->ModelSiteDetail->siteUser(Session()->get('id_user')),
             'user'              => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
@@ -44,8 +44,8 @@ class Site extends Controller
 
         if(!Request()->site_name) {
             $data = [
-                'title'     => 'Data Site',
-                'subTitle'  => 'Tambah Site',
+                'title'     => 'Data Cluster',
+                'subTitle'  => 'Tambah Cluster',
                 'user'      => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
                 'form'      => 'Tambah',
             ];
@@ -87,8 +87,8 @@ class Site extends Controller
 
         if(!Request()->site_name) {
             $data = [
-                'title'         => 'Data Site',
-                'subTitle'      => 'Edit Site',
+                'title'         => 'Data Cluster',
+                'subTitle'      => 'Edit Cluster',
                 'form'          => 'Edit',
                 'detail'        => $this->ModelSite->findOne('id_site', $id_site),
                 'user'          => $this->ModelUser->findOne('id_user', Session()->get('id_user'))

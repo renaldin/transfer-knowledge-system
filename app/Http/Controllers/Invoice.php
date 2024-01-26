@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ModelInvoice;
 use App\Models\ModelDetailInvoice;
 use App\Models\ModelUser;
+use App\Models\ModelStore;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -15,13 +16,14 @@ use PhpOffice\PhpSpreadsheet\Writer\Xls;
 class Invoice extends Controller
 {
 
-    private $ModelInvoice, $ModelDetailInvoice, $ModelUser;
+    private $ModelInvoice, $ModelDetailInvoice, $ModelUser, $ModelStore;
 
     public function __construct()
     {
         $this->ModelInvoice = new ModelInvoice();
         $this->ModelDetailInvoice = new ModelDetailInvoice();
         $this->ModelUser = new ModelUser();
+        $this->ModelStore = new ModelStore();
     }
 
     public function index()
@@ -30,12 +32,36 @@ class Invoice extends Controller
             return redirect()->route('login');
         }
 
-        $data = [
-            'title'             => 'Data Invoice',
-            'subTitle'          => 'Daftar Invoice',
-            'daftarInvoice'     => $this->ModelInvoice->findAll('id_invoice', 'DESC'),
-            'user'              => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
-        ];
+        if(!Request()->filter_by) {
+            $data = [
+                'title'             => 'Data Invoice',
+                'subTitle'          => 'Daftar Invoice',
+                'filter'            => false,
+                'daftarUser'        => $this->ModelUser->findAll('id_user', 'DESC'),
+                'daftarInvoice'     => $this->ModelInvoice->findAll('id_invoice', 'DESC'),
+                'user'              => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
+            ];
+        } else {
+            if(Request()->filter_by === 'Sales') {
+                $daftarInvoice = $this->ModelInvoice->findAllWhere('id_invoice', 'DESC', Request()->id_user, Request()->filter_by);
+                $user = $this->ModelUser->findOne('id_user', Request()->id_user);
+                $filterValue = $user->fullname . ' | ' .  $user->user_address;
+            } else if(Request()->filter_by === 'Tanggal') {
+                $daftarInvoice = $this->ModelInvoice->findAllByTanggal('id_invoice', 'DESC', Request()->date_from, Request()->date_to);
+                $filterValue = "dari ". Request()->date_from . " sampai " . Request()->date_to;
+            }
+
+            $data = [
+                'title'             => 'Data Invoice',
+                'subTitle'          => 'Daftar Invoice',
+                'filter'            => true,
+                'filterBy'          => Request()->filter_by,
+                'filterValue'       => $filterValue,
+                'daftarInvoice'     => $daftarInvoice,
+                'daftarUser'        => $this->ModelUser->findAll('id_user', 'DESC'),
+                'user'              => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
+            ];
+        }
 
         return view('invoice.index', $data);
     }
@@ -51,12 +77,15 @@ class Invoice extends Controller
         $spreadsheet = IOFactory::load($file->path());
         $sheet = $spreadsheet->getActiveSheet();
         $data = $sheet->toArray();
-
+        $user = $this->ModelUser->findOne('user_code', $data[3][2]);
+        if($user == null) {
+            return back()->with('fail', 'Kode user '.$data[3][2].' tidak ada!'); 
+        }
         $dataInvoice = [
-            'id_user'   => Session()->get('id_user'),
-            'date'      => date('Y-m-d', strtotime(str_replace('/', '-', $data[3][3]))),
-            'day'       => $data[1][3],
-            'user_code_invoice' => $data[2][3]
+            'id_user'   => $user->id_user,
+            'date'      => date('Y-m-d', strtotime(str_replace('/', '-', $data[1][2]))),
+            'day'       => $data[2][2],
+            'user_code_invoice' => $data[3][2]
         ];
         $this->ModelInvoice->create($dataInvoice);
 
@@ -64,16 +93,30 @@ class Invoice extends Controller
 
         $data = array_slice($data, 7, null, true);
         foreach ($data as $row) {
+            $store = $this->ModelStore->findOne('store_code', $row[1]);
+            if($store == null) {
+                $this->ModelDetailInvoice->deleteData('id_invoice', $lastDataInvoice->id_invoice);
+                $this->ModelInvoice->deleteData('id_invoice', $lastDataInvoice->id_invoice);
+                return back()->with('fail', 'Kode store '.$row[1].' tidak ada!');
+            }
             $dataDetailInvoice = [
                 'id_invoice'        => $lastDataInvoice->id_invoice,
+                'id_store'          => $store->id_store,
                 'store_code'        => $row[1],
                 'store_name'        => $row[2],
                 'bill'              => (int) str_replace('.', '', $row[3]),
                 'limit'             => (int) str_replace('.', '', $row[4]),
                 'group_price'       => $row[5],
-                'activation_date'   => date('Y-d-m', strtotime($row[6]))
+                'activation_date'   => date('Y-d-m', strtotime($row[6])),
+                'store_status_ar'   => $row[7]
             ];
             $this->ModelDetailInvoice->create($dataDetailInvoice);
+
+            $dataStore = [
+                'id_store'          => $store->id_store,
+                'store_status_ar'   => $row[7]
+            ];
+            $this->ModelStore->edit($dataStore);
         };
 
         return back()->with('success', 'Data berhasil diimport!');
@@ -148,7 +191,7 @@ class Invoice extends Controller
         $sheet->setCellValue('C3', $invoice->day);
         $sheet->mergeCells('A4:B4');
         $sheet->setCellValue('A4', 'NAMA SALES');
-        $sheet->setCellValue('C4', $user ? $user->fullname : $invoice->user_code_invoice);
+        $sheet->setCellValue('C4', $user ? $user->user_code .' - '. $user->fullname : $invoice->user_code_invoice);
 
         $sheet->setCellValue('A6', 'NO');
         $sheet->setCellValue('B6', 'ID');

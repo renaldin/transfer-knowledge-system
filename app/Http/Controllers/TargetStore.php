@@ -34,13 +34,42 @@ class TargetStore extends Controller
             $siteUser[] = $item->id_site;
         }
 
-        $data = [
-            'title'             => 'Data Target Store',
-            'subTitle'          => 'Daftar Target Store',
-            'siteUser'          => $siteUser,
-            'daftarTargetStore' => $this->ModelTargetStore->findAll('id_target_store', 'DESC'),
-            'user'              => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
-        ];
+        if (!Request()->filter_by) {
+            $data = [
+                'title'             => 'New Open Outlet',
+                'subTitle'          => 'Daftar New Open Outlet',
+                'siteUser'          => $siteUser,
+                'filter'            => false,
+                'daftarSite'        => $this->ModelSite->findAll('id_site', 'DESC'),
+                'daftarUser'        => $this->ModelUser->findAll('id_user', 'DESC'),
+                'daftarTargetStore' => $this->ModelTargetStore->findAll('id_target_store', 'DESC'),
+                'user'              => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
+            ];
+        } else {
+            if(Request()->filter_by === 'Sales') {
+                $daftarTargetStore = $this->ModelTargetStore->findAllWhere('id_target_store', 'DESC', Request()->id_user, Request()->filter_by);
+                $user = $this->ModelUser->findOne('id_user', Request()->id_user);
+                $filterValue = $user->fullname . ' | ' .  $user->user_address;
+            } else if(Request()->filter_by === 'Site') {
+                $daftarTargetStore = $this->ModelTargetStore->findAllWhere('id_target_store', 'DESC', Request()->id_site, Request()->filter_by);
+                $site = $this->ModelSite->findOne('id_site', Request()->id_site);
+                $filterValue = $site->site_name . ' | ' .  $site->site_address;
+            }
+
+            $data = [
+                'title'             => 'New Open Outlet',
+                'subTitle'          => 'Daftar New Open Outlet',
+                'siteUser'          => $siteUser,
+                'filter'            => true,
+                'filterBy'          => Request()->filter_by,
+                'filterValue'       => $filterValue,
+                'daftarSite'        => $this->ModelSite->findAll('id_site', 'DESC'),
+                'daftarUser'        => $this->ModelUser->findAll('id_user', 'DESC'),
+                'daftarTargetStore' => $daftarTargetStore,
+                'user'              => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
+            ];
+        }
+
 
         return view('targetStore.index', $data);
     }
@@ -52,8 +81,8 @@ class TargetStore extends Controller
         }
 
         $data = [
-            'title'             => 'Data Target Store',
-            'subTitle'          => 'Detail Target Store',
+            'title'             => 'New Open Outlet',
+            'subTitle'          => 'Detail New Open Outlet',
             'detail'            => $this->ModelTargetStore->findOne('id_target_store', $id_target_store),
             'user'              => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
         ];
@@ -76,8 +105,8 @@ class TargetStore extends Controller
             }
 
             $data = [
-                'title'             => 'Data Target Store',
-                'subTitle'          => 'Tambah Target Store',
+                'title'             => 'New Open Outlet',
+                'subTitle'          => 'Tambah New Open Outlet',
                 'daftarUser'        => $this->ModelUser->findAll('id_user', 'ASC'),
                 'daftarSiteAdmin'   => $this->ModelSite->findAll('id_site', 'ASC'),
                 'daftarSite'        => $this->ModelSiteDetail->findAll('site_detail.id_site', 'ASC'),
@@ -134,8 +163,8 @@ class TargetStore extends Controller
             }
 
             $data = [
-                'title'             => 'Data Target Store',
-                'subTitle'          => 'Edit Target Store',
+                'title'             => 'New Open Outlet',
+                'subTitle'          => 'Edit New Open Outlet',
                 'form'              => 'Edit',
                 'daftarUser'        => $this->ModelUser->findAll('id_user', 'ASC'),
                 'daftarSiteAdmin'   => $this->ModelSite->findAll('id_site', 'ASC'),

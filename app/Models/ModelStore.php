@@ -20,6 +20,21 @@ class ModelStore extends Model
             ->orderBy($order, $by)->get();
     }
 
+    public function findAllWhere($order, $by, $filter, $filterBy)
+    {
+        if($filterBy === 'Sales') {
+            $where = 'store.id_user';
+        } else if($filterBy === 'Site') {
+            $where = 'store.id_site';
+        }
+        return DB::table('store')
+            ->join('site', 'site.id_site', '=', 'store.id_site')
+            ->join('user', 'user.id_user', '=', 'store.id_user')
+            ->where($where, $filter)
+            ->orderBy($order, $by)
+            ->get();
+    }
+
     public function findOne($where, $value)
     {
         return DB::table('store')

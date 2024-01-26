@@ -162,7 +162,7 @@
                         @csrf
                         <div class="form-group col-md-12">
                             <label class="form-label" for="filter_by">Filter By</label>
-                            <select name="filter_by" id="filter_by" class="selectpicker form-control" data-live-search="true" required>
+                            <select name="filter_by" id="filter_by" class="form-control" data-live-search="true" required>
                                 <option value="" selected disabled>-- Pilih --</option>
                                 <option value="Produk" >Produk</option>
                                 <option value="Site" >Site</option>
@@ -171,7 +171,7 @@
                         </div>
                         <div class="form-group col-md-12">
                             <label class="form-label" for="id_product">Produk</label>
-                            <select name="id_product" id="id_product" class="selectpicker form-control" data-live-search="true" >
+                            <select name="id_product" id="id_product" class="form-control" data-live-search="true" >
                                 <option value="" selected disabled>-- Pilih --</option>
                                 @foreach ($daftarProduk as $item)
                                     <option value="{{$item->id_product}}" >{{$item->product_code}} | {{$item->product_name}}</option>
@@ -180,7 +180,7 @@
                         </div>
                         <div class="form-group col-md-12">
                             <label class="form-label" for="id_site">Site</label>
-                            <select name="id_site" id="id_site" class="selectpicker form-control" data-live-search="true" >
+                            <select name="id_site" id="id_site" class="form-control" data-live-search="true" >
                                 <option value="" selected disabled>-- Pilih --</option>
                                 @foreach ($daftarSite as $item)
                                     <option value="{{$item->id_site}}" >{{$item->site_name}} | {{$item->site_address}}</option>
