@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\ModelUser;
-use App\Models\ModelSiteDetail;
-use App\Models\ModelSite;
 use Illuminate\Support\Facades\Hash;
 
 class User extends Controller
@@ -16,8 +14,6 @@ class User extends Controller
     public function __construct()
     {
         $this->ModelUser = new ModelUser();
-        $this->ModelSiteDetail = new ModelSiteDetail();
-        $this->ModelSite = new ModelSite();
         $this->public_path = 'photo';
     }
 
@@ -27,22 +23,14 @@ class User extends Controller
             return redirect()->route('login');
         }
 
-        // $detailSite = $this->ModelSiteDetail->siteUser(Session()->get('id_user'));
-        // $siteUser = [];
-        // foreach($detailSite as $item) {
-        //     $siteUser[] = $item->id_site;
-        // }
-
         $data = [
             'title'             => 'Data User',
             'subTitle'          => 'Daftar User',
             'daftarUser'        => $this->ModelUser->findAll('id_user', 'DESC'),
-            // 'daftarSiteDetail'  => $this->ModelSiteDetail->findAllUser('id_site_detail', 'DESC'),
-            // 'siteUser'          => $siteUser,
             'user'              => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
         ];
 
-        return view('admin.user.index', $data);
+        return view('user.index', $data);
     }
 
     public function detail($id_user)
@@ -61,7 +49,7 @@ class User extends Controller
             'user'              => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
         ];
 
-        return view('admin.user.detail', $data);
+        return view('user.detail', $data);
     }
 
     public function newSite($id_user)
@@ -99,7 +87,7 @@ class User extends Controller
                 'user'      => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
                 'form'      => 'Tambah',
             ];
-            return view('admin.user.form', $data);
+            return view('user.form', $data);
         } else {
             Request()->validate([
                 'user_code'      => 'required',
@@ -163,7 +151,7 @@ class User extends Controller
                 'user'          => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
                 'detail'        => $this->ModelUser->findOne('id_user', $id_user)
             ];
-            return view('admin.user.form', $data);
+            return view('user.form', $data);
         } else {
             Request()->validate([
                 'user_code'      => 'required',

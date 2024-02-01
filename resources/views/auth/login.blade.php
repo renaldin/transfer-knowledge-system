@@ -2,10 +2,10 @@
 
 @section('content')
 <section class="login-content">
-   <div class="row m-0 align-items-center bg-white vh-100">            
-      <div class="col-md-6">
+   <div class="row m-0 align-items-center vh-100" style="background-color: rgba(246, 248, 255, 0.964)">            
+      <div class="col-md-12">
          <div class="row justify-content-center">
-            <div class="col-md-10">
+            <div class="col-md-4 shadow">
                <div class="card card-transparent shadow-none d-flex justify-content-center mb-0 auth-card">
                   <div class="card-body">
                      <a href="#" class="navbar-brand d-flex align-items-center mb-3">
@@ -70,7 +70,7 @@
                            </div>
                         </div>
                         <div class="d-flex justify-content-center mt-5">
-                           <button type="submit" class="btn btn-primary">Login</button>
+                           <button type="submit" class="btn btn-primary btn-sm">Login</button>
                         </div>
                      </form>
                   </div>
@@ -88,9 +88,6 @@
             </svg>
          </div>
       </div>
-      <div class="col-md-6 d-md-block d-none bg-primary p-0 mt-n1 vh-100 overflow-hidden">
-         <img src="{{ asset('template/html/assets/images/auth/01.png') }}" class="img-fluid gradient-main animated-scaleX" alt="images">
-      </div>
    </div>
- </section>
+</section>
 @endsection
