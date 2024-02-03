@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Sistem Site | {{ $subTitle }}</title>
+    <title>Sistem Monitoring Project | {{ $subTitle }}</title>
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ asset('template/html/assets/images/favicon.ico') }}" />
@@ -71,7 +71,7 @@
                     <a href="#" class="navbar-brand">
                         <!--Logo start-->
                         <!--logo End-->
-                        <h4 class="logo-title">Sistem Site</h4>
+                        <h4 class="logo-title">Sistem Project</h4>
                     </a>
                     <div class="sidebar-toggle" data-toggle="sidebar" data-active="true">
                         <i class="icon">
@@ -121,52 +121,44 @@
                     </div>
                 </div>
             </nav> <!-- Nav Header Component Start -->
-            <div class="iq-navbar-header" style="height: 215px;">
+            {{-- <div class="iq-navbar-header" style="height: 100px;">
                 <div class="container-fluid iq-container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="flex-wrap d-flex justify-content-between align-items-center">
-                                <div>
-                                    @if ($subTitle === 'Dashboard')
-                                        <h1>Hello, {{ $user->fullname }}
-                                        </h1>
-                                        <p>Selamat Datang Di Website Sistem Site.</p>
-                                    @else
-                                        <h1>{{ $subTitle }}</h1>
-                                        <p>Silahkan Jelajahi {{ $subTitle }}.</p>
-                                    @endif
-                                </div>
-                                <div>
-                                    <a href="" class="btn btn-link btn-soft-light">
-                                        @if ($title === null)
-                                            {{ $subTitle }}
-                                        @else
-                                            {{ $title }} / {{ $subTitle }}
-                                        @endif
-                                    </a>
+                </div>
+            </div> --}}
+        </div>
+        <div class="conatiner-fluid content-inner mt-n5 py-0">
+            <div class="row" style="margin-top: 80px;">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="flex-wrap d-flex justify-content-between align-items-center mb-4">
+                                        <div class="text-black">
+                                            @if ($subTitle === 'Dashboard')
+                                                <h3>Hello, {{ $user->fullname }}
+                                                </h3>
+                                                <p>Selamat Datang Di Website Sistem Monitoring Project.</p>
+                                            @else
+                                                <h3>{{ $subTitle }}</h3>
+                                            @endif
+                                        </div>
+                                        <div class="text-black">
+                                            <span class="btn btn-link btn-outline-primary" style="cursor: auto; text-decoration: none;">
+                                                @if ($title === null)
+                                                    {{ $subTitle }}
+                                                @else
+                                                    {{ $title }} / {{ $subTitle }}
+                                                @endif
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="iq-header-img">
-                    <img src="{{ asset('template/html/assets/images/dashboard/top-header.png') }}" alt="header"
-                        class="theme-color-default-img img-fluid w-100 h-100 animated-scaleX">
-                    <img src="{{ asset('template/html/assets/images/dashboard/top-header1.png') }}" alt="header"
-                        class="theme-color-purple-img img-fluid w-100 h-100 animated-scaleX">
-                    <img src="{{ asset('template/html/assets/images/dashboard/top-header2.png') }}" alt="header"
-                        class="theme-color-blue-img img-fluid w-100 h-100 animated-scaleX">
-                    <img src="{{ asset('template/html/assets/images/dashboard/top-header3.png') }}" alt="header"
-                        class="theme-color-green-img img-fluid w-100 h-100 animated-scaleX">
-                    <img src="{{ asset('template/html/assets/images/dashboard/top-header4.png') }}" alt="header"
-                        class="theme-color-yellow-img img-fluid w-100 h-100 animated-scaleX">
-                    <img src="{{ asset('template/html/assets/images/dashboard/top-header5.png') }}" alt="header"
-                        class="theme-color-pink-img img-fluid w-100 h-100 animated-scaleX">
-                </div>
-            </div> <!-- Nav Header Component End -->
-            <!--Nav End-->
-        </div>
-        <div class="conatiner-fluid content-inner mt-n5 py-0">
+            </div>
 
             {{-- content --}}
             @yield('content')
@@ -176,13 +168,13 @@
         <footer class="footer">
             <div class="footer-body">
                 <ul class="left-panel list-inline mb-0 p-0">
-                    <li class="list-inline-item"><a href="#">Sistem Site</a></li>
+                    {{-- <li class="list-inline-item"><a href="#">Sistem Monitoring Project</a></li> --}}
                 </ul>
                 <div class="right-panel">
                     ©
                     <script>
                         document.write(new Date().getFullYear())
-                    </script> Designed Sistem Site
+                    </script> Designed Sistem Monitoring Project
                 </div>
             </div>
         </footer>

@@ -2,17 +2,17 @@
 
 @section('content')
 <section class="login-content">
-   <div class="row m-0 align-items-center vh-100" style="background-color: rgba(246, 248, 255, 0.964)">            
+   <div class="row m-0 align-items-center bg-white vh-100" style="background-color: rgba(246, 248, 255, 0.964)">            
       <div class="col-md-12">
          <div class="row justify-content-center">
-            <div class="col-md-4 shadow">
+            <div class="col-md-4 shadow-lg">
                <div class="card card-transparent shadow-none d-flex justify-content-center mb-0 auth-card">
                   <div class="card-body">
                      <a href="#" class="navbar-brand d-flex align-items-center mb-3">
                         <!--Logo start-->
                      </a>
                      <h2 class="mb-2 text-center">{{$title}}</h2>
-                     <p class="text-center">Silahkan login dengan akun Anda.</p>
+                     <p class="text-center">Silahkan login!</p>
                      <form action="/login" method="POST">
                      @csrf
                      <div class="row">
@@ -26,12 +26,12 @@
                                  </div>
                               </div>
                            @endif
-                           @if (session('fail'))
+                           @if (session('failed'))
                               <div class="col-lg-12">
                                  <div class="alert bg-danger text-white alert-dismissible">
                                        <span>
                                           <svg width="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M11.9852 21.606C11.9852 21.606 19.6572 19.283 19.6572 12.879C19.6572 6.474 19.9352 5.974 19.3192 5.358C18.7042 4.742 12.9912 2.75 11.9852 2.75C10.9792 2.75 5.26616 4.742 4.65016 5.358C4.03516 5.974 4.31316 6.474 4.31316 12.879C4.31316 19.283 11.9852 21.606 11.9852 21.606Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>                                    <path d="M13.864 13.8249L10.106 10.0669" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>                                    <path d="M10.106 13.8249L13.864 10.0669" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>                                </svg>                            
-                                          {{ session('fail') }}
+                                          {{ session('failed') }}
                                        </span>
                                  </div>
                               </div>

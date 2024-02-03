@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Http\Controllers\Controller;
 use App\Models\ModelUser;
 
@@ -24,22 +23,29 @@ class Dashboard extends Controller
         $role = Session()->get('role');
         $user = $this->ModelUser->findOne('id_user', Session()->get('id_user'));
 
-        if ($role === 'Administrator') {
-            $route = 'admin.dashboard';
+        if ($role === 'Klien') {
+            $route = 'dashboard.dashboardKlien';
             $data = [
                 'title'     => null,
                 'subTitle'  => 'Dashboard',
                 'user'      => $user,
             ];
-        } elseif ($role === 'Sales') {
-            $route = 'sales.dashboard';
+        } elseif ($role === 'Project Manager') {
+            $route = 'dashboard.dashboardProjectManager';
             $data = [
                 'title'     => null,
                 'subTitle'  => 'Dashboard',
                 'user'      => $user,
             ];
-        } elseif ($role === 'Admin Cabang') {
-            $route = 'adminCabang.dashboard';
+        } elseif ($role === 'CEO') {
+            $route = 'dashboard.dashboardCeo';
+            $data = [
+                'title'     => null,
+                'subTitle'  => 'Dashboard',
+                'user'      => $user,
+            ];
+        } elseif ($role === 'CTO') {
+            $route = 'dashboard.dashboardCto';
             $data = [
                 'title'     => null,
                 'subTitle'  => 'Dashboard',

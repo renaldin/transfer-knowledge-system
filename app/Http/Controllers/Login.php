@@ -55,10 +55,10 @@ class Login extends Controller
 
                 return redirect()->route('dashboard');
             } else {
-                return back()->with('fail', 'Login gagal! Password tidak sesuai.');
+                return back()->with('failed', 'Login gagal! Password tidak sesuai.');
             }
         } else {
-            return back()->with('fail', 'Login gagal! Username/Email belum terdaftar.');
+            return back()->with('failed', 'Login gagal! Username/Email belum terdaftar.');
         }
     }
 
@@ -86,7 +86,7 @@ class Login extends Controller
 
             $user = $this->ModelUser->findOne('email', $email);
             if (!$user) {
-                return back()->with('fail', 'Email tidak terdaftar.');
+                return back()->with('failed', 'Email tidak terdaftar.');
             }
             $id_user = $user->id_user;
             $urlReset = 'http://127.0.0.1:8000/reset-password/' . $id_user;
@@ -103,7 +103,7 @@ class Login extends Controller
                 Mail::to($user->email)->send(new kirimEmail($data_email));
                 return redirect()->route('login')->with('success', 'Kami sudah kirim pesan ke email Anda. Silahkan cek email Anda!');
             } else {
-                return back()->with('fail', 'Email tidak terdaftar.');
+                return back()->with('failed', 'Email tidak terdaftar.');
             }
         }
     }

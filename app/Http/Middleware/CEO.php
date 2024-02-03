@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class Administrator
+class CEO
 {
     /**
      * Handle an incoming request.
@@ -16,7 +16,7 @@ class Administrator
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Session()->get('role') === 'Administrator') {
+        if (Session()->get('role') === 'CEO') {
             return $next($request);
         } else {
             return redirect()->route('login');
