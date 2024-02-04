@@ -5,6 +5,7 @@ use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Login;
 use App\Http\Controllers\Klien;
 use Illuminate\Support\Facades\Route;
+// use App\Http\Controllers\NoteDataTable;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,6 +50,11 @@ Route::group(['middleware' => 'revalidate'], function () {
     Route::get('/edit-klien/{id}', [Klien::class, 'update'])->name('edit-klien');
     Route::post('/edit-klien/{id}', [Klien::class, 'update']);
     Route::get('/hapus-klien/{id}', [Klien::class, 'delete']);
+
+    // Route::get('/daftar-note', [NoteDataTable::class, 'index'])->name('daftar-note');
+    // Route::get('/daftar-note/json', [NoteDataTable::class, 'data'])->name('daftar-note-json');
+    // Route::get('/user/json', [\App\Http\Controllers\UserController::class, 'data'])->name('user.data');
+    // Route::get('/user', [\App\Http\Controllers\UserController::class, 'index'])->name('user.index');
     
     Route::group(['middleware' => 'klien'], function () {
         
