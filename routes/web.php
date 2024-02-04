@@ -2,22 +2,8 @@
 
 use App\Http\Controllers\User;
 use App\Http\Controllers\Dashboard;
-use App\Http\Controllers\DetailInvoice;
-use App\Http\Controllers\Invoice;
 use App\Http\Controllers\Login;
-use App\Http\Controllers\Product;
-use App\Http\Controllers\Sales;
-use App\Http\Controllers\SalesDetail;
-use App\Http\Controllers\Site;
-use App\Http\Controllers\SiteDetail;
-use App\Http\Controllers\Stock;
-use App\Http\Controllers\StockAll;
-use App\Http\Controllers\StockIn;
-use App\Http\Controllers\StockInAll;
-use App\Http\Controllers\StockOpname;
-use App\Http\Controllers\Store;
-use App\Http\Controllers\StoreAr;
-use App\Http\Controllers\TargetStore;
+use App\Http\Controllers\Klien;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -55,6 +41,14 @@ Route::group(['middleware' => 'revalidate'], function () {
     Route::get('/edit-pengguna/{id}', [User::class, 'update'])->name('edit-pengguna');
     Route::post('/edit-pengguna/{id}', [User::class, 'update']);
     Route::get('/hapus-pengguna/{id}', [User::class, 'delete']);
+
+    Route::get('/daftar-klien', [Klien::class, 'index'])->name('daftar-klien');
+    Route::get('/detail-klien/{id}', [Klien::class, 'detail'])->name('detail-klien');
+    Route::get('/tambah-klien', [Klien::class, 'new'])->name('tambah-klien');
+    Route::post('/tambah-klien', [Klien::class, 'new']);
+    Route::get('/edit-klien/{id}', [Klien::class, 'update'])->name('edit-klien');
+    Route::post('/edit-klien/{id}', [Klien::class, 'update']);
+    Route::get('/hapus-klien/{id}', [Klien::class, 'delete']);
     
     Route::group(['middleware' => 'klien'], function () {
         

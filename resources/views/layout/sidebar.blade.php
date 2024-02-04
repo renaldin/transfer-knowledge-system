@@ -55,6 +55,14 @@
                             <span class="item-name">Pengguna</span>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link @if ($title === 'Data Klien') active @endif" aria-current="page" href="/daftar-klien">
+                            <i class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon-32" width="20" viewBox="0 0 24 24" fill="none">                                    <circle cx="12" cy="12" r="7.5" stroke="currentColor"></circle>                                                                    </svg>                                                          </svg>  
+                            </i>
+                            <span class="item-name">Klien</span>
+                        </a>
+                    </li>
                 @elseif ($user->role === 'Klien')
                     <li class="nav-item static-item">
                         <a class="nav-link static-item disabled" href="#" tabindex="-1">
