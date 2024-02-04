@@ -49,6 +49,8 @@
 }
 
    </style>
+   {{-- <link rel="stylesheet" href="https://cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css"> --}}
+    
 </head>
 
 <body class="  ">
@@ -245,6 +247,26 @@
 
         <script src="{{ asset('js/script.js') }}"></script>
 
+        {{-- <script src="https://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+        <script>
+            $(function() {
+                $('#users-table').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    bDestroy: true,
+                    ajax: '{!! route('daftar-note-json') !!}', // memanggil route yang menampilkan data json
+                    columns: [{ // mengambil & menampilkan kolom sesuai tabel database
+                            data: 'id',
+                            name: 'id'
+                        },
+                        {
+                            data: 'name',
+                            name: 'name'
+                        }
+                    ]
+                });
+            });
+        </script> --}}
 </body>
 
 </html>
