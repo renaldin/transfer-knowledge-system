@@ -17,6 +17,14 @@ class ModelUser extends Model
         return DB::table('user')->orderBy($order, $by)->get();
     }
 
+    public function findAllWhere($order, $by, $field, $value)
+    {
+        return DB::table('user')
+            ->where($field, $value)
+            ->orderBy($order, $by)
+            ->get();
+    }
+
     public function findOne($where, $value)
     {
         return DB::table('user')->where($where, $value)->first();

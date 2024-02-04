@@ -111,24 +111,4 @@
     </div>
 </div>
 
-{{-- @foreach ($daftarUser as $item)
-<div class="modal fade" id="hapus{{$item->id_user}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Hapus</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>Apakah Anda yakin akan hapus pengguna bernama <strong>{{$item->fullname}}</strong>?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Keluar</button>
-                <a href="/hapus-pengguna/{{$item->id_user}}" type="button" class="btn btn-danger">Hapus</a>
-            </div>
-        </div>
-    </div>
-</div>
-@endforeach --}}
-
 @endsection
