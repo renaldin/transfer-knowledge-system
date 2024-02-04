@@ -24,8 +24,8 @@ class User extends Controller
         }
 
         $data = [
-            'title'             => 'Data User',
-            'subTitle'          => 'Daftar User',
+            'title'             => 'Data Pengguna',
+            'subTitle'          => 'Daftar Pengguna',
             'daftarUser'        => $this->ModelUser->findAll('id_user', 'DESC'),
             'user'              => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
         ];
@@ -40,38 +40,14 @@ class User extends Controller
         }
 
         $data = [
-            'title'             => 'Data User',
-            'subTitle'          => 'Detail User',
+            'title'             => 'Data Pengguna',
+            'subTitle'          => 'Detail Pengguna',
             'detail'            => $this->ModelUser->findOne('id_user', $id_user),
-            'daftarSite'        => $this->ModelSiteDetail->findAll('id_site_detail', 'DESC'),
-            'site'              => $this->ModelSite->findAll('id_site', 'DESC'),
-            'siteDetail'        => $this->ModelSiteDetail->siteUser(Session()->get('id_user')),
             'user'              => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
+            'form'              => 'Detail'
         ];
 
-        return view('user.detail', $data);
-    }
-
-    public function newSite($id_user)
-    {
-        if (!Session()->get('role')) {
-            return redirect()->route('login');
-        }
-
-        $detailSite = $this->ModelSiteDetail->check(Request()->id_site, $id_user);
-
-        if(!$detailSite) {
-            $data = [
-                'id_site'   => Request()->id_site,
-                'id_user'   => $id_user
-            ];
-        } else {
-            return back()->with('fail', 'Sales sudah ada dalam site!');
-        }
-
-        $this->ModelSiteDetail->create($data);
-        return back()->with('success', 'Data berhasil ditambahkan!');
-
+        return view('user.form', $data);
     }
 
     public function new()
@@ -82,15 +58,14 @@ class User extends Controller
 
         if(!Request()->fullname) {
             $data = [
-                'title'     => 'Data User',
-                'subTitle'  => 'Tambah User',
+                'title'     => 'Data Pengguna',
+                'subTitle'  => 'Tambah Pengguna',
                 'user'      => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
                 'form'      => 'Tambah',
             ];
             return view('user.form', $data);
         } else {
             Request()->validate([
-                'user_code'      => 'required',
                 'fullname'      => 'required',
                 'username'      => 'required',
                 'email'         => 'required|unique:user,email',
@@ -100,7 +75,6 @@ class User extends Controller
                 'role'          => 'required',
                 'photo'         => 'required|mimes:jpeg,png,jpg|max:2048'
             ], [
-                'user_code.required'     => 'Kode harus diisi!',
                 'fullname.required'     => 'Nama lengkap harus diisi!',
                 'username.required'     => 'Username harus diisi!',
                 'email.required'        => 'Email harus diisi!',
@@ -120,7 +94,6 @@ class User extends Controller
             $file->move(public_path($this->public_path), $fileName);
 
             $data = [
-                'user_code'      => Request()->user_code,
                 'fullname'      => Request()->fullname,
                 'username'      => Request()->username,
                 'email'         => Request()->email,
@@ -132,9 +105,8 @@ class User extends Controller
             ];
     
             $this->ModelUser->create($data);
-            return redirect()->route('daftar-user')->with('success', 'Data berhasil ditambahkan!');
+            return redirect()->route('daftar-pengguna')->with('success', 'Data berhasil ditambahkan!');
         }
-
     }
 
     public function update($id_user)
@@ -145,8 +117,8 @@ class User extends Controller
 
         if(!Request()->fullname) {
             $data = [
-                'title'         => 'Data User',
-                'subTitle'      => 'Edit User',
+                'title'         => 'Data Pengguna',
+                'subTitle'      => 'Edit Pengguna',
                 'form'          => 'Edit',
                 'user'          => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
                 'detail'        => $this->ModelUser->findOne('id_user', $id_user)
@@ -154,7 +126,6 @@ class User extends Controller
             return view('user.form', $data);
         } else {
             Request()->validate([
-                'user_code'      => 'required',
                 'fullname'      => 'required',
                 'username'      => 'required',
                 'email'         => 'required',
@@ -163,7 +134,6 @@ class User extends Controller
                 'role'          => 'required',
                 'photo'         => 'mimes:jpeg,png,jpg|max:2048'
             ], [
-                'user_code.required'     => 'Kode harus diisi!',
                 'fullname.required'     => 'Nama lengkap harus diisi!',
                 'username.required'     => 'Username harus diisi!',
                 'email.required'        => 'Email harus diisi!',
@@ -175,79 +145,35 @@ class User extends Controller
             ]);
 
             $user = $this->ModelUser->findOne('id_user', $id_user);
-            
+
+            $data = [
+                'id_user'       => $id_user,
+                'fullname'      => Request()->fullname,
+                'username'      => Request()->username,
+                'email'         => Request()->email,
+                'user_address'  => Request()->user_address,
+                'mobile_phone'  => Request()->mobile_phone,
+                'role'          => Request()->role
+            ];
+
             if (Request()->password) {
-                if (Request()->photo <> "") {
-                    if ($user->photo <> "") {
-                        unlink(public_path($this->public_path) . '/' . $user->photo);
-                    }
-    
-                    $file = Request()->photo;
-                    $fileName = date('mdYHis') . Request()->fullname . '.' . $file->extension();
-                    $file->move(public_path($this->public_path), $fileName);
-    
-                    $data = [
-                        'id_user'       => $id_user,
-                        'user_code'      => Request()->user_code,
-                        'fullname'      => Request()->fullname,
-                        'username'      => Request()->username,
-                        'email'         => Request()->email,
-                        'password'      => Hash::make(Request()->password),
-                        'user_address'  => Request()->user_address,
-                        'mobile_phone'  => Request()->mobile_phone,
-                        'role'          => Request()->role,
-                        'photo'         => $fileName
-                    ];
-                } else {
-                    $data = [
-                        'id_user'       => $id_user,
-                        'user_code'      => Request()->user_code,
-                        'fullname'      => Request()->fullname,
-                        'username'      => Request()->username,
-                        'email'         => Request()->email,
-                        'password'      => Hash::make(Request()->password),
-                        'user_address'  => Request()->user_address,
-                        'mobile_phone'  => Request()->mobile_phone,
-                        'role'          => Request()->role
-                    ];
+                $data['password'] = Hash::make(Request()->password);
+            }
+
+            if (Request()->photo <> "") {
+                if ($user->photo <> "") {
+                    unlink(public_path($this->public_path) . '/' . $user->photo);
                 }
-            } else {
-                if (Request()->photo <> "") {
-                    if ($user->photo <> "") {
-                        unlink(public_path($this->public_path) . '/' . $user->photo);
-                    }
-    
-                    $file = Request()->photo;
-                    $fileName = date('mdYHis') . Request()->fullname . '.' . $file->extension();
-                    $file->move(public_path($this->public_path), $fileName);
-    
-                    $data = [
-                        'id_user'       => $id_user,
-                        'user_code'      => Request()->user_code,
-                        'fullname'      => Request()->fullname,
-                        'username'      => Request()->username,
-                        'email'         => Request()->email,
-                        'user_address'  => Request()->user_address,
-                        'mobile_phone'  => Request()->mobile_phone,
-                        'role'          => Request()->role,
-                        'photo'         => $fileName
-                    ];
-                } else {
-                    $data = [
-                        'id_user'       => $id_user,
-                        'user_code'      => Request()->user_code,
-                        'fullname'      => Request()->fullname,
-                        'username'      => Request()->username,
-                        'email'         => Request()->email,
-                        'user_address'  => Request()->user_address,
-                        'mobile_phone'  => Request()->mobile_phone,
-                        'role'          => Request()->role,
-                    ];
-                }
+
+                $file = Request()->photo;
+                $fileName = date('mdYHis') . Request()->fullname . '.' . $file->extension();
+                $file->move(public_path($this->public_path), $fileName);
+
+                $data['photo'] = $fileName;
             }
             
             $this->ModelUser->edit($data);
-            return redirect()->route('daftar-user')->with('success', 'Data berhasil diedit!');
+            return redirect()->route('daftar-pengguna')->with('success', 'Data berhasil diedit!');
         }
     }
 
@@ -368,7 +294,7 @@ class User extends Controller
                 $this->ModelUser->edit($data);
                 return back()->with('success', 'Password berhasil diubah !');
             } else {
-                return back()->with('fail', 'Password lama tidak sesuai.');
+                return back()->with('failed', 'Password lama tidak sesuai.');
             }
         }
 
@@ -397,7 +323,7 @@ class User extends Controller
             $this->ModelUser->edit($data);
             return back()->with('success', 'Password berhasil diubah !');
         } else {
-            return back()->with('fail', 'Password Lama tidak sesuai.');
+            return back()->with('failed', 'Password Lama tidak sesuai.');
         }
     }
 }

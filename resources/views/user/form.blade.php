@@ -11,18 +11,9 @@
             </div>
             <div class="card-body">
                 <div class="new-user-info">
-                    <form action="@if($form === 'Tambah') /tambah-user @elseif($form === 'Edit') /edit-user/{{$detail->id_user}} @endif" method="POST" enctype="multipart/form-data">
+                    <form action="@if($form === 'Tambah') /tambah-pengguna @elseif($form === 'Edit') /edit-pengguna/{{$detail->id_user}} @endif" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
-                        <div class="form-group col-md-6">
-                            <label class="form-label" for="user_code">Kode User</label>
-                            <input type="text" class="form-control @error('user_code') is-invalid @enderror" id="user_code" name="user_code" value="@if($form === 'Tambah'){{ old('user_code') }}@elseif($form === 'Edit' || $form === 'Detail'){{$detail->user_code}}@endif" @if($form === 'Detail') disabled @endif autofocus placeholder="Masukkan Kode" required>
-                            @error('user_code')
-                                <div class="invalid-feedback">
-                                {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
                         <div class="form-group col-md-6">
                             <label class="form-label" for="fullname">Nama Lengkap</label>
                             <input type="text" class="form-control @error('fullname') is-invalid @enderror" id="fullname" name="fullname" value="@if($form === 'Tambah'){{ old('fullname') }}@elseif($form === 'Edit' || $form === 'Detail'){{$detail->fullname}}@endif" @if($form === 'Detail') disabled @endif placeholder="Masukkan Nama Lengkap" required>
@@ -82,52 +73,42 @@
                                 </div>
                             @enderror
                         </div>
-                        @if ($user->role === 'Administrator')
-                            <div class="form-group col-md-6">
-                                <label class="form-label" for="role">Role</label>
-                                <select name="role" id="role" class="selectpicker form-control @error('role') is-invalid @enderror" data-live-search="true" @if($form === 'Detail') disabled @endif required>
-                                    <option value="" selected disabled>-- Pilih --</option>
-                                    <option value="Administrator" @if($form === "Tambah" && old("role") === "Administrator") selected @elseif($form === "Edit" && $detail->role === "Administrator") selected @endif)>Administrator</option>
-                                    <option value="Admin Cabang" @if($form === "Tambah" && old("role") === "Admin Cabang") selected @elseif($form === "Edit" && $detail->role === "Admin Cabang") selected @endif)>Admin Cabang</option>
-                                    <option value="Sales" @if($form === "Tambah" && old("role") === "Sales") selected @elseif($form === "Edit" && $detail->role === "Sales") selected @endif>Sales</option>
-                                </select>
-                                @error('role')
-                                    <div class="invalid-feedback">
-                                    {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-                        @else
-                            <div class="form-group col-md-6">
-                                <label class="form-label" for="role">Role</label>
-                                <select name="role" id="role" class="selectpicker form-control @error('role') is-invalid @enderror" data-live-search="true" @if($form === 'Detail') disabled @endif required>
-                                    <option value="" selected disabled>-- Pilih --</option>
-                                    <option value="Sales" @if($form === "Tambah" && old("role") === "Sales") selected @elseif($form === "Edit" && $detail->role === "Sales") selected @endif>Sales</option>
-                                </select>
-                                @error('role')
-                                    <div class="invalid-feedback">
-                                    {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-                        @endif
                         <div class="form-group col-md-6">
-                            <label class="form-label" for="photo">Foto</label>
-                            <input type="file" class="form-control @error('photo') is-invalid @enderror" id="preview_image" name="photo" @if($form === 'Detail') disabled @endif>
-                            @error('photo')
+                            <label class="form-label" for="role">Role</label>
+                            <select name="role" id="role" class="selectpicker form-control @error('role') is-invalid @enderror" data-live-search="true" @if($form === 'Detail') disabled @endif required>
+                                <option value="" selected disabled>-- Pilih --</option>
+                                <option value="Klien" @if($form === "Tambah" && old("role") === "Klien") selected @elseif($form === "Edit" && $detail->role === "Klien") selected @endif>Klien</option>
+                                <option value="Project Manager" @if($form === "Tambah" && old("role") === "Project Manager") selected @elseif($form === "Edit" && $detail->role === "Project Manager") selected @endif>Project Manager</option>
+                                <option value="CEO" @if($form === "Tambah" && old("role") === "CEO") selected @elseif($form === "Edit" && $detail->role === "CEO") selected @endif>CEO</option>
+                                <option value="CTO" @if($form === "Tambah" && old("role") === "CTO") selected @elseif($form === "Edit" && $detail->role === "CTO") selected @endif>CTO</option>
+                            </select>
+                            @error('role')
                                 <div class="invalid-feedback">
                                 {{ $message }}
                                 </div>
                             @enderror
                         </div>
-                        <div class="form-group col-md-6">
-                            <label class="form-label" for="photo"></label>
-                            <div class="profile-img-edit position-relative">
-                                <img src="@if($form === 'Tambah') {{ asset('photo/default1.jpg') }} @elseif($form === 'Edit' || $form === 'Detail') {{ asset('photo/'.$detail->photo) }} @endif" alt="profile-pic" id="load_image" class="theme-color-default-img profile-pic rounded avatar-100">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label class="form-label" for="photo">Foto</label>
+                                    <input type="file" class="form-control @error('photo') is-invalid @enderror" id="preview_image" name="photo" @if($form === 'Detail') disabled @endif>
+                                    @error('photo')
+                                        <div class="invalid-feedback">
+                                        {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label class="form-label" for="photo"></label>
+                                    <div class="profile-img-edit position-relative">
+                                        <img src="@if($form === 'Tambah') {{ asset('photo/default.jpg') }} @elseif($form === 'Edit' || $form === 'Detail') {{ asset('photo/'.$detail->photo) }} @endif" alt="profile-pic" id="load_image" class="theme-color-default-img profile-pic rounded avatar-100">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    @include('components.tombolForm', ['linkKembali' => '/daftar-user'])
+                    @include('components.tombolForm', ['linkKembali' => '/daftar-pengguna'])
                     </form>
                 </div>
             </div>
