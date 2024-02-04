@@ -31,8 +31,8 @@ Route::group(['middleware' => 'revalidate'], function () {
 
     Route::get('/profil', [User::class, 'profil'])->name('profil');
     Route::post('/edit-profil/{id}', [User::class, 'profil']);
-    Route::get('/ubah-password', [User::class, 'ubahPassword'])->name('ubah-password');
-    Route::post('/ubah-password/{id}', [User::class, 'ubahPassword']);
+    Route::get('/ubah-password', [User::class, 'changePassword'])->name('ubah-password');
+    Route::post('/ubah-password/{id}', [User::class, 'changePassword']);
     
     Route::get('/daftar-pengguna', [User::class, 'index'])->name('daftar-pengguna');
     Route::get('/detail-pengguna/{id}', [User::class, 'detail'])->name('detail-pengguna');
