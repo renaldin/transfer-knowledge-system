@@ -48,12 +48,13 @@ Route::group(['middleware' => 'revalidate'], function () {
     Route::get('/ubah-password', [User::class, 'ubahPassword'])->name('ubah-password');
     Route::post('/ubah-password/{id}', [User::class, 'ubahPassword']);
     
-    Route::get('/daftar-user', [User::class, 'index'])->name('daftar-user');
-    Route::get('/tambah-user', [User::class, 'new'])->name('tambah-user');
-    Route::post('/tambah-user', [User::class, 'new']);
-    Route::get('/edit-user/{id}', [User::class, 'update'])->name('edit-user');
-    Route::post('/edit-user/{id}', [User::class, 'update']);
-    Route::get('/hapus-user/{id}', [User::class, 'delete']);
+    Route::get('/daftar-pengguna', [User::class, 'index'])->name('daftar-pengguna');
+    Route::get('/detail-pengguna/{id}', [User::class, 'detail'])->name('detail-pengguna');
+    Route::get('/tambah-pengguna', [User::class, 'new'])->name('tambah-pengguna');
+    Route::post('/tambah-pengguna', [User::class, 'new']);
+    Route::get('/edit-pengguna/{id}', [User::class, 'update'])->name('edit-pengguna');
+    Route::post('/edit-pengguna/{id}', [User::class, 'update']);
+    Route::get('/hapus-pengguna/{id}', [User::class, 'delete']);
     
     Route::group(['middleware' => 'klien'], function () {
         

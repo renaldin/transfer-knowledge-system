@@ -32,7 +32,7 @@
                     <a class="nav-link @if ($subTitle === 'Dashboard') active @endif" aria-current="page"
                     @if ($subTitle === 'Dashboard') @endif href="/dashboard">
                         <i class="icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon-32" width="20" viewBox="0 0 24 24" fill="none">                                    <circle cx="12" cy="12" r="7.5" fill="currentColor" fill-opacity="0.4" stroke="currentColor"></circle>                                </svg>  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon-32" width="20" viewBox="0 0 24 24" fill="none">                                    <circle cx="12" cy="12" r="7.5" stroke="currentColor"></circle>                                                                    </svg>                                                          </svg>  
                         </i>
                         <span class="item-name">Dashboard</span>
                     </a>
@@ -48,11 +48,11 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @if ($title === 'Data User') active @endif" aria-current="page" href="/daftar-user">
+                        <a class="nav-link @if ($title === 'Data Pengguna') active @endif" aria-current="page" href="/daftar-pengguna">
                             <i class="icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon-32" width="20" viewBox="0 0 24 24" fill="none">                                    <circle cx="12" cy="12" r="7.5" fill="currentColor" fill-opacity="0.4" stroke="currentColor"></circle>                                </svg>  
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon-32" width="20" viewBox="0 0 24 24" fill="none">                                    <circle cx="12" cy="12" r="7.5" stroke="currentColor"></circle>                                                                    </svg>                                                          </svg>  
                             </i>
-                            <span class="item-name">Data User</span>
+                            <span class="item-name">Pengguna</span>
                         </a>
                     </li>
                 @elseif ($user->role === 'Klien')
@@ -65,7 +65,7 @@
                     <li class="nav-item">
                         <a class="nav-link @if ($title === 'Data Store') active @endif" aria-current="page" href="/daftar-store">
                             <i class="icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon-32" width="20" viewBox="0 0 24 24" fill="none">                                    <circle cx="12" cy="12" r="7.5" fill="currentColor" fill-opacity="0.4" stroke="currentColor"></circle>                                </svg>  
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon-32" width="20" viewBox="0 0 24 24" fill="none">                                    <circle cx="12" cy="12" r="7.5" stroke="currentColor"></circle>                                                                    </svg>                               </svg>  
                             </i>
                             <span class="item-name">Data Store</span>
                         </a>
@@ -78,11 +78,11 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @if ($title === 'Data User') active @endif" aria-current="page" href="/daftar-user">
+                        <a class="nav-link @if ($title === 'Data Pengguna') active @endif" aria-current="page" href="/daftar-user">
                             <i class="icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon-32" width="20" viewBox="0 0 24 24" fill="none">                                    <circle cx="12" cy="12" r="7.5" fill="currentColor" fill-opacity="0.4" stroke="currentColor"></circle>                                </svg>  
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon-32" width="20" viewBox="0 0 24 24" fill="none">                                    <circle cx="12" cy="12" r="7.5" stroke="currentColor"></circle>                                                                    </svg>                             </svg>  
                             </i>
-                            <span class="item-name">Data User</span>
+                            <span class="item-name">Pengguna</span>
                         </a>
                     </li>
                 @elseif ($user->role === 'CEO')
@@ -93,11 +93,11 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @if ($title === 'Data User') active @endif" aria-current="page" href="/daftar-user">
+                        <a class="nav-link @if ($title === 'Data Pengguna') active @endif" aria-current="page" href="/daftar-user">
                             <i class="icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon-32" width="20" viewBox="0 0 24 24" fill="none">                                    <circle cx="12" cy="12" r="7.5" fill="currentColor" fill-opacity="0.4" stroke="currentColor"></circle>                                </svg>  
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon-32" width="20" viewBox="0 0 24 24" fill="none">                                    <circle cx="12" cy="12" r="7.5" stroke="currentColor"></circle>                                                                    </svg>                              </svg>  
                             </i>
-                            <span class="item-name">Data User</span>
+                            <span class="item-name">Pengguna</span>
                         </a>
                     </li>
                 @endif
