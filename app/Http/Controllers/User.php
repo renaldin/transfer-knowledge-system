@@ -226,6 +226,15 @@ class User extends Controller
 
             $user = $this->ModelUser->findOne('id_user', $id_user);
 
+            $data = [
+                'id_user'       => $id_user,
+                'fullname'      => Request()->fullname,
+                'username'      => Request()->username,
+                'email'         => Request()->email,
+                'user_address'  => Request()->user_address,
+                'mobile_phone'  => Request()->mobile_phone
+            ];
+
             if (Request()->photo <> "") {
                 if ($user->photo <> "") {
                     unlink(public_path($this->public_path) . '/' . $user->photo);
@@ -234,32 +243,16 @@ class User extends Controller
                 $file = Request()->photo;
                 $fileName = date('mdYHis') . Request()->fullname . '.' . $file->extension();
                 $file->move(public_path($this->public_path), $fileName);
-
-                $data = [
-                    'id_user'       => $id_user,
-                    'fullname'      => Request()->fullname,
-                    'username'      => Request()->username,
-                    'email'         => Request()->email,
-                    'user_address'  => Request()->user_address,
-                    'mobile_phone'  => Request()->mobile_phone,
-                    'photo'         => $fileName
-                ];
-            } else {
-                $data = [
-                    'id_user'       => $id_user,
-                    'fullname'      => Request()->fullname,
-                    'username'      => Request()->username,
-                    'email'         => Request()->email,
-                    'user_address'  => Request()->user_address,
-                    'mobile_phone'  => Request()->mobile_phone,
-                ];
+            
+                $data['photo'] = $fileName;
             }
+
             $this->ModelUser->edit($data);
             return back()->with('success', 'Profil berhasil diedit!');
         }
     }
 
-    public function ubahPassword($id_user = null)
+    public function changePassword($id_user = null)
     {
         if (!Session()->get('role')) {
             return redirect()->route('login');
@@ -288,7 +281,7 @@ class User extends Controller
             if (Hash::check(Request()->password_lama, $user->password)) {
                 $data = [
                     'id_user'         => $id_user,
-                    'password'         => Hash::make(Request()->password_baru)
+                    'password'        => Hash::make(Request()->password_baru)
                 ];
     
                 $this->ModelUser->edit($data);
@@ -300,30 +293,30 @@ class User extends Controller
 
     }
 
-    public function prosesUbahPassword($id_user)
-    {
-        Request()->validate([
-            'password_lama'     => 'required|min:6',
-            'password_baru'     => 'required|min:6',
-        ], [
-            'password_lama.required'    => 'Password Lama harus diisi!',
-            'password_lama.min'         => 'Password Lama minikal 6 karakter!',
-            'password_baru.required'    => 'Password Baru harus diisi!',
-            'password_baru.min'         => 'Password Lama minikal 6 karakter!',
-        ]);
+    // public function changePasswordProcess($id_user)
+    // {
+    //     Request()->validate([
+    //         'password_lama'     => 'required|min:6',
+    //         'password_baru'     => 'required|min:6',
+    //     ], [
+    //         'password_lama.required'    => 'Password Lama harus diisi!',
+    //         'password_lama.min'         => 'Password Lama minikal 6 karakter!',
+    //         'password_baru.required'    => 'Password Baru harus diisi!',
+    //         'password_baru.min'         => 'Password Lama minikal 6 karakter!',
+    //     ]);
 
-        $user = $this->ModelUser->detail($id_user);
+    //     $user = $this->ModelUser->detail($id_user);
 
-        if (Hash::check(Request()->password_lama, $user->password)) {
-            $data = [
-                'id_user'         => $id_user,
-                'password'         => Hash::make(Request()->password_baru)
-            ];
+    //     if (Hash::check(Request()->password_lama, $user->password)) {
+    //         $data = [
+    //             'id_user'         => $id_user,
+    //             'password'         => Hash::make(Request()->password_baru)
+    //         ];
 
-            $this->ModelUser->edit($data);
-            return back()->with('success', 'Password berhasil diubah !');
-        } else {
-            return back()->with('failed', 'Password Lama tidak sesuai.');
-        }
-    }
+    //         $this->ModelUser->edit($data);
+    //         return back()->with('success', 'Password berhasil diubah !');
+    //     } else {
+    //         return back()->with('failed', 'Password Lama tidak sesuai.');
+    //     }
+    // }
 }
