@@ -7,20 +7,24 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
-class ModelUser extends Model
+class ModelProject extends Model
 {
     use HasFactory;
     use \Illuminate\Database\Eloquent\Concerns\HasTimestamps;
-    protected $table = 'user';
+    protected $table = 'project';
 
     public function findAll($order, $by)
     {
-        return DB::table($this->table)->orderBy($order, $by)->get();
+        return DB::table($this->table)
+            ->join('user', 'user.id_user', '=', 'project.id_user')
+            ->orderBy($order, $by)
+            ->get();
     }
 
     public function findAllWhere($order, $by, $field, $value)
     {
         return DB::table($this->table)
+            ->join('user', 'user.id_user', '=', 'project.id_user')
             ->where($field, $value)
             ->orderBy($order, $by)
             ->get();
@@ -28,7 +32,10 @@ class ModelUser extends Model
 
     public function findOne($where, $value)
     {
-        return DB::table($this->table)->where($where, $value)->first();
+        return DB::table($this->table)
+            ->join('user', 'user.id_user', '=', 'project.id_user')
+            ->where($where, $value)
+            ->first();
     }
 
     public function create($data)
