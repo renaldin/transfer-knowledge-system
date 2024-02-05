@@ -438,3 +438,39 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 // ================== END MODAL DELETE
+
+// ================== FORM PAGE
+document.addEventListener('DOMContentLoaded', function() {
+    var projectForm = document.getElementById('projectForm');
+
+    if(projectForm) {
+        let dp = document.getElementById('dp')
+        let dpValue = removeFormatting(dp.value);
+        dp.value = formatRupiah(dpValue);
+        dp.addEventListener('keyup', function (e) {
+            let dpValue = removeFormatting(dp.value);
+            dp.value = formatRupiah(dpValue);
+        });
+    }
+
+    function formatRupiah(angka, prefix) {
+        let number_string = angka.replace(/[^,\d]/g, '').toString(),
+        split = number_string.split(','),
+        sisa = split[0].length % 3,
+        rupiah = split[0].substr(0, sisa),
+        ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+        if (ribuan) {
+            separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+
+        rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah;
+        return prefix === undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+    }
+
+    function removeFormatting(value) {
+        return value.replace(/[^\d]/g, '');
+    }
+});
+// ================== END FORM PAGE

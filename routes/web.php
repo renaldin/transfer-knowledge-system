@@ -4,6 +4,7 @@ use App\Http\Controllers\User;
 use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Login;
 use App\Http\Controllers\Klien;
+use App\Http\Controllers\Project;
 use Illuminate\Support\Facades\Route;
 // use App\Http\Controllers\NoteDataTable;
 
@@ -50,6 +51,14 @@ Route::group(['middleware' => 'revalidate'], function () {
     Route::get('/edit-klien/{id}', [Klien::class, 'update'])->name('edit-klien');
     Route::post('/edit-klien/{id}', [Klien::class, 'update']);
     Route::get('/hapus-klien/{id}', [Klien::class, 'delete']);
+
+    Route::get('/daftar-proyek', [Project::class, 'index'])->name('daftar-proyek');
+    Route::get('/detail-proyek/{id}', [Project::class, 'detail'])->name('detail-proyek');
+    Route::get('/tambah-proyek', [Project::class, 'new'])->name('tambah-proyek');
+    Route::post('/tambah-proyek', [Project::class, 'new']);
+    Route::get('/edit-proyek/{id}', [Project::class, 'update'])->name('edit-proyek');
+    Route::post('/edit-proyek/{id}', [Project::class, 'update']);
+    Route::get('/hapus-proyek/{id}', [Project::class, 'delete']);
 
     // Route::get('/daftar-note', [NoteDataTable::class, 'index'])->name('daftar-note');
     // Route::get('/daftar-note/json', [NoteDataTable::class, 'data'])->name('daftar-note-json');
