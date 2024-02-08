@@ -102,11 +102,35 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @if ($title === 'Data Pengguna') active @endif" aria-current="page" href="/daftar-user">
+                        <a class="nav-link @if ($title === 'Data Pengguna') active @endif" aria-current="page" href="/daftar-pengguna">
                             <i class="icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon-32" width="20" viewBox="0 0 24 24" fill="none">                                    <circle cx="12" cy="12" r="7.5" stroke="currentColor"></circle>                                                                    </svg>                             </svg>  
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon-32" width="20" viewBox="0 0 24 24" fill="none">                                    <circle cx="12" cy="12" r="7.5" stroke="currentColor"></circle>                                                                    </svg>                                                          </svg>  
                             </i>
                             <span class="item-name">Pengguna</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @if ($title === 'Data Klien') active @endif" aria-current="page" href="/daftar-klien">
+                            <i class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon-32" width="20" viewBox="0 0 24 24" fill="none">                                    <circle cx="12" cy="12" r="7.5" stroke="currentColor"></circle>                                                                    </svg>                                                          </svg>  
+                            </i>
+                            <span class="item-name">Klien</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @if ($title === 'Data Proyek') active @endif" aria-current="page" href="/daftar-proyek">
+                            <i class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon-32" width="20" viewBox="0 0 24 24" fill="none">                                    <circle cx="12" cy="12" r="7.5" stroke="currentColor"></circle>                                                                    </svg>                                                          </svg>  
+                            </i>
+                            <span class="item-name">Proyek</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @if ($title === 'Data Catatan') active @endif" aria-current="page" href="/daftar-catatan">
+                            <i class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon-32" width="20" viewBox="0 0 24 24" fill="none">                                    <circle cx="12" cy="12" r="7.5" stroke="currentColor"></circle>                                                                    </svg>                                                          </svg>  
+                            </i>
+                            <span class="item-name">Catatan</span>
                         </a>
                     </li>
                 @elseif ($user->role === 'CEO')
