@@ -1,161 +1,199 @@
 @extends('layout.main')
 
 @section('content')
-<div class="row">
-    <div class="col-xl-6 col-lg-6">
+<section class="section profile">
+    <div class="row">
+        <div class="col-xl-4">
+
         <div class="card">
-            <div class="card-body">
-               <div class="d-flex flex-wrap align-items-center justify-content-between">
-                  <div class="d-flex flex-wrap align-items-center">
-                     <div class="profile-img position-relative me-3 mb-3 mb-lg-0 profile-logo profile-logo1">
-                        <img src="@if($user->photo == null){{ asset('photo/default1.jpg') }}@else{{ asset('photo/'.$user->photo) }}@endif" alt="User-Profile" class="theme-color-default-img img-fluid rounded-pill avatar-100">
-                     </div>
-                     <div class="d-flex flex-wrap align-items-center mb-3 mb-sm-0">
-                        <h4 class="me-2 h4">{{$user->fullname}}</h4>
-                        <span> - {{$user->role}}</span>
-                     </div>
-                  </div>
-               </div>
+            <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                <img src="{{ $user->foto ? asset('foto/'.$user->foto) : asset('foto/default.jpg') }}" alt="Profile" class="rounded-circle">
+                <h2>{{$user->nama}}</h2>
+                <h3>{{$user->role}}</h3>
             </div>
         </div>
-         <div class="card">
-            <div class="card-header">
-               <div class="header-title">
-                  <h4 class="card-title">Tentang Anda</h4>
-               </div>
-            </div>
-            <div class="card-body">
-               <div class="user-bio">
-                <p>Jika ingin merubah data profil Anda, silahkan ubah di form edit profil.</p>
-               </div>
-               <div class="mt-2">
-                <h6 class="mb-1">Nama Lengkap:</h6>
-                <p>{{$user->fullname}}</p>
-               </div>
-               <div class="mt-2">
-                <h6 class="mb-1">Alamat:</h6>
-                <p>{{$user->user_address}}</p>
-               </div>
-               <div class="mt-2">
-                <h6 class="mb-1">Nomor Telepon:</h6>
-                <p>{{$user->mobile_phone}}</p>
-               </div>
-               <div class="mt-2">
-                <h6 class="mb-1">Email</h6>
-                <p>{{$user->email}}</p>
-               </div>
-               <div class="mt-2">
-                <h6 class="mb-1">Username</h6>
-                <p>{{$user->username}}</p>
-               </div>
-               <div class="mt-2">
-                <h6 class="mb-1">Role</h6>
-                <p>{{$user->role}}</p>
-               </div>
-            </div>
-         </div>
-    </div>
-    <div class="col-xl-6 col-lg-6">
+
+        </div>
+
+        <div class="col-xl-8">
+
         <div class="card">
-            <div class="card-header d-flex justify-content-between">
-                <div class="header-title">
-                    <h4 class="card-title">{{$subTitle}}</h4>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="new-user-info">
-                    @if (session('success'))
-                        <div class="col-lg-12">
-                            <div class="alert bg-primary text-white alert-dismissible">
-                                <span>
-                                    <svg width="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.9846 21.606C11.9846 21.606 19.6566 19.283 19.6566 12.879C19.6566 6.474 19.9346 5.974 19.3196 5.358C18.7036 4.742 12.9906 2.75 11.9846 2.75C10.9786 2.75 5.26557 4.742 4.65057 5.358C4.03457 5.974 4.31257 6.474 4.31257 12.879C4.31257 19.283 11.9846 21.606 11.9846 21.606Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>                                    <path d="M9.38574 11.8746L11.2777 13.7696L15.1757 9.86963" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>                            
-                                    {{ session('success') }}
-                                </span>
-                            </div>
-                        </div>
-                    @endif
-                    @if (session('failed'))
-                        <div class="col-lg-12">
-                            <div class="alert bg-danger text-white alert-dismissible">
-                                <span>
-                                    <svg width="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M11.9852 21.606C11.9852 21.606 19.6572 19.283 19.6572 12.879C19.6572 6.474 19.9352 5.974 19.3192 5.358C18.7042 4.742 12.9912 2.75 11.9852 2.75C10.9792 2.75 5.26616 4.742 4.65016 5.358C4.03516 5.974 4.31316 6.474 4.31316 12.879C4.31316 19.283 11.9852 21.606 11.9852 21.606Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>                                    <path d="M13.864 13.8249L10.106 10.0669" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>                                    <path d="M10.106 13.8249L13.864 10.0669" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>                                </svg>                            
-                                    {{ session('failed') }}
-                                </span>
-                            </div>
-                        </div>
-                    @endif
-                    <form action="/edit-profil/{{$user->id_user}}" method="POST" enctype="multipart/form-data">
-                    @csrf
+            <div class="card-body pt-3">
+            <!-- Bordered Tabs -->
+            <ul class="nav nav-tabs nav-tabs-bordered">
+                <li class="nav-item">
+                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Data Profil</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profil</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Ubah Password</button>
+                </li>
+            </ul>
+            <div class="tab-content pt-2">
+                <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                    @if (Session('success') || Session('failed'))
                     <div class="row">
-                        <div class="form-group col-md-12">
-                            <label class="form-label" for="fullname">Nama Lengkap</label>
-                            <input type="text" class="form-control @error('fullname') is-invalid @enderror" id="fullname" name="fullname" value="{{$user->fullname}}" autofocus placeholder="Masukkan Nama Lengkap" required>
-                            @error('fullname')
-                                <div class="invalid-feedback">
-                                {{ $message }}
+                        <div class="col-md-12">
+                            @if (session('success'))
+                                <div class="alert alert-primary bg-primary text-light border-0 alert-dismissible" role="alert">
+                                {{session('success')}}
                                 </div>
-                            @enderror
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label class="form-label" for="user_address">Alamat</label>
-                            <input type="text" class="form-control @error('user_address') is-invalid @enderror" id="user_address" name="user_address" value="{{$user->user_address}}" placeholder="Masukkan Alamat">
-                            @error('user_address')
-                                <div class="invalid-feedback">
-                                {{ $message }}
+                            @endif
+                            @if (session('failed'))
+                                <div class="alert alert-danger bg-danger text-light border-0 alert-dismissible" role="alert">
+                                {{session('failed')}}
                                 </div>
-                            @enderror
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label class="form-label" for="mobile_phone">Nomor Telepon</label>
-                            <input type="text" class="form-control @error('mobile_phone') is-invalid @enderror" id="mobile_phone" name="mobile_phone" value="{{$user->mobile_phone}}" placeholder="Masukkan Nomor Telepon" oninput="handleNumberOnly(this)">
-                            @error('mobile_phone')
-                                <div class="invalid-feedback">
-                                {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label class="form-label" for="email">Email</label>
-                            <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{$user->email}}" placeholder="Masukkan Email">
-                            @error('email')
-                                <div class="invalid-feedback">
-                                {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label class="form-label" for="username">Username</label>
-                            <input type="text" class="form-control @error('username') is-invalid @enderror" id="username" name="username" value="{{$user->username}}" placeholder="Masukkan Username">
-                            @error('username')
-                                <div class="invalid-feedback">
-                                {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-                        <div class="form-group col-md-12">
-                            <label class="form-label" for="photo">Foto</label>
-                            <input type="file" class="form-control @error('photo') is-invalid @enderror" id="preview_image" name="photo">
-                            @error('photo')
-                                <div class="invalid-feedback">
-                                {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label class="form-label" for="photo"></label>
-                            <div class="profile-img-edit position-relative">
-                                <img src="@if($user->photo === null) {{ asset('photo/default1.jpg') }} @else {{ asset('photo/'.$user->photo) }} @endif" alt="profile-pic" id="load_image" class="theme-color-default-img profile-pic rounded avatar-100">
-                            </div>
+                            @endif
                         </div>
                     </div>
-                    <br>
-                    <center>
-                        <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
-                    </center>
-                    </form>
+                    @endif
+                    <h5 class="card-title">Detail Profil</h5>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 label ">Nama Lengkap</div>
+                        <div class="col-lg-9 col-md-8">{{$user->nama}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 label ">Email</div>
+                        <div class="col-lg-9 col-md-8">{{$user->email}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 label ">Username</div>
+                        <div class="col-lg-9 col-md-8">{{$user->username}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 label ">Role</div>
+                        <div class="col-lg-9 col-md-8">{{$user->role}}</div>
+                    </div>
                 </div>
+                <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+                <!-- Profile Edit Form -->
+                <form action="/profil/{{$user->id}}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="row mb-3">
+                        <label for="nama" class="col-md-4 col-lg-3 col-form-label">Nama Lengkap</label>
+                        <div class="col-md-8 col-lg-9">
+                            <input name="nama" type="text" class="form-control @error('nama') is-invalid @enderror" id="nama" value="{{$user->nama}}">
+                            @error('nama')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="email" class="col-md-4 col-lg-3 col-form-label">Email</label>
+                        <div class="col-md-8 col-lg-9">
+                            <input name="email" type="email" class="form-control @error('email') is-invalid @enderror" id="email" value="{{$user->email}}">
+                            @error('email')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="username" class="col-md-4 col-lg-3 col-form-label">Username</label>
+                        <div class="col-md-8 col-lg-9">
+                            <input name="username" type="text" class="form-control @error('username') is-invalid @enderror" id="username" value="{{$user->username}}">
+                            @error('username')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="foto" class="col-md-4 col-lg-3 col-form-label">Foto</label>
+                        <div class="col-md-8 col-lg-9">
+                            <input type="file" name="foto" id="foto" class="form-control">
+                            @error('foto')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+
+                </div>
+
+                <div class="tab-pane fade pt-3" id="profile-settings">
+
+                <!-- Settings Form -->
+                <form>
+
+                    <div class="row mb-3">
+                    <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Email Notifications</label>
+                    <div class="col-md-8 col-lg-9">
+                        <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="changesMade" checked>
+                        <label class="form-check-label" for="changesMade">
+                            Changes made to your account
+                        </label>
+                        </div>
+                        <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="newProducts" checked>
+                        <label class="form-check-label" for="newProducts">
+                            Information on new products and services
+                        </label>
+                        </div>
+                        <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="proOffers">
+                        <label class="form-check-label" for="proOffers">
+                            Marketing and promo offers
+                        </label>
+                        </div>
+                        <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="securityNotify" checked disabled>
+                        <label class="form-check-label" for="securityNotify">
+                            Security alerts
+                        </label>
+                        </div>
+                    </div>
+                    </div>
+
+                    <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form><!-- End settings Form -->
+
+                </div>
+
+                <div class="tab-pane fade pt-3" id="profile-change-password">
+                <!-- Change Password Form -->
+                <form>
+
+                    <div class="row mb-3">
+                    <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
+                    <div class="col-md-8 col-lg-9">
+                        <input name="password" type="password" class="form-control" id="currentPassword">
+                    </div>
+                    </div>
+
+                    <div class="row mb-3">
+                    <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
+                    <div class="col-md-8 col-lg-9">
+                        <input name="newpassword" type="password" class="form-control" id="newPassword">
+                    </div>
+                    </div>
+
+                    <div class="row mb-3">
+                    <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
+                    <div class="col-md-8 col-lg-9">
+                        <input name="renewpassword" type="password" class="form-control" id="renewPassword">
+                    </div>
+                    </div>
+
+                    <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Change Password</button>
+                    </div>
+                </form><!-- End Change Password Form -->
+
+                </div>
+
+            </div><!-- End Bordered Tabs -->
+
             </div>
         </div>
+
+        </div>
     </div>
-</div>
+</section>
 @endsection

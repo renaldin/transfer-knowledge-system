@@ -1,5 +1,6 @@
 
 // ================== HANDLE SHOW IMAGE
+console.log('masukkkk')
 function readImage(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
@@ -72,10 +73,15 @@ const togglePassword = document.getElementById("togglePassword")
 if (togglePassword) {
     togglePassword.addEventListener("click", function () {
         var passwordField = document.getElementById("password");
+        var iconPassword = document.getElementById("iconPassword");
         if (passwordField.type === "password") {
             passwordField.type = "text";
+            iconPassword.classList.remove("bi-eye-slash");
+            iconPassword.classList.add("bi-eye");
         } else {
             passwordField.type = "password";
+            iconPassword.classList.remove("bi-eye");
+            iconPassword.classList.add("bi-eye-slash");
         }
     });
 }

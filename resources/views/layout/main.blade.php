@@ -1,272 +1,161 @@
-<!doctype html>
-<html lang="en" dir="ltr">
+
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta charset="UTF-8">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Sistem Monitoring Project | {{ $subTitle }}</title>
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="{{ asset('template/html/assets/images/favicon.ico') }}" />
-    <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <!-- select2 -->
-    {{-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /> --}}
-    {{-- <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css"> --}}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
-        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-        
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css" integrity="sha512-ARJR74swou2y0Q2V9k0GbzQ/5vJ2RBSoCWokg4zkfM29Fb3vZEQyv0iWBMW/yvKgyHSR/7D64pFMmU8nYmbRkg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    {{-- <link rel="stylesheet" href="{{ asset('template/html/assets/vendor/bootstrap-select/css/bootstrap-select.min.css') }}" /> --}}
-    <!-- Library / Plugin Css Build -->
-    <link rel="stylesheet" href="{{ asset('template/html/assets/css/core/libs.min.css') }}" />
+  <title>Sistem | {{ $subTitle ? $subTitle : $title }}</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
 
-    <!-- Aos Animation Css -->
-    <link rel="stylesheet" href="{{ asset('template/html/assets/vendor/aos/dist/aos.css') }}" />
+  <!-- Favicons -->
+  <link href="{{ asset('template/assets/img/favicon.png') }}" rel="icon">
+  <link href="{{ asset('template/assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
 
-    <!-- Hope Ui Design System Css -->
-    <link rel="stylesheet" href="{{ asset('template/html/assets/css/hope-ui.min.css?v=1.2.0') }}" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
-    <!-- Custom Css -->
-    <link rel="stylesheet" href="{{ asset('template/html/assets/css/custom.min.css?v=1.2.0') }}" />
+  <!-- Vendor CSS Files -->
+  <link href="{{ asset('template/assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('template/assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+  <link href="{{ asset('template/assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('template/assets/vendor/quill/quill.snow.css') }}" rel="stylesheet">
+  <link href="{{ asset('template/assets/vendor/quill/quill.bubble.css') }}" rel="stylesheet">
+  <link href="{{ asset('template/assets/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
+  <link href="{{ asset('template/assets/vendor/simple-datatables/style.css') }}" rel="stylesheet">
 
-    <!-- Dark Css -->
-    <link rel="stylesheet" href="{{ asset('template/html/assets/css/dark.min.css') }}" />
-
-    <!-- Customizer Css -->
-    <link rel="stylesheet" href="{{ asset('template/html/assets/css/customizer.min.css') }}" />
-
-    <!-- RTL Css -->
-    <link rel="stylesheet" href="{{ asset('template/html/assets/css/rtl.min.css') }}" />
-   <style>
-    body {
-    font-family: 'Open Sans', sans-serif;
-}
-
-   </style>
-   {{-- <link rel="stylesheet" href="https://cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css"> --}}
-    
+  <!-- Template Main CSS File -->
+  <link href="{{ asset('template/assets/css/style.css') }}" rel="stylesheet">
 </head>
 
-<body class="  ">
-    <!-- loader Start -->
-    <div id="loading">
-        <div class="loader simple-loader">
-            <div class="loader-body"></div>
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="index.html" class="logo d-flex align-items-center">
+        <img src="{{ asset('template/assets/img/logo.png') }}" alt="">
+        <span class="d-none d-lg-block">NiceAdmin</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+
+        <li class="nav-item d-block d-lg-none">
+          <a class="nav-link nav-icon search-bar-toggle " href="#">
+            <i class="bi bi-search"></i>
+          </a>
+        </li><!-- End Search Icon-->
+
+        <li class="nav-item dropdown pe-3">
+
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <img src="{{ $user->foto ? asset('foto/'.$user->foto) : asset('foto/default.jpg') }}" alt="Profile" class="rounded-circle">
+            <span class="d-none d-md-block dropdown-toggle ps-2">{{$user->nama}}</span>
+          </a><!-- End Profile Iamge Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header">
+              <h6>{{$user->nama}}</h6>
+              <span>{{$user->role}}</span>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="/profil">
+                <i class="bi bi-person"></i>
+                <span>My Profile</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="#" data-bs-toggle="modal" data-bs-target="#logout">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Logout</span>
+              </a>
+            </li>
+
+          </ul><!-- End Profile Dropdown Items -->
+        </li><!-- End Profile Nav -->
+
+      </ul>
+    </nav><!-- End Icons Navigation -->
+
+  </header><!-- End Header -->
+
+  <div class="modal fade" id="logout" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Logout</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+        <div class="modal-body">
+          Apakah Anda yakin akan logout ?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+          <a href="/logout" class="btn btn-danger">Logout</a>
+        </div>
+      </div>
     </div>
-    <!-- loader END -->
+  </div>
 
-    {{-- sidebar --}}
-    @include('layout.sidebar')
+  <!-- ======= Sidebar ======= -->
+  @include('layout.sidebar')
 
-    <main class="main-content">
-        <div class="position-relative iq-banner">
-            <!--Nav Start-->
-            <nav class="nav navbar navbar-expand-lg navbar-light iq-navbar">
-                <div class="container-fluid navbar-inner">
-                    <a href="#" class="navbar-brand">
-                        <!--Logo start-->
-                        <!--logo End-->
-                        <h4 class="logo-title">Sistem Project</h4>
-                    </a>
-                    <div class="sidebar-toggle" data-toggle="sidebar" data-active="true">
-                        <i class="icon">
-                            <svg width="20px" height="20px" viewBox="0 0 24 24">
-                                <path fill="currentColor"
-                                    d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z" />
-                            </svg>
-                        </i>
-                    </div>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon">
-                            <span class="mt-2 navbar-toggler-bar bar1"></span>
-                            <span class="navbar-toggler-bar bar2"></span>
-                            <span class="navbar-toggler-bar bar3"></span>
-                        </span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="mb-2 navbar-nav ms-auto align-items-center navbar-list mb-lg-0">
-                            <li class="nav-item dropdown">
-                                <a class="py-0 nav-link d-flex align-items-center" href="#" id="navbarDropdown"
-                                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img src="@if ($user->photo === null) {{ asset('photo/default1.jpg') }} @else {{ asset('photo/' . $user->photo) }} @endif"
-                                        alt="User-Profile"
-                                        class="theme-color-default-img img-fluid avatar avatar-50 avatar-rounded">
-                                    <div class="caption ms-3 d-none d-md-block ">
-                                        <h6 class="mb-0 caption-title">{{ $user->fullname }}</h6>
-                                        <p class="mb-0 caption-sub-title">{{ $user->role }}</p>
-                                    </div>
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <li>
-                                        <a href="/profil" class="dropdown-item" href="#">Profil</a>
-                                    </li>
-                                    <li>
-                                        <a href="/ubah-password" class="dropdown-item" href="#">Ubah Password</a>
-                                    </li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
-                                            data-bs-target="#logout">Logout</button></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav> <!-- Nav Header Component Start -->
-            {{-- <div class="iq-navbar-header" style="height: 100px;">
-                <div class="container-fluid iq-container">
-                </div>
-            </div> --}}
-        </div>
-        <div class="conatiner-fluid content-inner mt-n5 py-0">
-            <div class="row" style="margin-top: 80px;">
-                <div class="col-sm-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="flex-wrap d-flex justify-content-between align-items-center mb-4">
-                                        <div class="text-black">
-                                            @if ($subTitle === 'Dashboard')
-                                                <h3>Hello, {{ $user->fullname }}
-                                                </h3>
-                                                <p>Selamat Datang Di Website Sistem Monitoring Project.</p>
-                                            @else
-                                                <h3>{{ $subTitle }}</h3>
-                                            @endif
-                                        </div>
-                                        <div class="text-black">
-                                            <span class="btn btn-link btn-outline-primary" style="cursor: auto; text-decoration: none;">
-                                                @if ($title === null)
-                                                    {{ $subTitle }}
-                                                @else
-                                                    {{ $title }} / {{ $subTitle }}
-                                                @endif
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <main id="main" class="main">
+    <div class="pagetitle">
+      <h1>{{ $title ? $title : $subTitle }}</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">{{$title}}</li>
+          <li class="breadcrumb-item active">{{$subTitle}}</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+    @yield('content')
+  </main><!-- End #main -->
 
-            {{-- content --}}
-            @yield('content')
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+    <div class="copyright">
+      &copy; Copyright <strong><span>Sistem</span></strong>. All Rights Reserved
+    </div>
+    <div class="credits">
+      Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+    </div>
+  </footer><!-- End Footer -->
 
-        </div>
-        <!-- Footer Section Start -->
-        <footer class="footer">
-            <div class="footer-body">
-                <ul class="left-panel list-inline mb-0 p-0">
-                    {{-- <li class="list-inline-item"><a href="#">Sistem Monitoring Project</a></li> --}}
-                </ul>
-                <div class="right-panel">
-                    ©
-                    <script>
-                        document.write(new Date().getFullYear())
-                    </script> Designed Sistem Monitoring Project
-                </div>
-            </div>
-        </footer>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
-        <div class="modal fade" id="logout" tabindex="-1" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Logout</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Apakah Anda yakin akan logout ?</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Batal</button>
-                        <a href="/logout" type="button" class="btn btn-danger btn-sm">Logout</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <!-- Vendor JS Files -->
+  <script src="{{ asset('template/assets/vendor/apexcharts/apexcharts.min.js') }}"></script>
+  <script src="{{ asset('template/assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ asset('template/assets/vendor/chart.js/chart.umd.js') }}"></script>
+  <script src="{{ asset('template/assets/vendor/echarts/echarts.min.js') }}"></script>
+  <script src="{{ asset('template/assets/vendor/quill/quill.min.js') }}"></script>
+  <script src="{{ asset('template/assets/vendor/simple-datatables/simple-datatables.js') }}"></script>
+  <script src="{{ asset('template/assets/vendor/tinymce/tinymce.min.js') }}"></script>
+  <script src="{{ asset('template/assets/vendor/php-email-form/validate.js') }}"></script>
 
-        <!-- Select2 -->
-        
-        {{-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> --}}
-        {{-- <script src="{{ asset('template/html/assets/vendor/bootstrap-select/js/bootstrap-select.min.js') }}" defer></script> --}}
+  <!-- Template Main JS File -->
+  <script src="{{ asset('template/assets/js/main.js') }}"></script>
+  <script src="{{ asset('js/script.js') }}"></script>
 
-        <!-- Library Bundle Script -->
-        <script src="{{ asset('template/html/assets/js/core/libs.min.js') }}"></script>
-
-        <!-- External Library Bundle Script -->
-        <script src="{{ asset('template/html/assets/js/core/external.min.js') }}"></script>
-
-        <!-- Widgetchart Script -->
-        <script src="{{ asset('template/html/assets/js/charts/widgetcharts.js') }}"></script>
-
-        <!-- mapchart Script -->
-        <script src="{{ asset('template/html/assets/js/charts/vectore-chart.js') }}"></script>
-        <script src="{{ asset('template/html/assets/js/charts/dashboard.js') }}"></script>
-
-        <!-- fslightbox Script -->
-        <script src="{{ asset('template/html/assets/js/plugins/fslightbox.js') }}"></script>
-
-        <!-- Settings Script -->
-        <script src="{{ asset('template/html/assets/js/plugins/setting.js') }}"></script>
-
-        <!-- Slider-tab Script -->
-        <script src="{{ asset('template/html/assets/js/plugins/slider-tabs.js') }}"></script>
-
-        <!-- Form Wizard Script -->
-        <script src="{{ asset('template/html/assets/js/plugins/form-wizard.js') }}"></script>
-
-        <!-- AOS Animation Plugin-->
-        <script src="{{ asset('template/html/assets/vendor/aos/dist/aos.js') }}"></script>
-
-        <!-- App Script -->
-        <script src="{{ asset('template/html/assets/js/hope-ui.js') }}" defer></script>
-
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
-            crossorigin="anonymous"></script>
-        
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js" integrity="sha512-yDlE7vpGDP7o2eftkCiPZ+yuUyEcaBwoJoIhdXv71KZWugFqEphIS3PU60lEkFaz8RxaVsMpSvQxMBaKVwA5xg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-        <script src="{{ asset('js/script.js') }}"></script>
-
-        {{-- <script src="https://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
-        <script>
-            $(function() {
-                $('#users-table').DataTable({
-                    processing: true,
-                    serverSide: true,
-                    bDestroy: true,
-                    ajax: '{!! route('daftar-note-json') !!}', // memanggil route yang menampilkan data json
-                    columns: [{ // mengambil & menampilkan kolom sesuai tabel database
-                            data: 'id',
-                            name: 'id'
-                        },
-                        {
-                            data: 'name',
-                            name: 'name'
-                        }
-                    ]
-                });
-            });
-        </script> --}}
 </body>
 
 </html>

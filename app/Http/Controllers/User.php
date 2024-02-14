@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\ModelUser;
+use App\Models\Users;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
 
 class User extends Controller
 {
@@ -13,8 +14,7 @@ class User extends Controller
 
     public function __construct()
     {
-        $this->ModelUser = new ModelUser();
-        $this->public_path = 'photo';
+        $this->public_path = 'foto';
     }
 
     public function index()
@@ -25,15 +25,15 @@ class User extends Controller
 
         $data = [
             'title'             => 'Data Pengguna',
-            'subTitle'          => 'Daftar Pengguna',
-            'daftarUser'        => $this->ModelUser->findAll('id_user', 'DESC'),
-            'user'              => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
+            'subTitle'          => 'Daftar',
+            'daftarUser'        => Users::orderBy('created_at', 'DESC')->limit(300)->get(),
+            'user'              => Users::find(Session()->get('id')),
         ];
 
         return view('user.index', $data);
     }
 
-    public function detail($id_user)
+    public function detail($userId)
     {
         if (!Session()->get('role')) {
             return redirect()->route('login');
@@ -41,232 +41,203 @@ class User extends Controller
 
         $data = [
             'title'             => 'Data Pengguna',
-            'subTitle'          => 'Detail Pengguna',
-            'detail'            => $this->ModelUser->findOne('id_user', $id_user),
-            'user'              => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
+            'subTitle'          => 'Detail',
+            'detail'            => Users::find($userId),
+            'user'              => Users::find('id', Session()->get('id')),
             'form'              => 'Detail'
         ];
 
         return view('user.form', $data);
     }
 
-    public function new()
+    public function new(Request $request)
     {
         if (!Session()->get('role')) {
             return redirect()->route('login');
         }
 
-        if(!Request()->fullname) {
+        if(!$request->username) {
             $data = [
                 'title'     => 'Data Pengguna',
-                'subTitle'  => 'Tambah Pengguna',
-                'user'      => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
+                'subTitle'  => 'Tambah',
+                'user'      => Users::find(Session()->get('id')),
                 'form'      => 'Tambah',
             ];
             return view('user.form', $data);
         } else {
-            Request()->validate([
-                'fullname'      => 'required',
+            $validateData = $request->validate([
+                'nama'          => 'required',
                 'username'      => 'required',
-                'email'         => 'required|unique:user,email',
+                'email'         => 'required|unique:users,email',
                 'password'      => 'min:6|required',
-                'user_address'  => 'required',
-                'mobile_phone'  => 'required',
                 'role'          => 'required',
-                'photo'         => 'required|mimes:jpeg,png,jpg|max:2048'
+                'foto'          => 'required|mimes:jpeg,png,jpg|max:2048'
             ], [
-                'fullname.required'     => 'Nama lengkap harus diisi!',
+                'nama.required'         => 'Nama lengkap harus diisi!',
                 'username.required'     => 'Username harus diisi!',
                 'email.required'        => 'Email harus diisi!',
                 'email.unique'          => 'Email sudah digunakan!',
                 'password.required'     => 'Password harus diisi!',
                 'password.min'          => 'Password minikal 6 karakter!',
-                'user_address.required' => 'Alamat harus diisi!',
-                'mobile_phone.required' => 'Nomor telepon harus diisi!',
                 'role.required'         => 'Role harus diisi!',
-                'photo.required'        => 'Foto harus diisi!',
-                'photo.mimes'           => 'Format Foto harus jpg/jpeg/png!',
-                'photo.max'             => 'Ukuran Foto maksimal 2 mb',
+                'foto.required'         => 'Foto harus diisi!',
+                'foto.mimes'            => 'Format Foto harus jpg/jpeg/png!',
+                'foto.max'              => 'Ukuran Foto maksimal 2 mb',
             ]);
 
-            $file = Request()->photo;
-            $fileName = date('mdYHis') . ' ' . Request()->fullname . '.' . $file->extension();
+            $file = $validateData['foto'];
+            $fileName = date('mdYHis') . ' ' . $validateData['nama'] . '.' . $file->extension();
             $file->move(public_path($this->public_path), $fileName);
-
-            $data = [
-                'fullname'      => Request()->fullname,
-                'username'      => Request()->username,
-                'email'         => Request()->email,
-                'password'      => Hash::make(Request()->password),
-                'user_address'  => Request()->user_address,
-                'mobile_phone'  => Request()->mobile_phone,
-                'role'          => Request()->role,
-                'photo'         => $fileName
-            ];
+            
+            $user = new Users();
+            $user->nama          = $validateData['nama'];
+            $user->username      = $validateData['username'];
+            $user->email         = $validateData['email'];
+            $user->password      = Hash::make($validateData['password']);
+            $user->role          = $validateData['role'];
+            $user->foto          = $fileName;
+            $user->save;
     
-            $this->ModelUser->create($data);
             return redirect()->route('daftar-pengguna')->with('success', 'Data berhasil ditambahkan!');
         }
     }
 
-    public function update($id_user)
+    public function update(Request $request, $userId)
     {
         if (!Session()->get('role')) {
             return redirect()->route('login');
         }
 
-        if(!Request()->fullname) {
+        if(!$request->username) {
             $data = [
-                'title'         => 'Data Pengguna',
-                'subTitle'      => 'Edit Pengguna',
-                'form'          => 'Edit',
-                'user'          => $this->ModelUser->findOne('id_user', Session()->get('id_user')),
-                'detail'        => $this->ModelUser->findOne('id_user', $id_user)
+                'title'     => 'Data Pengguna',
+                'subTitle'  => 'Edit',
+                'user'      => Users::find(Session()->get('id')),
+                'form'      => 'Edit',
             ];
             return view('user.form', $data);
         } else {
-            Request()->validate([
-                'fullname'      => 'required',
+            $validateData = $request->validate([
+                'nama'          => 'required',
                 'username'      => 'required',
-                'email'         => 'required',
-                'user_address'  => 'required',
-                'mobile_phone'  => 'required',
+                'email'         => 'required|unique:users,email',
                 'role'          => 'required',
-                'photo'         => 'mimes:jpeg,png,jpg|max:2048'
+                'foto'          => 'mimes:jpeg,png,jpg|max:2048'
             ], [
-                'fullname.required'     => 'Nama lengkap harus diisi!',
+                'nama.required'         => 'Nama lengkap harus diisi!',
                 'username.required'     => 'Username harus diisi!',
                 'email.required'        => 'Email harus diisi!',
-                'user_address.required' => 'Alamat harus diisi!',
-                'mobile_phone.required' => 'Nomor telepon harus diisi!',
+                'email.unique'          => 'Email sudah digunakan!',
                 'role.required'         => 'Role harus diisi!',
-                'photo.mimes'           => 'Format Foto harus jpg/jpeg/png!',
-                'photo.max'             => 'Ukuran Foto maksimal 2 mb',
+                'foto.mimes'            => 'Format Foto harus jpg/jpeg/png!',
+                'foto.max'              => 'Ukuran Foto maksimal 2 mb',
             ]);
 
-            $user = $this->ModelUser->findOne('id_user', $id_user);
+            $user = Users::find($userId);
+            $user->nama          = $validateData['nama'];
+            $user->username      = $validateData['username'];
+            $user->email         = $validateData['email'];
+            $user->role          = $validateData['role'];
 
-            $data = [
-                'id_user'       => $id_user,
-                'fullname'      => Request()->fullname,
-                'username'      => Request()->username,
-                'email'         => Request()->email,
-                'user_address'  => Request()->user_address,
-                'mobile_phone'  => Request()->mobile_phone,
-                'role'          => Request()->role
-            ];
-
-            if (Request()->password) {
-                $data['password'] = Hash::make(Request()->password);
+            if ($request->password) {
+                $user->password = Hash::make(Request()->password);
             }
 
-            if (Request()->photo <> "") {
-                if ($user->photo <> "") {
-                    unlink(public_path($this->public_path) . '/' . $user->photo);
+            if ($request->foto) {
+                if ($user->foto) {
+                    unlink(public_path($this->public_path) . '/' . $user->foto);
                 }
 
-                $file = Request()->photo;
-                $fileName = date('mdYHis') . Request()->fullname . '.' . $file->extension();
+                $file = $request->foto;
+                $fileName = date('mdYHis') . $request->nama . '.' . $file->extension();
                 $file->move(public_path($this->public_path), $fileName);
-
-                $data['photo'] = $fileName;
+                $user->foto          = $fileName;
             }
-            
-            $this->ModelUser->edit($data);
+
+            $user->save;
             return redirect()->route('daftar-pengguna')->with('success', 'Data berhasil diedit!');
         }
     }
 
-    public function delete($id_user)
+    public function delete($userId)
     {
         if (!Session()->get('role')) {
             return redirect()->route('login');
         }
         
-        $user = $this->ModelUser->findOne('id_user', $id_user);
+        $user = Users::find($userId);
 
-        if ($user->photo <> "") {
-            unlink(public_path($this->public_path) . '/' . $user->photo);
+        if ($user->foto) {
+            unlink(public_path($this->public_path) . '/' . $user->foto);
         }
 
-        $this->ModelUser->deleteData('id_user', $id_user);
-        return back()->with('success', 'Data berhasil dihapus !');
+        $user->delete();
+        return back()->with('success', 'Data berhasil dihapus!');
     }
 
-    public function profil($id_user = null)
+    public function profil(Request $request, $userId = null)
     {
         if (!Session()->get('role')) {
             return redirect()->route('login');
         }
 
-        if(!Request()->fullname) {
+        if(!$userId) {
             $data = [
                 'title'     => 'Profil',
                 'subTitle'  => 'Edit Profil',
-                'user'      => $this->ModelUser->findOne('id_user', Session()->get('id_user'))
+                'user'      => Users::find(Session()->get('id'))
             ];
             return view('profil.index', $data);
         } else {
-            Request()->validate([
-                'fullname'      => 'required',
+            $validateData = $request->validate([
+                'nama'          => 'required',
                 'username'      => 'required',
                 'email'         => 'required',
-                'user_address'  => 'required',
-                'mobile_phone'  => 'required',
-                'photo'         => 'mimes:jpeg,png,jpg|max:2048'
+                'foto'          => 'mimes:jpeg,png,jpg|max:2048'
             ], [
-                'fullname.required'     => 'Nama lengkap harus diisi!',
+                'nama.required'         => 'Nama lengkap harus diisi!',
                 'username.required'     => 'Username harus diisi!',
                 'email.required'        => 'Email harus diisi!',
-                'user_address.required' => 'Alamat harus diisi!',
-                'mobile_phone.required' => 'Nomor telepon harus diisi!',
-                'photo.mimes'           => 'Format Foto harus jpg/jpeg/png!',
-                'photo.max'             => 'Ukuran Foto maksimal 2 mb',
+                'foto.mimes'            => 'Format foto harus jpg/jpeg/png!',
+                'foto.max'              => 'Ukuran Foto maksimal 2 mb',
             ]);
 
-            $user = $this->ModelUser->findOne('id_user', $id_user);
-
-            $data = [
-                'id_user'       => $id_user,
-                'fullname'      => Request()->fullname,
-                'username'      => Request()->username,
-                'email'         => Request()->email,
-                'user_address'  => Request()->user_address,
-                'mobile_phone'  => Request()->mobile_phone
-            ];
-
-            if (Request()->photo <> "") {
-                if ($user->photo <> "") {
-                    unlink(public_path($this->public_path) . '/' . $user->photo);
+            $user = Users::find($userId);
+            $user->nama          = $validateData['nama'];
+            $user->username      = $validateData['username'];
+            $user->email         = $validateData['email'];
+            
+            if ($request->foto) {
+                if ($user->foto) {
+                    unlink(public_path($this->public_path) . '/' . $user->foto);
                 }
 
-                $file = Request()->photo;
-                $fileName = date('mdYHis') . Request()->fullname . '.' . $file->extension();
+                $file = $request->foto;
+                $fileName = date('mdYHis') . $request->nama . '.' . $file->extension();
                 $file->move(public_path($this->public_path), $fileName);
-            
-                $data['photo'] = $fileName;
+                $user->foto          = $fileName;
             }
 
-            $this->ModelUser->edit($data);
+            $user->save();
             return back()->with('success', 'Profil berhasil diedit!');
         }
     }
 
-    public function changePassword($id_user = null)
+    public function changePassword(Request $request, $userId = null)
     {
         if (!Session()->get('role')) {
             return redirect()->route('login');
         }
 
-        if(!Request()->password_lama) {
+        if(!$request->password_lama) {
             $data = [
                 'title'     => 'Profil',
                 'subTitle'  => 'Ubah Password',
-                'user'      => $this->ModelUser->findOne('id_user', Session()->get('id_user'))
+                'user'      => Users::find(Session()->get('id'))
             ];
             return view('profil.ubahPassword', $data);
         } else {
-            Request()->validate([
+            $validateData = $request->validate([
                 'password_lama'     => 'required|min:6',
                 'password_baru'     => 'required|min:6',
             ], [
@@ -276,47 +247,17 @@ class User extends Controller
                 'password_baru.min'         => 'Password Lama minikal 6 karakter!',
             ]);
     
-            $user = $this->ModelUser->findOne('id_user', $id_user);
+            $user = Users::find($userId);
     
-            if (Hash::check(Request()->password_lama, $user->password)) {
-                $data = [
-                    'id_user'         => $id_user,
-                    'password'        => Hash::make(Request()->password_baru)
-                ];
+            if (Hash::check($validateData['password_lama'], $user->password)) {
+
+                $user->password = Hash::make($validateData['password_baru']);
     
-                $this->ModelUser->edit($data);
+                $user->save();
                 return back()->with('success', 'Password berhasil diubah !');
             } else {
                 return back()->with('failed', 'Password lama tidak sesuai.');
             }
         }
-
     }
-
-    // public function changePasswordProcess($id_user)
-    // {
-    //     Request()->validate([
-    //         'password_lama'     => 'required|min:6',
-    //         'password_baru'     => 'required|min:6',
-    //     ], [
-    //         'password_lama.required'    => 'Password Lama harus diisi!',
-    //         'password_lama.min'         => 'Password Lama minikal 6 karakter!',
-    //         'password_baru.required'    => 'Password Baru harus diisi!',
-    //         'password_baru.min'         => 'Password Lama minikal 6 karakter!',
-    //     ]);
-
-    //     $user = $this->ModelUser->detail($id_user);
-
-    //     if (Hash::check(Request()->password_lama, $user->password)) {
-    //         $data = [
-    //             'id_user'         => $id_user,
-    //             'password'         => Hash::make(Request()->password_baru)
-    //         ];
-
-    //         $this->ModelUser->edit($data);
-    //         return back()->with('success', 'Password berhasil diubah !');
-    //     } else {
-    //         return back()->with('failed', 'Password Lama tidak sesuai.');
-    //     }
-    // }
 }

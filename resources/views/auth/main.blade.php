@@ -1,135 +1,64 @@
-<!doctype html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      <title>Sistem Site | {{$title}}</title>
-      <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-      <!-- Favicon -->
-      <link rel="shortcut icon" href="{{ asset('template/html/assets/images/favicon.ico') }}" />
-      <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
-      <!-- Library / Plugin Css Build -->
-      <link rel="stylesheet" href="{{ asset('template/html/assets/css/core/libs.min.css') }}" />
-      
-      
-      <!-- Hope Ui Design System Css -->
-      <link rel="stylesheet" href="{{ asset('template/html/assets/css/hope-ui.min.css?v=1.2.0') }}" />
-      
-      <!-- Custom Css -->
-      <link rel="stylesheet" href="{{ asset('template/html/assets/css/custom.min.css?v=1.2.0') }}" />
-      
-      <!-- Dark Css -->
-      <link rel="stylesheet" href="{{ asset('template/html/assets/css/dark.min.css') }}"/>
-      
-      <!-- Customizer Css -->
-      <link rel="stylesheet" href="{{ asset('template/html/assets/css/customizer.min.css') }}" />
-      
-      <!-- RTL Css -->
-      <link rel="stylesheet" href="{{ asset('template/html/assets/css/rtl.min.css') }}"/>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" />
 
-      <script>
-        function hanyaAngka(evt) {
-            var charCode = (evt.which) ? evt.which : event.keyCode;
-            if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-                return false;
-            }
-            return true;
-        }
-      </script>
-      <style>
-        @media (max-width: 768px) {
-          .logo-kanan {
-              /* padding-right: 180px !important; */
-              /* display: flex; */
-              /* margin-right: 100px; */
-              width: 200px !important;
-              margin-left: -45px !important;
-              /* height: 150%; */
-          }
-        }
-        body {
-    font-family: 'Open Sans', sans-serif;
-}
+<!DOCTYPE html>
+<html lang="en">
 
-      </style>
-  </head>
-  <body class=" " data-bs-spy="scroll" data-bs-target="#elements-section" data-bs-offset="0" tabindex="0">
-    
-    <!-- loader Start -->
-    <div id="loading">
-      <div class="loader simple-loader">
-          <div class="loader-body"></div>
-      </div>    </div>
-    <!-- loader END -->
-    
-      <div class="wrapper">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Sistem | {{$subTitle ? $subTitle : $title }}</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="{{ asset('template/assets/img/favicon.png') }}" rel="icon">
+  <link href="{{ asset('template/assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{{ asset('template/assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('template/assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+  <link href="{{ asset('template/assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('template/assets/vendor/quill/quill.snow.css') }}" rel="stylesheet">
+  <link href="{{ asset('template/assets/vendor/quill/quill.bubble.css') }}" rel="stylesheet">
+  <link href="{{ asset('template/assets/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
+  <link href="{{ asset('template/assets/vendor/simple-datatables/style.css') }}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{{ asset('template/assets/css/style.css') }}" rel="stylesheet">
+</head>
+
+<body>
+
+  <main>
+    <div class="container">
+
       @yield('content')
-      </div>
-    
-    <!-- Library Bundle Script -->
-    <script src="{{ asset('template/html/assets/js/core/libs.min.js') }}"></script>
-    
-    <!-- External Library Bundle Script -->
-    <script src="{{ asset('template/html/assets/js/core/external.min.js') }}"></script>
-    
-    <!-- Widgetchart Script -->
-    <script src="{{ asset('template/html/assets/js/charts/widgetcharts.js') }}"></script>
-    
-    <!-- mapchart Script -->
-    <script src="{{ asset('template/html/assets/js/charts/vectore-chart.js') }}"></script>
-    <script src="{{ asset('template/html/assets/js/charts/dashboard.js') }}" ></script>
-    
-    <!-- fslightbox Script -->
-    <script src="{{ asset('template/html/assets/js/plugins/fslightbox.js') }}"></script>
-    
-    <!-- Settings Script -->
-    <script src="{{ asset('template/html/assets/js/plugins/setting.js') }}"></script>
-    
-    <!-- Slider-tab Script -->
-    <script src="{{ asset('template/html/assets/js/plugins/slider-tabs.js') }}"></script>
-    
-    <!-- Form Wizard Script -->
-    <script src="{{ asset('template/html/assets/js/plugins/form-wizard.js') }}"></script>
-    
-    <!-- AOS Animation Plugin-->
-    
-    <!-- App Script -->
-    <script src="{{ asset('template/html/assets/js/hope-ui.js') }}" defer></script>
 
-    <script>
-      // umum
-      function readImage(input) {
-        if (input.files && input.files[0]) {
-          var reader = new FileReader();
-          reader.onload = function(e) {
-            $('#load_image').attr('src', e.target.result);
-          }
-          reader.readAsDataURL(input.files[0]);
-        }
-      }
-      $('#preview_image').change(function() {
-        readImage(this);
-      })
-    </script>
+    </div>
+  </main><!-- End #main -->
 
-   <script>
-      window.setTimeout(function() {
-      $(".alert").fadeTo(1500, 0).slideUp(1500, function() {
-         $(this).remove();
-      });
-      }, 6000);
-   </script>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
-  <script>
-    document.getElementById("togglePassword").addEventListener("click", function () {
-        var passwordField = document.getElementById("password");
-        if (passwordField.type === "password") {
-            passwordField.type = "text";
-        } else {
-            passwordField.type = "password";
-        }
-    });
-  </script>
-  </body>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+  <!-- Vendor JS Files -->
+  <script src="{{ asset('template/assets/vendor/apexcharts/apexcharts.min.js') }}"></script>
+  <script src="{{ asset('template/assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ asset('template/assets/vendor/chart.js/chart.umd.js') }}"></script>
+  <script src="{{ asset('template/assets/vendor/echarts/echarts.min.js') }}"></script>
+  <script src="{{ asset('template/assets/vendor/quill/quill.min.js') }}"></script>
+  <script src="{{ asset('template/assets/vendor/simple-datatables/simple-datatables.js') }}"></script>
+  <script src="{{ asset('template/assets/vendor/tinymce/tinymce.min.js') }}"></script>
+  <script src="{{ asset('template/assets/vendor/php-email-form/validate.js') }}"></script>
+
+  <!-- Template Main JS File -->
+  <script src="{{ asset('template/assets/js/main.js') }}"></script>
+  <script src="{{ asset('js/script.js') }}"></script>
+
+</body>
+
 </html>

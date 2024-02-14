@@ -2,50 +2,40 @@
 
 namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
-use App\Models\ModelUser;
+use App\Models\Users;
 
 class Dashboard extends Controller
 {
 
-    private $ModelUser;
-
     public function __construct()
     {
-        $this->ModelUser = new ModelUser();
     }
 
     public function index()
     {
-        if (!Session()->get('id_user')) {
+        if (!Session()->get('id')) {
             return redirect()->route('login');
         }
 
         $role = Session()->get('role');
-        $user = $this->ModelUser->findOne('id_user', Session()->get('id_user'));
-
-        if ($role === 'Klien') {
-            $route = 'dashboard.dashboardKlien';
+        $user = Users::find(Session()->get('id'));
+       
+        if ($role === 'HRD') {
+            $route = 'dashboard.dashboardHrd';
             $data = [
-                'title'     => null,
+                'title'     => 'Dashboard',
                 'subTitle'  => 'Dashboard',
                 'user'      => $user,
             ];
-        } elseif ($role === 'Project Manager') {
-            $route = 'dashboard.dashboardProjectManager';
+        } elseif ($role === 'Manager') {
+            $route = 'dashboard.dashboardManager';
             $data = [
-                'title'     => null,
+                'title'     => 'Dashboard',
                 'subTitle'  => 'Dashboard',
                 'user'      => $user,
             ];
-        } elseif ($role === 'CEO') {
-            $route = 'dashboard.dashboardCeo';
-            $data = [
-                'title'     => null,
-                'subTitle'  => 'Dashboard',
-                'user'      => $user,
-            ];
-        } elseif ($role === 'CTO') {
-            $route = 'dashboard.dashboardCto';
+        } elseif ($role === 'Pelamar') {
+            $route = 'dashboard.dashboardPelamar';
             $data = [
                 'title'     => null,
                 'subTitle'  => 'Dashboard',
