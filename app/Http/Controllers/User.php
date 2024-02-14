@@ -254,7 +254,7 @@ class User extends Controller
                 $user->password = Hash::make($validateData['password_baru']);
     
                 $user->save();
-                return back()->with('success', 'Password berhasil diubah !');
+                return back()->with('success', 'Password berhasil diubah!');
             } else {
                 return back()->with('failed', 'Password lama tidak sesuai.');
             }
