@@ -7,7 +7,7 @@
 
         <div class="card">
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-                <img src="{{ $user->foto ? asset('foto/'.$user->foto) : asset('foto/default.jpg') }}" alt="Profile" class="rounded-circle">
+                <img src="{{ $user->photo ? asset('photo/'.$user->photo) : asset('photo/default.jpg') }}" alt="Profile" class="rounded-circle">
                 <h2>{{$user->nama}}</h2>
                 <h3>{{$user->role}}</h3>
             </div>
@@ -72,10 +72,10 @@
                     <form action="/profil/{{$user->id}}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="row mb-3">
-                            <label for="nama" class="col-md-4 col-lg-3 col-form-label">Nama Lengkap</label>
+                            <label for="name" class="col-md-4 col-lg-3 col-form-label">Nama Lengkap</label>
                             <div class="col-md-8 col-lg-9">
-                                <input name="nama" type="text" class="form-control @error('nama') is-invalid @enderror" id="nama" value="{{$user->nama}}">
-                                @error('nama')
+                                <input name="name" type="text" class="form-control @error('name') is-invalid @enderror" id="name" value="{{$user->name}}">
+                                @error('name')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -99,10 +99,10 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label for="foto" class="col-md-4 col-lg-3 col-form-label">Foto</label>
+                            <label for="photo" class="col-md-4 col-lg-3 col-form-label">Foto</label>
                             <div class="col-md-8 col-lg-9">
-                                <input type="file" name="foto" id="foto" class="form-control">
-                                @error('foto')
+                                <input type="file" name="photo" id="photo" class="form-control">
+                                @error('photo')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>

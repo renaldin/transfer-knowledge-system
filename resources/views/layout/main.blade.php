@@ -29,6 +29,20 @@
 
   <!-- Template Main CSS File -->
   <link href="{{ asset('template/assets/css/style.css') }}" rel="stylesheet">
+  <style>
+    /* @media only screen and (max-width: 768px) {
+      .table tbody tr {
+        display: block;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #ddd;
+      }
+      
+      .table tbody td {
+        display: block;
+        text-align: left;
+      }
+    } */
+  </style>
 </head>
 
 <body>
@@ -39,7 +53,7 @@
     <div class="d-flex align-items-center justify-content-between">
       <a href="index.html" class="logo d-flex align-items-center">
         <img src="{{ asset('template/assets/img/logo.png') }}" alt="">
-        <span class="d-none d-lg-block">NiceAdmin</span>
+        <span class="d-none d-lg-block">Rekrutmen</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
@@ -56,13 +70,13 @@
         <li class="nav-item dropdown pe-3">
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img src="{{ $user->foto ? asset('foto/'.$user->foto) : asset('foto/default.jpg') }}" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2">{{$user->nama}}</span>
+            <img src="{{ $user->photo ? asset('photo/'.$user->photo) : asset('photo/default.jpg') }}" alt="Profile" class="rounded-circle">
+            <span class="d-none d-md-block dropdown-toggle ps-2">{{$user->name}}</span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6>{{$user->nama}}</h6>
+              <h6>{{$user->name}}</h6>
               <span>{{$user->role}}</span>
             </li>
             <li>
