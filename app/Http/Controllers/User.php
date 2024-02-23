@@ -10,11 +10,11 @@ use Illuminate\Http\Request;
 class User extends Controller
 {
 
-    private $ModelUser, $ModelSiteDetail, $ModelSite, $public_path;
+    private $public_path;
 
     public function __construct()
     {
-        $this->public_path = 'foto';
+        $this->public_path = 'photo';
     }
 
     public function index()
@@ -38,12 +38,12 @@ class User extends Controller
         if (!Session()->get('role')) {
             return redirect()->route('login');
         }
-
+        
         $data = [
             'title'             => 'Data Pengguna',
             'subTitle'          => 'Detail',
             'detail'            => Users::find($userId),
-            'user'              => Users::find('id', Session()->get('id')),
+            'user'              => Users::find(Session()->get('id')),
             'form'              => 'Detail'
         ];
 
@@ -66,39 +66,39 @@ class User extends Controller
             return view('user.form', $data);
         } else {
             $validateData = $request->validate([
-                'nama'          => 'required',
+                'name'          => 'required',
                 'username'      => 'required',
                 'email'         => 'required|unique:users,email',
                 'password'      => 'min:6|required',
                 'role'          => 'required',
-                'foto'          => 'required|mimes:jpeg,png,jpg|max:2048'
+                'photo'         => 'required|mimes:jpeg,png,jpg|max:2048'
             ], [
-                'nama.required'         => 'Nama lengkap harus diisi!',
+                'name.required'         => 'Nama lengkap harus diisi!',
                 'username.required'     => 'Username harus diisi!',
                 'email.required'        => 'Email harus diisi!',
                 'email.unique'          => 'Email sudah digunakan!',
                 'password.required'     => 'Password harus diisi!',
                 'password.min'          => 'Password minikal 6 karakter!',
                 'role.required'         => 'Role harus diisi!',
-                'foto.required'         => 'Foto harus diisi!',
-                'foto.mimes'            => 'Format Foto harus jpg/jpeg/png!',
-                'foto.max'              => 'Ukuran Foto maksimal 2 mb',
+                'photo.required'        => 'Foto harus diisi!',
+                'photo.mimes'           => 'Format Foto harus jpg/jpeg/png!',
+                'photo.max'             => 'Ukuran Foto maksimal 2 mb',
             ]);
-
-            $file = $validateData['foto'];
-            $fileName = date('mdYHis') . ' ' . $validateData['nama'] . '.' . $file->extension();
+            
+            $file = $validateData['photo'];
+            $fileName = date('mdYHis') . ' ' . $validateData['name'] . '.' . $file->extension();
             $file->move(public_path($this->public_path), $fileName);
             
             $user = new Users();
-            $user->nama          = $validateData['nama'];
+            $user->name          = $validateData['name'];
             $user->username      = $validateData['username'];
             $user->email         = $validateData['email'];
             $user->password      = Hash::make($validateData['password']);
             $user->role          = $validateData['role'];
-            $user->foto          = $fileName;
-            $user->save;
+            $user->photo         = $fileName;
+            $user->save();
     
-            return redirect()->route('daftar-pengguna')->with('success', 'Data berhasil ditambahkan!');
+            return redirect()->route('pengguna')->with('success', 'Data berhasil ditambahkan!');
         }
     }
 
@@ -112,29 +112,30 @@ class User extends Controller
             $data = [
                 'title'     => 'Data Pengguna',
                 'subTitle'  => 'Edit',
+                'detail'    => Users::find($userId),
                 'user'      => Users::find(Session()->get('id')),
                 'form'      => 'Edit',
             ];
             return view('user.form', $data);
         } else {
             $validateData = $request->validate([
-                'nama'          => 'required',
+                'name'          => 'required',
                 'username'      => 'required',
-                'email'         => 'required|unique:users,email',
+                'email'         => 'required',
                 'role'          => 'required',
-                'foto'          => 'mimes:jpeg,png,jpg|max:2048'
+                'photo'         => 'mimes:jpeg,png,jpg|max:2048'
             ], [
-                'nama.required'         => 'Nama lengkap harus diisi!',
+                'name.required'         => 'Nama lengkap harus diisi!',
                 'username.required'     => 'Username harus diisi!',
                 'email.required'        => 'Email harus diisi!',
                 'email.unique'          => 'Email sudah digunakan!',
                 'role.required'         => 'Role harus diisi!',
-                'foto.mimes'            => 'Format Foto harus jpg/jpeg/png!',
-                'foto.max'              => 'Ukuran Foto maksimal 2 mb',
+                'photo.mimes'           => 'Format Foto harus jpg/jpeg/png!',
+                'photo.max'             => 'Ukuran Foto maksimal 2 mb',
             ]);
 
             $user = Users::find($userId);
-            $user->nama          = $validateData['nama'];
+            $user->name          = $validateData['name'];
             $user->username      = $validateData['username'];
             $user->email         = $validateData['email'];
             $user->role          = $validateData['role'];
@@ -143,19 +144,19 @@ class User extends Controller
                 $user->password = Hash::make(Request()->password);
             }
 
-            if ($request->foto) {
-                if ($user->foto) {
-                    unlink(public_path($this->public_path) . '/' . $user->foto);
+            if ($request->photo) {
+                if ($user->photo) {
+                    unlink(public_path($this->public_path) . '/' . $user->photo);
                 }
 
-                $file = $request->foto;
-                $fileName = date('mdYHis') . $request->nama . '.' . $file->extension();
+                $file = $request->photo;
+                $fileName = date('mdYHis') . $request->name . '.' . $file->extension();
                 $file->move(public_path($this->public_path), $fileName);
-                $user->foto          = $fileName;
+                $user->photo          = $fileName;
             }
 
-            $user->save;
-            return redirect()->route('daftar-pengguna')->with('success', 'Data berhasil diedit!');
+            $user->save();
+            return redirect()->route('pengguna')->with('success', 'Data berhasil diedit!');
         }
     }
 
@@ -167,8 +168,8 @@ class User extends Controller
         
         $user = Users::find($userId);
 
-        if ($user->foto) {
-            unlink(public_path($this->public_path) . '/' . $user->foto);
+        if ($user->photo) {
+            unlink(public_path($this->public_path) . '/' . $user->photo);
         }
 
         $user->delete();
@@ -190,32 +191,32 @@ class User extends Controller
             return view('profil.index', $data);
         } else {
             $validateData = $request->validate([
-                'nama'          => 'required',
+                'name'          => 'required',
                 'username'      => 'required',
                 'email'         => 'required',
-                'foto'          => 'mimes:jpeg,png,jpg|max:2048'
+                'photo'         => 'mimes:jpeg,png,jpg|max:2048'
             ], [
-                'nama.required'         => 'Nama lengkap harus diisi!',
+                'name.required'         => 'Nama lengkap harus diisi!',
                 'username.required'     => 'Username harus diisi!',
                 'email.required'        => 'Email harus diisi!',
-                'foto.mimes'            => 'Format foto harus jpg/jpeg/png!',
-                'foto.max'              => 'Ukuran Foto maksimal 2 mb',
+                'photo.mimes'           => 'Format foto harus jpg/jpeg/png!',
+                'photo.max'             => 'Ukuran Foto maksimal 2 mb',
             ]);
 
             $user = Users::find($userId);
-            $user->nama          = $validateData['nama'];
+            $user->name          = $validateData['name'];
             $user->username      = $validateData['username'];
             $user->email         = $validateData['email'];
             
-            if ($request->foto) {
-                if ($user->foto) {
-                    unlink(public_path($this->public_path) . '/' . $user->foto);
+            if ($request->photo) {
+                if ($user->photo) {
+                    unlink(public_path($this->public_path) . '/' . $user->photo);
                 }
 
-                $file = $request->foto;
-                $fileName = date('mdYHis') . $request->nama . '.' . $file->extension();
+                $file = $request->photo;
+                $fileName = date('mdYHis') . $request->name . '.' . $file->extension();
                 $file->move(public_path($this->public_path), $fileName);
-                $user->foto          = $fileName;
+                $user->photo          = $fileName;
             }
 
             $user->save();
