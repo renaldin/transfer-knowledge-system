@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Users;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class User extends Controller
 {
@@ -17,6 +18,23 @@ class User extends Controller
         $this->public_path = 'photo';
     }
 
+    public function user() 
+    {
+        $data = [
+            'title'             => 'Data Pengguna',
+            'subTitle'          => 'Daftar',
+            // 'daftarUser'        => Users::orderBy('created_at', 'DESC')->limit(10000)->get(),
+            'user'              => Users::find(Session()->get('id')),
+        ];
+
+        return view('user.user', $data);
+    }
+
+    public function json() 
+    {
+        return DataTables::of(Users::limit(10))->toJson();
+    }
+
     public function index()
     {
         if (!Session()->get('role')) {
@@ -26,7 +44,7 @@ class User extends Controller
         $data = [
             'title'             => 'Data Pengguna',
             'subTitle'          => 'Daftar',
-            'daftarUser'        => Users::orderBy('created_at', 'DESC')->limit(300)->get(),
+            'daftarUser'        => Users::where('deleted_at', null)->orderBy('created_at', 'DESC')->limit(300)->get(),
             'user'              => Users::find(Session()->get('id')),
         ];
 
@@ -56,7 +74,7 @@ class User extends Controller
             return redirect()->route('login');
         }
 
-        if(!$request->username) {
+        if(!$request->role) {
             $data = [
                 'title'     => 'Data Pengguna',
                 'subTitle'  => 'Tambah',
@@ -98,7 +116,7 @@ class User extends Controller
             $user->photo         = $fileName;
             $user->save();
     
-            return redirect()->route('pengguna')->with('success', 'Data berhasil ditambahkan!');
+            return redirect()->route('data-pengguna')->with('success', 'Data berhasil ditambahkan!');
         }
     }
 
@@ -108,7 +126,7 @@ class User extends Controller
             return redirect()->route('login');
         }
 
-        if(!$request->username) {
+        if(!$request->role) {
             $data = [
                 'title'     => 'Data Pengguna',
                 'subTitle'  => 'Edit',
@@ -156,7 +174,7 @@ class User extends Controller
             }
 
             $user->save();
-            return redirect()->route('pengguna')->with('success', 'Data berhasil diedit!');
+            return redirect()->route('data-pengguna')->with('success', 'Data berhasil diedit!');
         }
     }
 
@@ -167,13 +185,10 @@ class User extends Controller
         }
         
         $user = Users::find($userId);
+        $user->deleted_at = date('Y-m-d H:i:s');
+        $user->save();
 
-        if ($user->photo) {
-            unlink(public_path($this->public_path) . '/' . $user->photo);
-        }
-
-        $user->delete();
-        return back()->with('success', 'Data berhasil dihapus!');
+        return back()->with('success', 'Data berhasil dinonaktifkan!');
     }
 
     public function profil(Request $request, $userId = null)
@@ -230,30 +245,27 @@ class User extends Controller
             return redirect()->route('login');
         }
 
-        if(!$request->password_lama) {
+        if(!$request->old_password) {
             $data = [
                 'title'     => 'Profil',
                 'subTitle'  => 'Ubah Password',
                 'user'      => Users::find(Session()->get('id'))
             ];
-            return view('profil.ubahPassword', $data);
+            return view('profil.changePassword', $data);
         } else {
             $validateData = $request->validate([
-                'password_lama'     => 'required|min:6',
-                'password_baru'     => 'required|min:6',
+                'old_password'     => 'required|min:6',
+                'new_password'     => 'required|min:6',
             ], [
-                'password_lama.required'    => 'Password Lama harus diisi!',
-                'password_lama.min'         => 'Password Lama minikal 6 karakter!',
-                'password_baru.required'    => 'Password Baru harus diisi!',
-                'password_baru.min'         => 'Password Lama minikal 6 karakter!',
+                'old_password.required'    => 'Password Lama harus diisi!',
+                'old_password.min'         => 'Password Lama minikal 6 karakter!',
+                'new_password.required'    => 'Password Baru harus diisi!',
+                'new_password.min'         => 'Password Lama minikal 6 karakter!',
             ]);
-    
+            
             $user = Users::find($userId);
-    
-            if (Hash::check($validateData['password_lama'], $user->password)) {
-
-                $user->password = Hash::make($validateData['password_baru']);
-    
+            if (Hash::check($validateData['old_password'], $user->password)) {
+                $user->password = Hash::make($validateData['new_password']);
                 $user->save();
                 return back()->with('success', 'Password berhasil diubah!');
             } else {

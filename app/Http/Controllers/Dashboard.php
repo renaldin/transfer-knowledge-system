@@ -20,8 +20,29 @@ class Dashboard extends Controller
         $role = Session()->get('role');
         $user = Users::find(Session()->get('id'));
        
-        if ($role === 'HRD') {
-            $route = 'dashboard.dashboardHrd';
+        if ($role === 'Admin IT') {
+            $route = 'dashboard.dashboardAdminIt';
+            $data = [
+                'title'     => 'Dashboard',
+                'subTitle'  => 'Dashboard',
+                'user'      => $user,
+            ];
+        } elseif ($role === 'Admin Corporate') {
+            $route = 'dashboard.dashboardAdminCorparate';
+            $data = [
+                'title'     => 'Dashboard',
+                'subTitle'  => 'Dashboard',
+                'user'      => $user,
+            ];
+        } elseif ($role === 'Karyawan Senior') {
+            $route = 'dashboard.dashboardKaryawanSenior';
+            $data = [
+                'title'     => 'Dashboard',
+                'subTitle'  => 'Dashboard',
+                'user'      => $user,
+            ];
+        } elseif ($role === 'Karyawan Junior') {
+            $route = 'dashboard.dashboardKaryawanJunior';
             $data = [
                 'title'     => 'Dashboard',
                 'subTitle'  => 'Dashboard',
@@ -29,13 +50,6 @@ class Dashboard extends Controller
             ];
         } elseif ($role === 'Manager') {
             $route = 'dashboard.dashboardManager';
-            $data = [
-                'title'     => 'Dashboard',
-                'subTitle'  => 'Dashboard',
-                'user'      => $user,
-            ];
-        } elseif ($role === 'Pelamar') {
-            $route = 'dashboard.dashboardPelamar';
             $data = [
                 'title'     => null,
                 'subTitle'  => 'Dashboard',

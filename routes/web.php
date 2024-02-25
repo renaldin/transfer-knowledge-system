@@ -34,13 +34,16 @@ Route::group(['middleware' => 'revalidate'], function () {
     Route::get('/ubah-password', [User::class, 'changePassword'])->name('ubah-password');
     Route::post('/ubah-password/{id}', [User::class, 'changePassword']);
     
-    Route::get('/pengguna', [User::class, 'index'])->name('pengguna');
+    Route::get('/data-pengguna', [User::class, 'index'])->name('data-pengguna');
     Route::get('/detail-pengguna/{id}', [User::class, 'detail'])->name('detail-pengguna');
     Route::get('/tambah-pengguna', [User::class, 'new'])->name('tambah-pengguna');
     Route::post('/tambah-pengguna', [User::class, 'new']);
     Route::get('/edit-pengguna/{id}', [User::class, 'update'])->name('edit-pengguna');
     Route::post('/edit-pengguna/{id}', [User::class, 'update']);
     Route::get('/hapus-pengguna/{id}', [User::class, 'delete']);
+
+    // Route::get('/pengguna', [User::class, 'user'])->name('pengguna');
+    // Route::get('/pengguna/json', [User::class, 'json'])->name('pengguna-json');
     
     Route::group(['middleware' => 'hrd'], function () {
         
