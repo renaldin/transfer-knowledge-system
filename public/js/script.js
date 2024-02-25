@@ -430,7 +430,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 <p>${deleteModalContent}</p>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
                                 <a href="${deleteModalHref}" type="button" class="btn btn-danger">Hapus</a>
                             </div>
                         </div>

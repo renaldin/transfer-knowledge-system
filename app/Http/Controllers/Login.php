@@ -34,7 +34,6 @@ class Login extends Controller
 
     public function loginProcess(Request $request)
     {
-
         $validateData = $request->validate([
             'username'      => 'required',
             'password'      => 'min:6|required',
@@ -44,7 +43,7 @@ class Login extends Controller
             'password.min'      => 'Password minimal 6 karakter!',
         ]);
 
-        $checkLogin = Users::orWhere('username', $validateData['username'])->orWhere('email', $validateData['username'])->first();
+        $checkLogin = Users::where('deleted_at', null)->orWhere('username', $validateData['username'])->orWhere('email', $validateData['username'])->first();
 
         if ($checkLogin) {
             if (Hash::check($validateData['password'], $checkLogin->password)) {
@@ -57,7 +56,7 @@ class Login extends Controller
                 return back()->with('failed', 'Login gagal! Password tidak sesuai.');
             }
         } else {
-            return back()->with('failed', 'Login gagal! Username/Email belum terdaftar.');
+            return back()->with('failed', 'Login gagal! Username/Email tidak ada.');
         }
     }
 

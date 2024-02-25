@@ -1,64 +1,38 @@
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
   <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
-  <title>Sistem | {{$subTitle ? $subTitle : $title }}</title>
-  <meta content="" name="description">
-  <meta content="" name="keywords">
-
-  <!-- Favicons -->
-  <link href="{{ asset('template/assets/img/favicon.png') }}" rel="icon">
-  <link href="{{ asset('template/assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.gstatic.com" rel="preconnect">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-
-  <!-- Vendor CSS Files -->
-  <link href="{{ asset('template/assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-  <link href="{{ asset('template/assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
-  <link href="{{ asset('template/assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
-  <link href="{{ asset('template/assets/vendor/quill/quill.snow.css') }}" rel="stylesheet">
-  <link href="{{ asset('template/assets/vendor/quill/quill.bubble.css') }}" rel="stylesheet">
-  <link href="{{ asset('template/assets/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
-  <link href="{{ asset('template/assets/vendor/simple-datatables/style.css') }}" rel="stylesheet">
-
-  <!-- Template Main CSS File -->
-  <link href="{{ asset('template/assets/css/style.css') }}" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login | STL</title>
+  <link rel="shortcut icon" type="image/png" href="{{ asset('template/src/assets/images/logos/favicon.png') }}" />
+  <link rel="stylesheet" href="{{ asset('template/src/assets/css/styles.min.css') }}" />
 </head>
 
 <body>
-
-  <main>
-    <div class="container">
-
-      @yield('content')
-
+  <!--  Body Wrapper -->
+  <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed">
+    <div class="position-relative overflow-hidden radial-gradient min-vh-100 d-flex align-items-center justify-content-center">
+      <div class="d-flex align-items-center justify-content-center w-100">
+        <div class="row justify-content-center w-100">
+          <div class="col-md-8 col-lg-4 col-xxl-3">
+            <div class="card mb-0">
+              <div class="card-body">
+                <a href="" class="text-nowrap logo-img text-center d-block py-3 w-100">
+                  <img src="{{ asset('template/src/assets/images/logos/dark-logo.svg') }}" width="180" alt="">
+                </a>
+                @yield('content')
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </main><!-- End #main -->
-
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-
-  <!-- Vendor JS Files -->
-  <script src="{{ asset('template/assets/vendor/apexcharts/apexcharts.min.js') }}"></script>
-  <script src="{{ asset('template/assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-  <script src="{{ asset('template/assets/vendor/chart.js/chart.umd.js') }}"></script>
-  <script src="{{ asset('template/assets/vendor/echarts/echarts.min.js') }}"></script>
-  <script src="{{ asset('template/assets/vendor/quill/quill.min.js') }}"></script>
-  <script src="{{ asset('template/assets/vendor/simple-datatables/simple-datatables.js') }}"></script>
-  <script src="{{ asset('template/assets/vendor/tinymce/tinymce.min.js') }}"></script>
-  <script src="{{ asset('template/assets/vendor/php-email-form/validate.js') }}"></script>
-
-  <!-- Template Main JS File -->
-  <script src="{{ asset('template/assets/js/main.js') }}"></script>
+  </div>
+  <script src="{{ asset('template/src/assets/libs/jquery/dist/jquery.min.js') }}"></script>
+  <script src="{{ asset('template/src/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
   <script src="{{ asset('js/script.js') }}"></script>
-
 </body>
 
 </html>

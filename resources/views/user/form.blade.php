@@ -1,84 +1,91 @@
 @extends('layout.main')
 
 @section('content')
-<section class="section">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card p-3">
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
             <div class="card-header">
-                <h3 class="card-title">{{$subTitle}}</h3>
+                <div class="card-title">{{$subTitle}}</div>
             </div>
             <div class="card-body">
-                <form class="row g-3" action="@if($form == 'Tambah') /tambah-pengguna @elseif($form == 'Edit') /edit-pengguna/{{$detail->id}} @endif" method="POST" enctype="multipart/form-data">
-                @csrf
-                <div class="col-md-6">
-                    <label for="role" class="form-label">Role</label>
-                    <select class="form-control" name="role" id="role" @if($form == 'Detail') disabled @endif required>
-                        <option value="" selected disabled>-- Pilih --</option>
-                        <option value="Pelamar" @if($form == 'Edit' && $detail->role == 'Pelamar') selected @elseif($form == 'Detail' && $detail->role == 'Pelamar') selected @endif>Pelamar</option>
-                        <option value="HRD" @if($form == 'Edit' && $detail->role == 'HRD') selected @elseif($form == 'Detail' && $detail->role == 'HRD') selected @endif>HRD</option>
-                        <option value="Manager" @if($form == 'Edit' && $detail->role == 'Manager') selected @elseif($form == 'Detail' && $detail->role == 'Pelamar') selected @endif>Manager</option>
-                    </select>
-                    <div class="text-danger">
-                        @error('role')
-                        {{ $message}}
-                        @enderror
+                @if (Session('success'))
+                    <div class="alert bg-primary text-white" role="alert">
+                        {{Session('success')}}
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <label for="name" class="form-label">Nama Lengkap</label>
-                    <input type="text" class="form-control" id="name" name="name" placeholder="Masukkan Nama Lengkap..." @if($form == 'Tambah')value="{{old('name')}}"@elseif($form == 'Edit' || $form == 'Detail')value="{{$detail->name}}"@endif @if($form == 'Detail') disabled @endif>
-                    <div class="text-danger">
-                        @error('name')
-                        {{ $message}}
-                        @enderror
+                @endif
+                @if (Session('failed'))
+                    <div class="alert bg-danger text-white" role="alert">
+                        {{Session('failed')}}
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" placeholder="Masukkan Email..." @if($form == 'Tambah')value="{{old('email')}}"@elseif($form == 'Edit' || $form == 'Detail')value="{{$detail->email}}"@endif @if($form == 'Detail') disabled @endif>
-                    <div class="text-danger">
-                        @error('email')
-                        {{ $message}}
-                        @enderror
+                @endif
+                <form action="@if($form == 'Tambah') /tambah-pengguna @elseif($form == 'Edit') /edit-pengguna/{{$detail->id}} @endif" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="row">
+                        <div class="mb-3 col-md-6">
+                            <label for="role" class="form-label">Role <small class="text-danger">*</small></label>
+                            <select name="role" id="role" class="form-control" @if($form == 'Detail') disabled @endif required>
+                                <option value="" disabled selected>-- Pilih --</option>
+                                <option value="Admin IT" @if($form == 'Edit' && $detail->role == 'Admin IT') selected @elseif($form == 'Detail' && $detail->role == 'Admin IT') selected @endif>Admin IT</option>
+                                <option value="Admin Corporate" @if($form == 'Edit' && $detail->role == 'Admin Corporate') selected @elseif($form == 'Detail' && $detail->role == 'Admin Corporate') selected @endif>Admin Corporate</option>
+                                <option value="Manager" @if($form == 'Edit' && $detail->role == 'Manager') selected @elseif($form == 'Detail' && $detail->role == 'Manager') selected @endif>Manager</option>
+                                <option value="Karyawan Senior" @if($form == 'Edit' && $detail->role == 'Karyawan Senior') selected @elseif($form == 'Detail' && $detail->role == 'Karyawan Senior') selected @endif>Karyawan Senior</option>
+                                <option value="Karyawan Junior" @if($form == 'Edit' && $detail->role == 'Karyawan Junior') selected @elseif($form == 'Detail' && $detail->role == 'Karyawan Junior') selected @endif>Karyawan Junior</option>
+                            </select>
+                            @error('role')
+                                <div class="form-text text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="mb-3 col-md-6">
+                            <label for="name" class="form-label">Nama Lengkap <small class="text-danger">*</small></label>
+                            <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="name" @if($form == 'Tambah') value="{{old('name')}}" @elseif($form == 'Edit' || $form == 'Detail') value="{{$detail->name}}" @endif @if($form == 'Detail') disabled @endif placeholder="Masukkan Nama Lengkap...">
+                            @error('name')
+                                <div class="form-text text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="mb-3 col-md-6">
+                            <label for="email" class="form-label">Email <small class="text-danger">*</small></label>
+                            <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" id="email" @if($form == 'Tambah') value="{{old('email')}}" @elseif($form == 'Edit' || $form == 'Detail') value="{{$detail->email}}" @endif @if($form == 'Detail') disabled @endif placeholder="Masukkan Email...">
+                            @error('email')
+                                <div class="form-text text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="mb-3 col-md-6">
+                            <label for="username" class="form-label">Username <small class="text-danger">*</small></label>
+                            <input type="text" class="form-control @error('username') is-invalid @enderror" name="username" id="username" @if($form == 'Tambah') value="{{old('username')}}" @elseif($form == 'Edit' || $form == 'Detail') value="{{$detail->username}}" @endif @if($form == 'Detail') disabled @endif placeholder="Masukkan Username...">
+                            @error('username')
+                                <div class="form-text text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="mb-3 col-md-6">
+                            <label for="password" class="form-label">Password <small class="text-danger">*</small></label>
+                            <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" id="password" @if($form == 'Detail') disabled @endif placeholder="Masukkan Password...">
+                            @error('password')
+                                <div class="form-text text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="mb-3 col-md-6">
+                            <label for="photo" class="form-label">Foto <small class="text-danger">*</small></label>
+                            <input type="file" class="form-control @error('photo') is-invalid @enderror" name="photo" id="preview_image" @if($form == 'Detail') disabled @endif>
+                            @error('photo')
+                                <div class="form-text text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="mb-3 col-md-6">
+                            <label for="photo" class="form-label"></label>
+                            <img src="@if($form == 'Edit' || $form == 'Detail' && $detail->photo) {{ asset('photo/'.$detail->photo) }} @else {{ asset('photo/default.jpg') }} @endif" class="rounded-circle" alt="" style="width: 200px;" id="load_image">
+                        </div>
+                        <div class="col-md-12 text-center mt-4">
+                            @if ($form == 'Detail')
+                                <a href="/data-pengguna" class="btn btn-light">Kembali</a>
+                            @else
+                                <button type="submit" class="btn btn-primary">Simpan</button>
+                                <a href="/data-pengguna" class="btn btn-light">Kembali</a>
+                            @endif
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <label for="username" class="form-label">Usermame</label>
-                    <input type="text" class="form-control" id="username" name="username" placeholder="Masukkan Username..." @if($form == 'Tambah')value="{{old('username')}}"@elseif($form == 'Edit' || $form == 'Detail')value="{{$detail->username}}"@endif @if($form == 'Detail') disabled @endif required>
-                    <div class="text-danger">
-                    @error('username')
-                        {{ $message}}
-                    @enderror 
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Masukkan Password..." @if($form == 'Detail') disabled @endif>
-                    <div class="text-danger">
-                    @error('password')
-                        {{ $message}}
-                    @enderror
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <label for="photo" class="form-label">Foto</label>
-                    <input type="file" class="form-control" id="preview_image" name="photo" @if($form == 'Detail') disabled @endif>
-                    <div class="text-danger">
-                    @error('photo')
-                        {{ $message}}
-                    @enderror
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label"></label>
-                    <img src="{{ $form == 'Edit' || $form == 'Detail' && $detail->photo ? asset('photo/'.$detail->photo) : asset('photo/default.jpg') }}" alt="Profile" class="rounded-circle" id="load_image" style="width: 160px; height: 160px;">
-                </div>
-                @include('components.buttonForm')
                 </form>
-            </div>
             </div>
         </div>
     </div>
-</section>
+</div>
 @endsection
