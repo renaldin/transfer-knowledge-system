@@ -10,7 +10,7 @@ class UserSeeder extends Seeder
 {
     public function run()
     {
-        for ($i=1; $i <= 200000; $i++) {
+        for ($i=1; $i <= 1; $i++) {
             Users::create([
                 'name'      => 'Admin IT '.$i,
                 'username'  => 'adminit'.$i,

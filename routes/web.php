@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\User;
 use App\Http\Controllers\Dashboard;
+use App\Http\Controllers\Employee;
 use App\Http\Controllers\Login;
 use Illuminate\Support\Facades\Route;
 // use App\Http\Controllers\NoteDataTable;
@@ -41,6 +42,14 @@ Route::group(['middleware' => 'revalidate'], function () {
     Route::get('/edit-pengguna/{id}', [User::class, 'update'])->name('edit-pengguna');
     Route::post('/edit-pengguna/{id}', [User::class, 'update']);
     Route::get('/hapus-pengguna/{id}', [User::class, 'delete']);
+
+    Route::get('/data-karyawan', [Employee::class, 'index'])->name('data-karyawan');
+    Route::get('/detail-karyawan/{id}', [Employee::class, 'detail'])->name('detail-karyawan');
+    Route::get('/tambah-karyawan', [Employee::class, 'new'])->name('tambah-karyawan');
+    Route::post('/tambah-karyawan', [Employee::class, 'new']);
+    Route::get('/edit-karyawan/{id}', [Employee::class, 'update'])->name('edit-karyawan');
+    Route::post('/edit-karyawan/{id}', [Employee::class, 'update']);
+    Route::get('/hapus-karyawan/{id}', [Employee::class, 'delete']);
 
     // Route::get('/pengguna', [User::class, 'user'])->name('pengguna');
     // Route::get('/pengguna/json', [User::class, 'json'])->name('pengguna-json');

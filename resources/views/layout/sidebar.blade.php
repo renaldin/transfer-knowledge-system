@@ -36,6 +36,14 @@
                         <span class="hide-menu">Data Pengguna</span>
                     </a>
                 </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link @if($title == 'Data Karyawan') active @endif" href="/data-karyawan" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-user-plus"></i>
+                        </span>
+                        <span class="hide-menu">Data Karyawan</span>
+                    </a>
+                </li>
             </ul>
             <div class="unlimited-access hide-menu bg-light-primary position-relative mb-7 mt-5 rounded">
                 <div class="d-flex">
