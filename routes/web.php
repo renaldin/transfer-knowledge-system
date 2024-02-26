@@ -44,6 +44,8 @@ Route::group(['middleware' => 'revalidate'], function () {
 
     // Route::get('/pengguna', [User::class, 'user'])->name('pengguna');
     // Route::get('/pengguna/json', [User::class, 'json'])->name('pengguna-json');
+    // Route::get('/data-pengguna', [User::class, 'user'])->name('data-pengguna');
+    // Route::get('/data-pengguna/json', [User::class, 'data'])->name('data-pengguna-json');
     
     Route::group(['middleware' => 'hrd'], function () {
         

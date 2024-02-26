@@ -8,9 +8,12 @@
   <title>{{$subTitle ? $subTitle : $title}} | STL</title>
   <link rel="shortcut icon" type="image/png" href="{{ asset('template/src/assets/images/logos/favicon.png') }}" />
   <link rel="stylesheet" href="{{ asset('template/src/assets/css/styles.min.css') }}" />
-  {{-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.datatables.net/2.0.0/css/dataTables.bootstrap.css">
-  <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.5.0/css/rowReorder.bootstrap.css"> --}}
+  <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.5.0/css/rowReorder.bootstrap.css">
+  {{-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> --}}
+  {{-- <script src="{{ asset('template/DataTables-2.0.0/css/dataTables.bootstrap.min.css') }}"></script> --}}
+  {{-- <script src="{{ asset('template/RowReorder-1.5.0/css/rowReorder.bootstrap.css') }}"></script> --}}
+  {{-- <link rel="stylesheet" href="https://cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css"> --}}
   <style>
     .page-wrapper {
         position: relative;
@@ -74,33 +77,39 @@
   <script src="{{ asset('template/src/assets/js/sidebarmenu.js') }}"></script>
   <script src="{{ asset('template/src/assets/js/app.min.js') }}"></script>
   <script src="{{ asset('template/src/assets/libs/simplebar/dist/simplebar.js') }}"></script>
-  {{-- <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script src="https://cdn.datatables.net/2.0.0/js/dataTables.js"></script>
+  <script src="{{ asset('js/script.js') }}"></script>
+  <script src="{{ asset('template/DataTables-2.0.0/js/dataTables.js') }}"></script>
+  <script src="{{ asset('template/DataTables-2.0.0/js/dataTables.bootstrap.js') }}"></script>
+
+  {{-- <script src="https://code.jquery.com/jquery-3.7.1.js"></script> --}}
+  {{-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> --}}
+  {{-- <script src="https://cdn.datatables.net/2.0.0/js/dataTables.js"></script>
   <script src="https://cdn.datatables.net/2.0.0/js/dataTables.bootstrap.js"></script>
   <script src="https://cdn.datatables.net/rowreorder/1.5.0/js/dataTables.rowReorder.js"></script>
   <script src="https://cdn.datatables.net/rowreorder/1.5.0/js/rowReorder.bootstrap.js"></script> --}}
-  <script src="{{ asset('js/script.js') }}"></script>
+  {{-- <script src="{{ asset('template/RowReorder-1.5.0/js/dataTables.rowReorder.js') }}"></script>
+  <script src="{{ asset('template/RowReorder-1.5.0/js/rowReorder.bootstrap.js') }}"></script> --}}
+  
   <script>
     new DataTable('#datatable', {
+        searching: false,
         rowReorder: true
     });
   </script>
   {{-- <script type="text/javascript">
-    $(function () {
-        $('#datatable').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: '{!! route('pengguna-json') !!}',
-            columns: [
-                {data: 'id', name: 'id'},
-                {data: 'name', name: 'name'},
-                {data: 'email', name: 'email'},
-                {data: 'username', name: 'username'},
-                {data: 'role', name: 'role'},
-            ]
-        })
-    })
+    new DataTable('#datatable', {
+        ajax: '{!! route('data-pengguna-json') !!}',
+        columns: [
+          {data: 'id', name: 'id'},
+          {data: 'name', name: 'name'},
+          {data: 'email', name: 'email'},
+          {data: 'username', name: 'username'},
+          {data: 'role', name: 'role'},
+        ],
+        rowReorder: {
+            dataSrc: 'id'
+        }
+    });
   </script> --}}
 </body>
 

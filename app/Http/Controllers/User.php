@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Users;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
-use Yajra\DataTables\DataTables;
+use Yajra\DataTables\Facades\DataTables;
 
 class User extends Controller
 {
@@ -18,22 +18,22 @@ class User extends Controller
         $this->public_path = 'photo';
     }
 
-    public function user() 
-    {
-        $data = [
-            'title'             => 'Data Pengguna',
-            'subTitle'          => 'Daftar',
-            // 'daftarUser'        => Users::orderBy('created_at', 'DESC')->limit(10000)->get(),
-            'user'              => Users::find(Session()->get('id')),
-        ];
+    // public function user() 
+    // {
+    //     $data = [
+    //         'title'             => 'Data Pengguna',
+    //         'subTitle'          => 'Daftar',
+    //         // 'daftarUser'        => Users::orderBy('created_at', 'DESC')->limit(10000)->get(),
+    //         'user'              => Users::find(Session()->get('id')),
+    //     ];
 
-        return view('user.user', $data);
-    }
+    //     return view('user.user', $data);
+    // }
 
-    public function json() 
-    {
-        return DataTables::of(Users::limit(10))->toJson();
-    }
+    // public function data()
+    // {
+    //     return DataTables::of(Users::all())->toJson();
+    // }
 
     public function index()
     {
@@ -44,9 +44,26 @@ class User extends Controller
         $data = [
             'title'             => 'Data Pengguna',
             'subTitle'          => 'Daftar',
-            'daftarUser'        => Users::where('deleted_at', null)->orderBy('created_at', 'DESC')->limit(300)->get(),
             'user'              => Users::find(Session()->get('id')),
         ];
+
+        if (Request()->keyword) {
+            $keyword = Request()->keyword;
+            $data['keyword']    = Request()->keyword;
+            $data['daftarUser'] =  Users::where('deleted_at', null)
+                                    ->where(function($query) use ($keyword) {
+                                        $query->where('username', 'like', '%'.$keyword.'%')
+                                            ->orWhere('email', 'like', '%'.$keyword.'%')
+                                            ->orWhere('name', 'like', '%'.$keyword.'%')
+                                            ->orWhere('role', 'like', '%'.$keyword.'%');
+                                    })
+                                    ->orderBy('created_at', 'DESC')
+                                    ->limit(300)
+                                    ->get();
+        } else {
+            $data['daftarUser'] =  Users::where('deleted_at', null)->orderBy('created_at', 'DESC')->limit(300)->get();
+            $data['keyword']    = null;
+        }
 
         return view('user.index', $data);
     }
