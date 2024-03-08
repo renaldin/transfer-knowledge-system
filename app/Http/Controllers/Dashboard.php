@@ -28,7 +28,7 @@ class Dashboard extends Controller
                 'user'      => $user,
             ];
         } elseif ($role === 'Admin Corporate') {
-            $route = 'dashboard.dashboardAdminCorparate';
+            $route = 'dashboard.dashboardAdminCorporate';
             $data = [
                 'title'     => 'Dashboard',
                 'subTitle'  => 'Dashboard',

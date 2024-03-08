@@ -37,7 +37,6 @@ class Employee extends Controller
                                     ->where(function($query) use ($keyword) {
                                         $query->where('full_name', 'like', '%'.$keyword.'%')
                                             ->orWhere('nik', 'like', '%'.$keyword.'%')
-                                            ->orWhere('job_code', 'like', '%'.$keyword.'%')
                                             ->orWhere('job_title', 'like', '%'.$keyword.'%');
                                     })
                                     ->orderBy('created_at', 'DESC')
@@ -93,7 +92,7 @@ class Employee extends Controller
                 'address'           => 'required',
                 'birth_date'        => 'required',
                 'nik'               => 'required|unique:employees,nik',
-                'ogranization'      => 'required',
+                'organization'      => 'required',
                 'job_code'          => 'required',
                 'job_title'         => 'required',
             ], [
@@ -130,6 +129,7 @@ class Employee extends Controller
             $user->save();
 
             $userLatest = Users::latest()->first();
+            
             $employee = new Employees();
             $employee->user_id      = $userLatest->id;
             $employee->full_name    = $validateData['full_name'];
@@ -165,21 +165,18 @@ class Employee extends Controller
                 'full_name'         => 'required',
                 'username'          => 'required',
                 'email'             => 'required',
-                'password'          => 'min:6|required',
                 'role'              => 'required',
                 'photo'             => 'mimes:jpeg,png,jpg|max:2048',
                 'address'           => 'required',
                 'birth_date'        => 'required',
                 'nik'               => 'required',
-                'ogranization'      => 'required',
+                'organization'      => 'required',
                 'job_code'          => 'required',
                 'job_title'         => 'required',
             ], [
                 'full_name.required'    => 'Nama lengkap harus diisi!',
                 'username.required'     => 'Username harus diisi!',
                 'email.required'        => 'Email harus diisi!',
-                'password.required'     => 'Password harus diisi!',
-                'password.min'          => 'Password minikal 6 karakter!',
                 'role.required'         => 'Role harus diisi!',
                 'photo.mimes'           => 'Format Foto harus jpg/jpeg/png!',
                 'photo.max'             => 'Ukuran Foto maksimal 2 mb',

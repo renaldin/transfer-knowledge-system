@@ -3,6 +3,8 @@
 use App\Http\Controllers\User;
 use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Employee;
+use App\Http\Controllers\CadreDevelopment;
+use App\Http\Controllers\Assignment;
 use App\Http\Controllers\Login;
 use Illuminate\Support\Facades\Route;
 // use App\Http\Controllers\NoteDataTable;
@@ -50,6 +52,22 @@ Route::group(['middleware' => 'revalidate'], function () {
     Route::get('/edit-karyawan/{id}', [Employee::class, 'update'])->name('edit-karyawan');
     Route::post('/edit-karyawan/{id}', [Employee::class, 'update']);
     Route::get('/hapus-karyawan/{id}', [Employee::class, 'delete']);
+
+    Route::get('/data-kaderisasi', [CadreDevelopment::class, 'index'])->name('data-kaderisasi');
+    Route::get('/detail-kaderisasi/{id}', [CadreDevelopment::class, 'detail'])->name('detail-kaderisasi');
+    Route::get('/tambah-kaderisasi', [CadreDevelopment::class, 'new'])->name('tambah-kaderisasi');
+    Route::post('/tambah-kaderisasi', [CadreDevelopment::class, 'new']);
+    Route::get('/edit-kaderisasi/{id}', [CadreDevelopment::class, 'update'])->name('edit-kaderisasi');
+    Route::post('/edit-kaderisasi/{id}', [CadreDevelopment::class, 'update']);
+    Route::get('/hapus-kaderisasi/{id}', [CadreDevelopment::class, 'delete']);
+
+    Route::get('/data-penugasan', [Assignment::class, 'index'])->name('data-penugasan');
+    Route::get('/detail-penugasan/{id}', [Assignment::class, 'detail'])->name('detail-penugasan');
+    Route::get('/tambah-penugasan', [Assignment::class, 'new'])->name('tambah-penugasan');
+    Route::post('/tambah-penugasan', [Assignment::class, 'new']);
+    Route::get('/edit-penugasan/{id}', [Assignment::class, 'update'])->name('edit-penugasan');
+    Route::post('/edit-penugasan/{id}', [Assignment::class, 'update']);
+    Route::get('/hapus-penugasan/{id}', [Assignment::class, 'delete']);
 
     // Route::get('/pengguna', [User::class, 'user'])->name('pengguna');
     // Route::get('/pengguna/json', [User::class, 'json'])->name('pengguna-json');

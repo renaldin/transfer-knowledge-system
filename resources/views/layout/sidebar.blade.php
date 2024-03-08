@@ -24,26 +24,58 @@
                         <span class="hide-menu">Dashboard</span>
                     </a>
                 </li>
-                <li class="nav-small-cap">
-                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">Data Master</span>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link @if($title == 'Data Pengguna') active @endif" href="/data-pengguna" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-users"></i>
-                        </span>
-                        <span class="hide-menu">Data Pengguna</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link @if($title == 'Data Karyawan') active @endif" href="/data-karyawan" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-user-plus"></i>
-                        </span>
-                        <span class="hide-menu">Data Karyawan</span>
-                    </a>
-                </li>
+                @if ($user->role == 'Admin IT')
+                    <li class="nav-small-cap">
+                        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                        <span class="hide-menu">Data Master</span>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link @if($title == 'Data Pengguna') active @endif" href="/data-pengguna" aria-expanded="false">
+                            <span>
+                                <i class="ti ti-users"></i>
+                            </span>
+                            <span class="hide-menu">Data Pengguna</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link @if($title == 'Data Karyawan') active @endif" href="/data-karyawan" aria-expanded="false">
+                            <span>
+                                <i class="ti ti-user-plus"></i>
+                            </span>
+                            <span class="hide-menu">Data Karyawan</span>
+                        </a>
+                    </li>
+                @elseif($user->role == 'Admin Corporate')
+                    <li class="nav-small-cap">
+                        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                        <span class="hide-menu">Operasi</span>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link @if($title == 'Data Kaderisasi') active @endif" href="/data-kaderisasi" aria-expanded="false">
+                            <span>
+                                <i class="ti ti-users"></i>
+                            </span>
+                            <span class="hide-menu">Data Kaderisasi</span>
+                        </a>
+                    </li>
+                @elseif($user->role == 'Manager')
+                    <li class="nav-small-cap">
+                        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                        <span class="hide-menu">Operasi</span>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link @if($title == 'Data Penugasan') active @endif" href="/data-penugasan" aria-expanded="false">
+                            <span>
+                                <i class="ti ti-users"></i>
+                            </span>
+                            <span class="hide-menu">Data Penugasan</span>
+                        </a>
+                    </li>
+                @elseif($user->role == 'Karyawan Senior')
+
+                @elseif($user->role == 'Karyawan Junior')
+                
+                @endif
             </ul>
             <div class="unlimited-access hide-menu bg-light-primary position-relative mb-7 mt-5 rounded">
                 <div class="d-flex">
