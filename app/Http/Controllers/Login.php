@@ -43,8 +43,11 @@ class Login extends Controller
             'password.min'      => 'Password minimal 6 karakter!',
         ]);
 
-        $checkLogin = Users::where('deleted_at', null)->orWhere('username', $validateData['username'])->orWhere('email', $validateData['username'])->first();
-
+        $checkLogin = Users::where('username', $validateData['username'])->orWhere('email', $validateData['username'])->first();
+        if ($checkLogin->deleted_at) {
+            return back()->with('failed', 'Login gagal! Username/Email tidak ada.');
+        }
+        
         if ($checkLogin) {
             if (Hash::check($validateData['password'], $checkLogin->password)) {
                 Session()->put('id', $checkLogin->id);

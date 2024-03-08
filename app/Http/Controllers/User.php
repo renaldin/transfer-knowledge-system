@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Employees;
 use App\Models\Users;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
@@ -189,8 +190,12 @@ class User extends Controller
                 $file->move(public_path($this->public_path), $fileName);
                 $user->photo          = $fileName;
             }
-
             $user->save();
+
+            $employee = Employees::where('id_user', $user->id)->first();
+            $employee->full_name = $user->name;
+            $employee->save();
+
             return redirect()->route('data-pengguna')->with('success', 'Data berhasil diedit!');
         }
     }

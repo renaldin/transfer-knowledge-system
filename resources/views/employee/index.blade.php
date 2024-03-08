@@ -5,7 +5,7 @@
     <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">{{$title}}</h5>
+                <h5 class="card-title">{{$subTitle}}</h5>
                 <div class="d-flex justify-content-between">
                     <a href="/tambah-karyawan" class="btn btn-primary my-2">Tambah</a>
                     <form action="" class="d-flex">
@@ -14,7 +14,7 @@
                     </form>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-striped table-responsive" id="datatable">
+                    <table class="table table-hover table-responsive" id="datatable">
                         @if (Session('success'))
                             <div class="alert bg-primary text-white" role="alert">
                                 {{Session('success')}}
@@ -26,10 +26,9 @@
                             </div>
                         @endif
                         <thead>
-                            <tr>
+                            <tr style="background-color: #eaeff4">
                                 <th>No</th>
                                 <th>Nama Lengkap</th>
-                                <th>NIK</th>
                                 <th>Kode Pekerjaan</th>
                                 <th>Pekerjaan</th>
                                 <th>Jenis Karyawan</th>
@@ -44,7 +43,6 @@
                                 <tr>
                                     <td>{{$no++}}</td>
                                     <td>{{$item->full_name}}</td>
-                                    <td>{{$item->nik}}</td>
                                     <td>{{$item->job_code}}</td>
                                     <td>{{$item->job_title}}</td>
                                     <td>
@@ -61,13 +59,9 @@
                                         @endif
                                     </td>
                                     <td>
-                                        @if (Session()->get('id') == $item->id)
-                                            Akun Anda
-                                        @else
-                                            <a href="/detail-karyawan/{{$item->id}}" class="btn btn-primary mb-1"><i class="ti ti-eye"></i></a>
-                                            <a href="/edit-karyawan/{{$item->id}}" class="btn btn-success mb-1"><i class="ti ti-edit"></i></a>
-                                            <button type="button" data-href="/hapus-karyawan/{{$item->id}}" data-content="Apakah Anda yakin akan non active data karyawan {{$item->full_name}} ?" class="btn btn-danger mb-1 btn-delete"><i class="ti ti-trash"></i></button>
-                                        @endif
+                                        <a href="/detail-karyawan/{{$item->id}}" class="btn btn-primary mb-1"><i class="ti ti-eye"></i></a>
+                                        <a href="/edit-karyawan/{{$item->id}}" class="btn btn-success mb-1"><i class="ti ti-edit"></i></a>
+                                        <button type="button" data-href="/hapus-karyawan/{{$item->id}}" data-content="Apakah Anda yakin akan non active data karyawan {{$item->full_name}} ?" class="btn btn-danger mb-1 btn-delete"><i class="ti ti-trash"></i></button>
                                     </td>
                                 </tr>
                             @endforeach
